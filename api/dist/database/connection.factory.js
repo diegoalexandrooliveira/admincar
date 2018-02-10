@@ -19,7 +19,12 @@ class ConnectionFactory {
         });
     }
     query(query, params) {
-        return this._pool.query(query, params);
+        if (typeof query === 'string') {
+            return this._pool.query(query, params);
+        }
+        else {
+            return this._pool.query(query);
+        }
     }
 }
 exports.connection = new ConnectionFactory();

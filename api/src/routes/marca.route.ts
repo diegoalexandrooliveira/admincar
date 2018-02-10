@@ -18,18 +18,28 @@ class MarcaRoute {
         return this.router;
     }
 
-    private getMarcas(req: Request, res: Response, next: NextFunction) {
+    private getMarcasPorTipoDeVeiculo(req: Request, res: Response, next: NextFunction): void {
 
-        MarcaDAO.buscarMarcas(req.params["tipoVeiculoId"])
+        MarcaDAO.buscarMarcasPorTipoDeVeiculo(req.params["tipoVeiculoId"])
             .then((resultado: Marca[]) => {
-                res.json(resultado);
+                res.status(resultado ? 200 : 204).json(resultado);
+            }).catch((erro: Erro) => {
+                res.status(500).json(erro);
+            });
+    }
+
+    private getMarcaPorId(req: Request, res: Response, next: NextFunction): void {
+        MarcaDAO.buscaMarcaPorId(req.params["marcaId"])
+            .then((resultado: Marca) => {
+                res.status(resultado ? 200 : 204).json(resultado);
             }).catch((erro: Erro) => {
                 res.status(500).json(erro);
             });
     }
 
     private init(): void {
-        this.router.get("/:tipoVeiculoId", this.getMarcas);
+        this.router.get("/tipoVeiculo/:tipoVeiculoId", this.getMarcasPorTipoDeVeiculo);
+        this.router.get("/:marcaId", this.getMarcaPorId);
     }
 
 }

@@ -10,16 +10,25 @@ class MarcaRoute {
     getRouter() {
         return this.router;
     }
-    getMarcas(req, res, next) {
-        index_1.MarcaDAO.buscarMarcas(req.params["tipoVeiculoId"])
+    getMarcasPorTipoDeVeiculo(req, res, next) {
+        index_1.MarcaDAO.buscarMarcasPorTipoDeVeiculo(req.params["tipoVeiculoId"])
             .then((resultado) => {
-            res.json(resultado);
+            res.status(resultado ? 200 : 204).json(resultado);
+        }).catch((erro) => {
+            res.status(500).json(erro);
+        });
+    }
+    getMarcaPorId(req, res, next) {
+        index_1.MarcaDAO.buscaMarcaPorId(req.params["marcaId"])
+            .then((resultado) => {
+            res.status(resultado ? 200 : 204).json(resultado);
         }).catch((erro) => {
             res.status(500).json(erro);
         });
     }
     init() {
-        this.router.get("/:tipoVeiculoId", this.getMarcas);
+        this.router.get("/tipoVeiculo/:tipoVeiculoId", this.getMarcasPorTipoDeVeiculo);
+        this.router.get("/:marcaId", this.getMarcaPorId);
     }
 }
 exports.marca = new MarcaRoute().getRouter();

@@ -1,6 +1,6 @@
 export class Marca {
 
-    constructor(private id: Number, private descricao: string, private tipo_veiculo_id: Number) {
+    constructor(private id?: Number, private descricao?: string, private tipo_veiculo_id?: Number) {
     }
 
     public getId(): Number {

@@ -1,4 +1,4 @@
-import { Pool, Client, QueryResult } from "pg";
+import { Pool, Client, QueryResult, QueryConfig } from "pg";
 import { logger } from "../utils";
 import * as dataBaseConfigObject from "../../database.config";
 import { Erro } from "../model";
@@ -21,8 +21,12 @@ class ConnectionFactory {
         });
     }
 
-    public query(query: string, params?: any[]): Promise<QueryResult> {
-        return this._pool.query(query, params);
+    public query(query: string | QueryConfig, params?: any[]): Promise<QueryResult> {
+        if (typeof query === 'string') {
+            return this._pool.query(query, params);
+        } else {
+            return this._pool.query(query);
+        }
     }
 }
 
