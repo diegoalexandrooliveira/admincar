@@ -10,9 +10,7 @@ class AdminCarApi {
         this._express = new CustomExpress().getExpress();
         this._express.listen(this._port, () => {
             let mensagem = "API admincar rodando na porta " + this._port;
-            console.log(mensagem);
-            logger.error(mensagem);
-            logger.debug(mensagem);
+            logger.info(mensagem);
         });
     }
 }

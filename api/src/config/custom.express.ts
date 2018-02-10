@@ -1,5 +1,7 @@
-import * as express from 'express';
+import * as express from "express";
 import { logger } from "../utils/index";
+import * as bodyParser from "body-parser";
+import * as routes from "../routes/index";
 
 export class CustomExpress {
 
@@ -7,11 +9,18 @@ export class CustomExpress {
 
     constructor() {
         this._express = express();
-        this._express.use((req: express.Request, res: express.Response) => {
-            logger.info("Teste");
-            res.send("Funcionou");
+        this.middlewares();
+        this.routes();
+    }
 
-        });
+    private middlewares(): void {
+        this._express.use(bodyParser.json());
+        this._express.use(bodyParser.urlencoded({ extended: false }));
+    }
+
+    private routes(): void {
+        this._express.use("/api/v1/marca", routes.marca);
+        this._express.use("/api/v1/modelo", routes.modelo);
     }
 
     public getExpress(): express.Express {
