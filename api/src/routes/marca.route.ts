@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { ConnectionFactory } from "../database/index";
+import { MarcaDAO } from "../dao/index";
 import { logger } from "../utils";
+import { Marca, Erro } from "../model";
 
 
 class MarcaRoute {
@@ -18,20 +19,17 @@ class MarcaRoute {
     }
 
     private getMarcas(req: Request, res: Response, next: NextFunction) {
-        let connection = new ConnectionFactory().getConnection();
-        connection.query("select id, descricao from marca order by id").then(result => {
-            connection.end();
-            res.json(result.rows);
-        }).catch(error => {
-            connection.end();
-            logger.error(error);
-            res.status(500).send("Ocorreu um problema ao tentar recuperar as marcas.");
-        });
 
+        MarcaDAO.buscarMarcas(req.params["tipoVeiculoId"])
+            .then((resultado: Marca[]) => {
+                res.json(resultado);
+            }).catch((erro: Erro) => {
+                res.status(500).json(erro);
+            });
     }
 
     private init(): void {
-        this.router.get("/", this.getMarcas);
+        this.router.get("/:tipoVeiculoId", this.getMarcas);
     }
 
 }

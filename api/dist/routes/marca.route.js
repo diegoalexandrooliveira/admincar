@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const index_1 = require("../database/index");
-const utils_1 = require("../utils");
+const index_1 = require("../dao/index");
 class MarcaRoute {
     constructor() {
         this.router = express_1.Router();
@@ -12,18 +11,15 @@ class MarcaRoute {
         return this.router;
     }
     getMarcas(req, res, next) {
-        let connection = new index_1.ConnectionFactory().getConnection();
-        connection.query("select id, descricao from marca order by id").then(result => {
-            connection.end();
-            res.json(result.rows);
-        }).catch(error => {
-            connection.end();
-            utils_1.logger.error(error);
-            res.status(500).send("Ocorreu um problema ao tentar recuperar as marcas.");
+        index_1.MarcaDAO.buscarMarcas(req.params["tipoVeiculoId"])
+            .then((resultado) => {
+            res.json(resultado);
+        }).catch((erro) => {
+            res.status(500).json(erro);
         });
     }
     init() {
-        this.router.get("/", this.getMarcas);
+        this.router.get("/:tipoVeiculoId", this.getMarcas);
     }
 }
 exports.marca = new MarcaRoute().getRouter();
