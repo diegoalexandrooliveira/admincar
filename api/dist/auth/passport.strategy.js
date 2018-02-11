@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_jwt_1 = require("passport-jwt");
 class PassportStrategy {
-    constructor(passport) {
-        this.passport = passport;
+    static initialize(passport) {
         let opts = {
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: "123"
@@ -15,4 +14,4 @@ class PassportStrategy {
     }
 }
 exports.PassportStrategy = PassportStrategy;
-//# sourceMappingURL=passport.js.map
+//# sourceMappingURL=passport.strategy.js.map

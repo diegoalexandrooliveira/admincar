@@ -14,7 +14,7 @@ class MarcaRoute {
     getMarcasPorTipoDeVeiculo(req, res, next) {
         let tipoVeiculoId = req.query["tipoVeiculo"];
         if (!tipoVeiculoId) {
-            res.status(400).json(new model_1.Erro("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}"));
+            res.status(400).json(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}", "erro"));
         }
         else {
             index_1.MarcaDAO.buscarMarcasPorTipoDeVeiculo(tipoVeiculoId)

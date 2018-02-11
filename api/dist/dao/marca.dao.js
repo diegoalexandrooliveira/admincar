@@ -9,7 +9,7 @@ class MarcaDAO {
                     from marca where tipo_veiculo_id = $1
                     order by id`;
         return new Promise((resolve, reject) => {
-            index_1.connection
+            index_1.clientFactory
                 .query(query, [tipoVeiculoId])
                 .then((result) => {
                 let retorno;
@@ -21,7 +21,7 @@ class MarcaDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`marca.dao.buscarMarcas - ${error}`);
-                reject(new index_2.Erro("Erro ao tentar recuperar as marcas"));
+                reject(new index_2.Mensagem("Erro ao tentar recuperar as marcas", "erro"));
             });
         });
     }
@@ -29,7 +29,7 @@ class MarcaDAO {
         let query = `select descricao, tipo_veiculo_id
                      from marca where id = $1`;
         return new Promise((resolve, reject) => {
-            index_1.connection.query(query, [id]).then((result) => {
+            index_1.clientFactory.query(query, [id]).then((result) => {
                 let retorno;
                 if (result.rowCount > 0) {
                     retorno = new index_2.Marca(id, result.rows[0].descricao, result.rows[0].tipo_veiculo_id);
@@ -37,7 +37,7 @@ class MarcaDAO {
                 resolve(retorno);
             }).catch((error) => {
                 utils_1.logger.error(`marca.dao.buscaMarcaPorId - ${error}`);
-                reject(new index_2.Erro(`Erro ao tentar recuperar a marca ${id}`));
+                reject(new index_2.Mensagem(`Erro ao tentar recuperar a marca ${id}`, "erro"));
             });
         });
     }

@@ -3,8 +3,9 @@ import * as passport from "passport";
 
 
 export class PassportStrategy {
+    private passport: passport.PassportStatic;
 
-    constructor(private passport: passport.PassportStatic) {
+    public static initialize(passport: passport.PassportStatic) {
         let opts: StrategyOptions = {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: "123"

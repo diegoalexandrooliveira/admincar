@@ -1,1 +1,1 @@
-export * from "./connection.factory";
+export * from "./client.factory";

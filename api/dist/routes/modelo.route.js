@@ -22,7 +22,7 @@ class ModeloRoute {
     getModelosPorMarca(req, res, next) {
         let marca = req.query["marca"];
         if (!marca) {
-            res.status(400).json(new model_1.Erro("Este resource deve conter uma query string no seguinte formato: marca={id}"));
+            res.status(400).json(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro"));
         }
         else {
             index_1.ModeloDAO.buscarModelosPorMarca(marca)

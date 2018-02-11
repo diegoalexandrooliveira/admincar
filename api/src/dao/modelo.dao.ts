@@ -1,6 +1,6 @@
-import { connection } from "../database/index";
+import { clientFactory } from "../database/index";
 import { QueryResult } from "pg";
-import { Marca, Erro, Modelo } from "../model/index";
+import { Marca, Mensagem, Modelo } from "../model/index";
 import { logger } from "../utils";
 
 
@@ -11,7 +11,7 @@ export class ModeloDAO {
                         order by id`;
 
         return new Promise((resolve, reject) => {
-            connection
+            clientFactory
                 .query(query, [marcaId])
                 .then((result: QueryResult) => {
                     let retorno: Modelo[];
@@ -25,7 +25,7 @@ export class ModeloDAO {
                 })
                 .catch(error => {
                     logger.error(`modelo.dao.buscarModelosPorMarca - ${error}`);
-                    reject(new Erro(`Erro ao tentar recuperar os modelos da marca ${marcaId}`));
+                    reject(new Mensagem(`Erro ao tentar recuperar os modelos da marca ${marcaId}`, "erro"));
                 });
         });
     }
@@ -38,7 +38,7 @@ export class ModeloDAO {
                         where modelo.id = $1`;
 
         return new Promise((resolve, reject) => {
-            connection
+            clientFactory
                 .query(query, [id])
                 .then((result: QueryResult) => {
                     let retorno: Modelo;
@@ -51,7 +51,7 @@ export class ModeloDAO {
                 })
                 .catch(error => {
                     logger.error(`modelo.dao.buscarModeloPorId - ${error}`);
-                    reject(new Erro(`Erro ao tentar recuperar o modelo ${id}`));
+                    reject(new Mensagem(`Erro ao tentar recuperar o modelo ${id}`, "erro"));
                 });
         });
     }

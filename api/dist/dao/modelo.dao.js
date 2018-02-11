@@ -9,7 +9,7 @@ class ModeloDAO {
                         from modelo where marca_id = $1
                         order by id`;
         return new Promise((resolve, reject) => {
-            index_1.connection
+            index_1.clientFactory
                 .query(query, [marcaId])
                 .then((result) => {
                 let retorno;
@@ -23,7 +23,7 @@ class ModeloDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`modelo.dao.buscarModelosPorMarca - ${error}`);
-                reject(new index_2.Erro(`Erro ao tentar recuperar os modelos da marca ${marcaId}`));
+                reject(new index_2.Mensagem(`Erro ao tentar recuperar os modelos da marca ${marcaId}`, "erro"));
             });
         });
     }
@@ -34,7 +34,7 @@ class ModeloDAO {
                         marca on modelo.marca_id = marca.id
                         where modelo.id = $1`;
         return new Promise((resolve, reject) => {
-            index_1.connection
+            index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
                 let retorno;
@@ -46,7 +46,7 @@ class ModeloDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`modelo.dao.buscarModeloPorId - ${error}`);
-                reject(new index_2.Erro(`Erro ao tentar recuperar o modelo ${id}`));
+                reject(new index_2.Mensagem(`Erro ao tentar recuperar o modelo ${id}`, "erro"));
             });
         });
     }

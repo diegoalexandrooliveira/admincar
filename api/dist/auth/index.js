@@ -3,7 +3,5 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./usuario.dao"));
-__export(require("./marca.dao"));
-__export(require("./modelo.dao"));
+__export(require("./passport.strategy"));
 //# sourceMappingURL=index.js.map

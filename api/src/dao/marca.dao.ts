@@ -1,6 +1,6 @@
-import { connection } from "../database/index";
+import { clientFactory } from "../database/index";
 import { QueryResult } from "pg";
-import { Marca, Erro } from "../model/index";
+import { Marca, Mensagem } from "../model/index";
 import { logger } from "../utils";
 
 
@@ -11,7 +11,7 @@ export class MarcaDAO {
                     order by id`;
 
         return new Promise((resolve, reject) => {
-            connection
+            clientFactory
                 .query(query, [tipoVeiculoId])
                 .then((result: QueryResult) => {
                     let retorno: Marca[];
@@ -23,7 +23,7 @@ export class MarcaDAO {
                 })
                 .catch(error => {
                     logger.error(`marca.dao.buscarMarcas - ${error}`);
-                    reject(new Erro("Erro ao tentar recuperar as marcas"));
+                    reject(new Mensagem("Erro ao tentar recuperar as marcas", "erro"));
                 });
         });
     }
@@ -32,7 +32,7 @@ export class MarcaDAO {
         let query = `select descricao, tipo_veiculo_id
                      from marca where id = $1`;
         return new Promise((resolve, reject) => {
-            connection.query(query, [id]).then((result: QueryResult) => {
+            clientFactory.query(query, [id]).then((result: QueryResult) => {
                 let retorno: Marca;
                 if (result.rowCount > 0) {
                     retorno = new Marca(id, result.rows[0].descricao, result.rows[0].tipo_veiculo_id);
@@ -40,7 +40,7 @@ export class MarcaDAO {
                 resolve(retorno);
             }).catch((error) => {
                 logger.error(`marca.dao.buscaMarcaPorId - ${error}`);
-                reject(new Erro(`Erro ao tentar recuperar a marca ${id}`));
+                reject(new Mensagem(`Erro ao tentar recuperar a marca ${id}`, "erro"));
             });
         });
     }
