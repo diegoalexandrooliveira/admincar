@@ -1,11 +1,11 @@
 import { Pool, Client, QueryResult, QueryConfig } from "pg";
 import { logger } from "../utils";
-import * as dataBaseConfigObject from "../../database.config";
+import { configs } from "../config/configs";
 import { Mensagem } from "../model";
 
 
 class ClientFactory {
-    private _pool: Pool = new Pool(dataBaseConfigObject);
+    private _pool: Pool = new Pool(configs.database);
 
     public getClient(): Promise<Client> {
         return new Promise((resolve, reject) => {

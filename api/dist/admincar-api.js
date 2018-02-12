@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const custom_express_1 = require("./config/custom.express");
+const custom_express_1 = require("./express/custom.express");
 const index_1 = require("./utils/index");
 class AdminCarApi {
     constructor() {

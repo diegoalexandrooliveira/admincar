@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { ModeloDAO } from "../dao/index";
 import { logger } from "../utils";
-import { Modelo, Mensagem } from "../model";
+import { Modelo, Mensagem, Resposta } from "../model";
 
 
 class ModeloRoute {
@@ -19,25 +19,24 @@ class ModeloRoute {
     }
 
     private getModeloPorId(req: Request, res: Response, next: NextFunction): void {
-
         ModeloDAO.buscarModeloPorId(req.params["id"])
             .then((resultado: Modelo) => {
-                res.status(resultado ? 200 : 204).json(resultado);
+                res.json(new Resposta(null, null, resultado));
             }).catch((erro: Mensagem) => {
-                res.status(500).json(erro);
+                res.status(500).json(new Resposta(erro));
             });
     }
 
     private getModelosPorMarca(req: Request, res: Response, next: NextFunction): void {
         let marca: number = req.query["marca"];
         if (!marca) {
-            res.status(400).json(new Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro"));
+            res.status(400).json(new Resposta(new Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro")));
         } else {
             ModeloDAO.buscarModelosPorMarca(marca)
                 .then((result: Modelo[]) => {
-                    res.status(result ? 200 : 204).json(result);
+                    res.json(new Resposta(null, null, result));
                 }).catch((erro: Mensagem) => {
-                    res.status(500).json(erro);
+                    res.status(500).json(new Resposta(erro));
                 });
         }
     }

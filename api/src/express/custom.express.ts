@@ -28,21 +28,11 @@ export class CustomExpress {
         this._express.use("/api/v1/usuarios", routes.usuario);
         this._express.use("/api/v1/marcas", routes.marca);
         this._express.use("/api/v1/modelos", routes.modelo);
-        this._express.get("/api/v1/authenticate", ((req, res) => {
-            let expires = moment().add(1, "minutes").valueOf();
-            let token = jwt.encode({
-                iss: "diego",
-                exp: expires
-            }, "123");
-            res.send(token);
-        }));
 
-        // let opts: passport.AuthenticateOptions = {};
-
-        this._express.get("/restrito", passport.authenticate("jwt", { session: false }),
-            (req, res) => {
-                res.send("Ok");
-            });
+        // this._express.get("/restrito", passport.authenticate("jwt", { session: false }),
+        //     (req, res) => {
+        //         res.send("Ok");
+        //     });
     }
 
     public getExpress(): express.Express {

@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg_1 = require("pg");
 const utils_1 = require("../utils");
-const dataBaseConfigObject = require("../../database.config");
+const configs_1 = require("../config/configs");
 const model_1 = require("../model");
 class ClientFactory {
     constructor() {
-        this._pool = new pg_1.Pool(dataBaseConfigObject);
+        this._pool = new pg_1.Pool(configs_1.configs.database);
     }
     getClient() {
         return new Promise((resolve, reject) => {

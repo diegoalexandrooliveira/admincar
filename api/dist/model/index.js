@@ -7,4 +7,5 @@ __export(require("./usuario.model"));
 __export(require("./marca.model"));
 __export(require("./modelo.model"));
 __export(require("./mensagem.model"));
+__export(require("./resposta.model"));
 //# sourceMappingURL=index.js.map

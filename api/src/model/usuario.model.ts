@@ -28,34 +28,38 @@ export class Usuario {
         this.senha = value;
     }
 
-    public encodeSenha(): void {
+    public codificaSenha(): void {
         if (this.senha) {
             let salt: string = bcrypt.genSaltSync(10);
-            this.$senha = bcrypt.hashSync(this.$senha, salt);
+            this.senha = bcrypt.hashSync(this.senha, salt);
         }
     }
 
-    public validarUsuario(ehInsercao: boolean): Promise<Mensagem[]> {
+    public senhaIgual(senha: string): boolean {
+        return bcrypt.compareSync(senha, this.$senha);
+    }
+
+    public validaUsuario(ehInsercao: boolean): Promise<Mensagem[]> {
         return new Promise((resolve, reject) => {
             let erros: Mensagem[] = [];
 
-            if (!this.$usuario) {
+            if (!this.usuario) {
                 erros.push(new Mensagem("Usuário não informado.", "erro"));
             } else {
-                if (this.$usuario.length > 20) {
+                if (this.usuario.length > 20) {
                     erros.push(new Mensagem("Tamanho do usuário deve ser de no máximo 20 caracteres.", "erro"));
                 }
             }
-            if (!this.$senha) {
-                erros.push(new Mensagem("Senha não informada", "erro"));
+            if (!this.senha) {
+                erros.push(new Mensagem("Senha não informada.", "erro"));
             }
             if (!ehInsercao || !this.$usuario) {
                 resolve(erros);
             } else {
-                UsuarioDAO.buscaUsuario(this.$usuario)
+                UsuarioDAO.buscaUsuario(this.usuario)
                     .then((usuarioEncontrado: Usuario) => {
-                        if (usuarioEncontrado.$usuario) {
-                            erros.push(new Mensagem(`Usuário ${this.$usuario} já cadastrado.`, "erro"));
+                        if (usuarioEncontrado.usuario) {
+                            erros.push(new Mensagem(`Usuário ${this.usuario} já cadastrado.`, "erro"));
                         }
                         resolve(erros);
                     })

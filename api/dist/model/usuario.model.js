@@ -20,34 +20,37 @@ class Usuario {
     set $senha(value) {
         this.senha = value;
     }
-    encodeSenha() {
+    codificaSenha() {
         if (this.senha) {
             let salt = bcrypt.genSaltSync(10);
-            this.$senha = bcrypt.hashSync(this.$senha, salt);
+            this.senha = bcrypt.hashSync(this.senha, salt);
         }
     }
-    validarUsuario(ehInsercao) {
+    senhaIgual(senha) {
+        return bcrypt.compareSync(senha, this.$senha);
+    }
+    validaUsuario(ehInsercao) {
         return new Promise((resolve, reject) => {
             let erros = [];
-            if (!this.$usuario) {
+            if (!this.usuario) {
                 erros.push(new index_1.Mensagem("Usuário não informado.", "erro"));
             }
             else {
-                if (this.$usuario.length > 20) {
+                if (this.usuario.length > 20) {
                     erros.push(new index_1.Mensagem("Tamanho do usuário deve ser de no máximo 20 caracteres.", "erro"));
                 }
             }
-            if (!this.$senha) {
-                erros.push(new index_1.Mensagem("Senha não informada", "erro"));
+            if (!this.senha) {
+                erros.push(new index_1.Mensagem("Senha não informada.", "erro"));
             }
             if (!ehInsercao || !this.$usuario) {
                 resolve(erros);
             }
             else {
-                index_2.UsuarioDAO.buscaUsuario(this.$usuario)
+                index_2.UsuarioDAO.buscaUsuario(this.usuario)
                     .then((usuarioEncontrado) => {
-                    if (usuarioEncontrado.$usuario) {
-                        erros.push(new index_1.Mensagem(`Usuário ${this.$usuario} já cadastrado.`, "erro"));
+                    if (usuarioEncontrado.usuario) {
+                        erros.push(new index_1.Mensagem(`Usuário ${this.usuario} já cadastrado.`, "erro"));
                     }
                     resolve(erros);
                 })

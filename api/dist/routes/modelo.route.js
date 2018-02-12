@@ -14,22 +14,22 @@ class ModeloRoute {
     getModeloPorId(req, res, next) {
         index_1.ModeloDAO.buscarModeloPorId(req.params["id"])
             .then((resultado) => {
-            res.status(resultado ? 200 : 204).json(resultado);
+            res.json(new model_1.Resposta(null, null, resultado));
         }).catch((erro) => {
-            res.status(500).json(erro);
+            res.status(500).json(new model_1.Resposta(erro));
         });
     }
     getModelosPorMarca(req, res, next) {
         let marca = req.query["marca"];
         if (!marca) {
-            res.status(400).json(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro"));
+            res.status(400).json(new model_1.Resposta(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro")));
         }
         else {
             index_1.ModeloDAO.buscarModelosPorMarca(marca)
                 .then((result) => {
-                res.status(result ? 200 : 204).json(result);
+                res.json(new model_1.Resposta(null, null, result));
             }).catch((erro) => {
-                res.status(500).json(erro);
+                res.status(500).json(new model_1.Resposta(erro));
             });
         }
     }

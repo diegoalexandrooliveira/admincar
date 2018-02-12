@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { MarcaDAO } from "../dao/index";
 import { logger } from "../utils";
-import { Marca, Mensagem } from "../model";
+import { Marca, Mensagem, Resposta } from "../model";
 
 
 class MarcaRoute {
@@ -21,13 +21,13 @@ class MarcaRoute {
     private getMarcasPorTipoDeVeiculo(req: Request, res: Response, next: NextFunction): void {
         let tipoVeiculoId = req.query["tipoVeiculo"];
         if (!tipoVeiculoId) {
-            res.status(400).json(new Mensagem("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}", "erro"));
+            res.status(400).json(new Resposta(new Mensagem("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}", "erro")));
         } else {
             MarcaDAO.buscarMarcasPorTipoDeVeiculo(tipoVeiculoId)
                 .then((resultado: Marca[]) => {
-                    res.status(resultado ? 200 : 204).json(resultado);
+                    res.json(new Resposta(null, null, resultado));
                 }).catch((erro: Mensagem) => {
-                    res.status(500).json(erro);
+                    res.status(500).json(new Resposta(erro));
                 });
         }
     }
@@ -35,15 +35,14 @@ class MarcaRoute {
     private getMarcaPorId(req: Request, res: Response, next: NextFunction): void {
         MarcaDAO.buscaMarcaPorId(req.params["id"])
             .then((resultado: Marca) => {
-                res.status(resultado ? 200 : 204).json(resultado);
+                res.json(new Resposta(null, null, resultado));
             }).catch((erro: Mensagem) => {
-                res.status(500).json(erro);
+                res.status(500).json(new Resposta(erro));
             });
     }
 
     private init(): void {
         this.router.get("/", this.getMarcasPorTipoDeVeiculo);
-        // this.router.get("/tipoVeiculo/:tipoVeiculoId", this.getMarcasPorTipoDeVeiculo);
         this.router.get("/:id", this.getMarcaPorId);
     }
 

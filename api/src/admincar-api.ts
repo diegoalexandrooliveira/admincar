@@ -1,4 +1,4 @@
-import { CustomExpress } from "./config/custom.express";
+import { CustomExpress } from "./express/custom.express";
 import { Express } from "express";
 import { logger } from "./utils/index";
 
