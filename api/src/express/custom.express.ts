@@ -14,7 +14,8 @@ export class CustomExpress {
     constructor() {
         this._express = express();
         this.middlewares();
-        this.routes();
+        this.privateRoutes();
+        this.publicRoutes();
     }
 
     private middlewares(): void {
@@ -24,15 +25,14 @@ export class CustomExpress {
         PassportStrategy.initialize(passport);
     }
 
-    private routes(): void {
-        this._express.use("/api/v1/usuarios", routes.usuario);
-        this._express.use("/api/v1/marcas", routes.marca);
-        this._express.use("/api/v1/modelos", routes.modelo);
+    private privateRoutes(): void {
+        this._express.use("/api/v1/usuarios", passport.authenticate("jwt", { session: false }), routes.usuario);
+        this._express.use("/api/v1/marcas", passport.authenticate("jwt", { session: false }), routes.marca);
+        this._express.use("/api/v1/modelos", passport.authenticate("jwt", { session: false }), routes.modelo);
+    }
 
-        // this._express.get("/restrito", passport.authenticate("jwt", { session: false }),
-        //     (req, res) => {
-        //         res.send("Ok");
-        //     });
+    private publicRoutes(): void {
+        this._express.use("/api/v1/public/autenticar", routes.autenticacao);
     }
 
     public getExpress(): express.Express {
