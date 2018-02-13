@@ -17,11 +17,15 @@ class CustomExpress {
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(passport.initialize());
         index_1.PassportStrategy.initialize(passport);
+        this._passportMiddleware = passport.authenticate("jwt", { session: false });
     }
     privateRoutes() {
-        this._express.use("/api/v1/usuarios", passport.authenticate("jwt", { session: false }), routes.usuario);
-        this._express.use("/api/v1/marcas", passport.authenticate("jwt", { session: false }), routes.marca);
-        this._express.use("/api/v1/modelos", passport.authenticate("jwt", { session: false }), routes.modelo);
+        this._express.use("/api/v1/usuarios", this._passportMiddleware, routes.usuario);
+        this._express.use("/api/v1/marcas", this._passportMiddleware, routes.marca);
+        this._express.use("/api/v1/modelos", this._passportMiddleware, routes.modelo);
+        this._express.use("/api/v1/tiposVeiculo", this._passportMiddleware, routes.tipoDeVeiculo);
+        this._express.use("/api/v1/estados", this._passportMiddleware, routes.estado);
+        this._express.use("/api/v1/cidades", this._passportMiddleware, routes.cidade);
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);

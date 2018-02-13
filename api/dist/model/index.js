@@ -8,4 +8,7 @@ __export(require("./marca.model"));
 __export(require("./modelo.model"));
 __export(require("./mensagem.model"));
 __export(require("./resposta.model"));
+__export(require("./tipo.veiculo.model"));
+__export(require("./estado.model"));
+__export(require("./cidade.model"));
 //# sourceMappingURL=index.js.map
