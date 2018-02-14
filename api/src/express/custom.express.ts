@@ -6,6 +6,9 @@ import * as passport from "passport";
 import * as jwt from "jwt-simple";
 import { PassportStrategy } from "../auth/index";
 import * as moment from "moment";
+import * as gzip from "compression";
+import * as cors from "cors";
+import * as helmet from "helmet";
 
 export class CustomExpress {
 
@@ -20,6 +23,13 @@ export class CustomExpress {
     }
 
     private middlewares(): void {
+        this._express.use(helmet());
+        this._express.use(cors({
+            methods: "*",
+            allowedHeaders: "*",
+            origin: "*"
+        }));
+        this._express.use(gzip());
         this._express.use(bodyParser.json());
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(passport.initialize());

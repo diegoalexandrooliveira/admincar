@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const routes = require("../routes/index");
 const passport = require("passport");
 const index_1 = require("../auth/index");
+const gzip = require("compression");
+const cors = require("cors");
+const helmet = require("helmet");
 class CustomExpress {
     constructor() {
         this._express = express();
@@ -13,6 +16,13 @@ class CustomExpress {
         this.publicRoutes();
     }
     middlewares() {
+        this._express.use(helmet());
+        this._express.use(cors({
+            methods: "*",
+            allowedHeaders: "*",
+            origin: "*"
+        }));
+        this._express.use(gzip());
         this._express.use(bodyParser.json());
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(passport.initialize());

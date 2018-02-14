@@ -6,7 +6,6 @@ import { clientFactory } from "../database";
 import { Client } from "pg";
 import * as moment from "moment";
 import * as jwt from "jwt-simple";
-import { configs } from "../config/configs";
 
 
 class UsuarioRoute {
@@ -39,7 +38,7 @@ class UsuarioRoute {
                                     clientFactory.commit(client)
                                 )
                                 .then(() =>
-                                    res.json(new Resposta(new Mensagem(`Usuário ${usuario.$usuario} incluído com sucesso.`, "info"), null, { "usuario": usuario.$usuario }))
+                                    res.status(201).json(new Resposta(new Mensagem(`Usuário ${usuario.$usuario} incluído com sucesso.`, "info"), null, { "usuario": usuario.$usuario }))
                                 )
                                 .catch((erro: Mensagem) => {
                                     res.status(500).json(new Resposta(erro));
