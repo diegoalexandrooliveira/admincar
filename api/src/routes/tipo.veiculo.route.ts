@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { TipoVeiculoDAO } from "../dao/index";
-import { logger } from "../utils";
-import { TipoVeiculo, Mensagem, Resposta } from "../model";
+import { TipoVeiculoController, MarcaController, ModeloController } from "../controllers/index";
 
 
-class MarcaRoute {
+class TipoVeiculoRoute {
 
     private router: Router;
 
@@ -18,29 +16,13 @@ class MarcaRoute {
         return this.router;
     }
 
-    private getTodosTipoDeVeiculo(req: Request, res: Response, next: NextFunction): void {
-        TipoVeiculoDAO.buscaTodosTipoVeiculo()
-            .then((resultado: TipoVeiculo[]) => {
-                res.json(new Resposta(null, null, resultado));
-            }).catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
-
-    private getTipoDeVeiculoPorId(req: Request, res: Response, next: NextFunction): void {
-        let id = req.params["id"];
-        TipoVeiculoDAO.buscaTipoVeiculoPorId(id)
-            .then((resultado: TipoVeiculo) => {
-                res.json(new Resposta(null, null, resultado));
-            }).catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
     private init(): void {
-        this.router.get("/", this.getTodosTipoDeVeiculo);
-        this.router.get("/:id", this.getTipoDeVeiculoPorId);
+        this.router.get("/", TipoVeiculoController.buscarTodosTiposDeVeiculo);
+        this.router.get("/:idTipoVeiculo", TipoVeiculoController.buscarTipoDeVeiculoPorId);
+        this.router.get("/:idTipoVeiculo/marcas", MarcaController.buscarMarcasPorTipoDeVeiculo);
+        this.router.get("/:idTipoVeiculo/marcas/:idMarca/modelos", ModeloController.buscarModelosPorTipoVeiculoEMarca);
     }
 
 }
 
-export let tipoDeVeiculo: Router = new MarcaRoute().getRouter();
+export let tipoDeVeiculo: Router = new TipoVeiculoRoute().getRouter();

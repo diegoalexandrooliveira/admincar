@@ -7,8 +7,8 @@ class AdminCarApi {
         this._port = 8080;
         this._express = new custom_express_1.CustomExpress().getExpress();
         // let credenciais = {
-        //     key: fs.readFileSync("certificado/localhost.key", "utf8"),
-        //     cert: fs.readFileSync("certificado/localhost.cert", "utf8")
+        //     key: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/privkey.pem", "utf8"),
+        //     cert: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/cert.pem", "utf8")
         // }
         this._express
             .listen(this._port, () => {

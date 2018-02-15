@@ -1,42 +1,41 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const index_1 = require("../dao/index");
-const model_1 = require("../model");
-class ModeloRoute {
-    constructor() {
-        this.router = express_1.Router();
-        this.init();
-    }
-    getRouter() {
-        return this.router;
-    }
-    getModeloPorId(req, res, next) {
-        index_1.ModeloDAO.buscarModeloPorId(req.params["id"])
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        }).catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
-    }
-    getModelosPorMarca(req, res, next) {
-        let marca = req.query["marca"];
-        if (!marca) {
-            res.status(400).json(new model_1.Resposta(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro")));
-        }
-        else {
-            index_1.ModeloDAO.buscarModelosPorMarca(marca)
-                .then((result) => {
-                res.json(new model_1.Resposta(null, null, result));
-            }).catch((erro) => {
-                res.status(500).json(new model_1.Resposta(erro));
-            });
-        }
-    }
-    init() {
-        this.router.get("/:id", this.getModeloPorId);
-        this.router.get("/", this.getModelosPorMarca);
-    }
-}
-exports.modelo = new ModeloRoute().getRouter();
+// import { Request, Response, NextFunction, Router } from "express";
+// import { ModeloDAO } from "../dao/index";
+// import { logger } from "../utils";
+// import { Modelo, Mensagem, Resposta } from "../model";
+// class ModeloRoute {
+//     private router: Router;
+//     constructor() {
+//         this.router = Router();
+//         this.init();
+//     }
+//     public getRouter(): Router {
+//         return this.router;
+//     }
+//     private getModeloPorId(req: Request, res: Response, next: NextFunction): void {
+//         ModeloDAO.buscarModeloPorId(req.params["id"])
+//             .then((resultado: Modelo) => {
+//                 res.json(new Resposta(null, null, resultado));
+//             }).catch((erro: Mensagem) => {
+//                 res.status(500).json(new Resposta(erro));
+//             });
+//     }
+//     private getModelosPorMarca(req: Request, res: Response, next: NextFunction): void {
+//         let marca: number = req.query["marca"];
+//         if (!marca) {
+//             res.status(400).json(new Resposta(new Mensagem("Este resource deve conter uma query string no seguinte formato: marca={id}", "erro")));
+//         } else {
+//             ModeloDAO.buscarModelosPorMarca(marca)
+//                 .then((result: Modelo[]) => {
+//                     res.json(new Resposta(null, null, result));
+//                 }).catch((erro: Mensagem) => {
+//                     res.status(500).json(new Resposta(erro));
+//                 });
+//         }
+//     }
+//     private init(): void {
+//         this.router.get("/:id", this.getModeloPorId);
+//         this.router.get("/", this.getModelosPorMarca);
+//     }
+// }
+// export let modelo: Router = new ModeloRoute().getRouter();
 //# sourceMappingURL=modelo.route.js.map

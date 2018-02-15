@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const index_1 = require("../dao/index");
-const model_1 = require("../model");
-class MarcaRoute {
+const index_1 = require("../controllers/index");
+class TipoVeiculoRoute {
     constructor() {
         this.router = express_1.Router();
         this.init();
@@ -11,27 +10,12 @@ class MarcaRoute {
     getRouter() {
         return this.router;
     }
-    getTodosTipoDeVeiculo(req, res, next) {
-        index_1.TipoVeiculoDAO.buscaTodosTipoVeiculo()
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        }).catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
-    }
-    getTipoDeVeiculoPorId(req, res, next) {
-        let id = req.params["id"];
-        index_1.TipoVeiculoDAO.buscaTipoVeiculoPorId(id)
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        }).catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
-    }
     init() {
-        this.router.get("/", this.getTodosTipoDeVeiculo);
-        this.router.get("/:id", this.getTipoDeVeiculoPorId);
+        this.router.get("/", index_1.TipoVeiculoController.buscarTodosTiposDeVeiculo);
+        this.router.get("/:idTipoVeiculo", index_1.TipoVeiculoController.buscarTipoDeVeiculoPorId);
+        this.router.get("/:idTipoVeiculo/marcas", index_1.MarcaController.buscarMarcasPorTipoDeVeiculo);
+        this.router.get("/:idTipoVeiculo/marcas/:idMarca/modelos", index_1.ModeloController.buscarModelosPorTipoVeiculoEMarca);
     }
 }
-exports.tipoDeVeiculo = new MarcaRoute().getRouter();
+exports.tipoDeVeiculo = new TipoVeiculoRoute().getRouter();
 //# sourceMappingURL=tipo.veiculo.route.js.map

@@ -1,42 +1,41 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const index_1 = require("../dao/index");
-const model_1 = require("../model");
-class MarcaRoute {
-    constructor() {
-        this.router = express_1.Router();
-        this.init();
-    }
-    getRouter() {
-        return this.router;
-    }
-    getMarcasPorTipoDeVeiculo(req, res, next) {
-        let tipoVeiculoId = req.query["tipoVeiculo"];
-        if (!tipoVeiculoId) {
-            res.status(400).json(new model_1.Resposta(new model_1.Mensagem("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}", "erro")));
-        }
-        else {
-            index_1.MarcaDAO.buscarMarcasPorTipoDeVeiculo(tipoVeiculoId)
-                .then((resultado) => {
-                res.json(new model_1.Resposta(null, null, resultado));
-            }).catch((erro) => {
-                res.status(500).json(new model_1.Resposta(erro));
-            });
-        }
-    }
-    getMarcaPorId(req, res, next) {
-        index_1.MarcaDAO.buscaMarcaPorId(req.params["id"])
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        }).catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
-    }
-    init() {
-        this.router.get("/", this.getMarcasPorTipoDeVeiculo);
-        this.router.get("/:id", this.getMarcaPorId);
-    }
-}
-exports.marca = new MarcaRoute().getRouter();
+// import { Request, Response, NextFunction, Router } from "express";
+// import { MarcaDAO } from "../dao/index";
+// import { logger } from "../utils";
+// import { Marca, Mensagem, Resposta } from "../model";
+// class MarcaRoute {
+//     private router: Router;
+//     constructor() {
+//         this.router = Router();
+//         this.init();
+//     }
+//     public getRouter(): Router {
+//         return this.router;
+//     }
+//     private getMarcasPorTipoDeVeiculo(req: Request, res: Response, next: NextFunction): void {
+//         let tipoVeiculoId = req.query["tipoVeiculo"];
+//         if (!tipoVeiculoId) {
+//             res.status(400).json(new Resposta(new Mensagem("Este resource deve conter uma query string no seguinte formato: tipoVeiculo={id}", "erro")));
+//         } else {
+//             MarcaDAO.buscarMarcasPorTipoDeVeiculo(tipoVeiculoId)
+//                 .then((resultado: Marca[]) => {
+//                     res.json(new Resposta(null, null, resultado));
+//                 }).catch((erro: Mensagem) => {
+//                     res.status(500).json(new Resposta(erro));
+//                 });
+//         }
+//     }
+//     private getMarcaPorId(req: Request, res: Response, next: NextFunction): void {
+//         MarcaDAO.buscaMarcaPorId(req.params["id"])
+//             .then((resultado: Marca) => {
+//                 res.json(new Resposta(null, null, resultado));
+//             }).catch((erro: Mensagem) => {
+//                 res.status(500).json(new Resposta(erro));
+//             });
+//     }
+//     private init(): void {
+//         this.router.get("/", this.getMarcasPorTipoDeVeiculo);
+//         this.router.get("/:id", this.getMarcaPorId);
+//     }
+// }
+// export let marca: Router = new MarcaRoute().getRouter();
 //# sourceMappingURL=marca.route.js.map

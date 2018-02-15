@@ -39,8 +39,6 @@ export class CustomExpress {
 
     private privateRoutes(): void {
         this._express.use("/api/v1/usuarios", this._passportMiddleware, routes.usuario);
-        this._express.use("/api/v1/marcas", this._passportMiddleware, routes.marca);
-        this._express.use("/api/v1/modelos", this._passportMiddleware, routes.modelo);
         this._express.use("/api/v1/tiposVeiculo", this._passportMiddleware, routes.tipoDeVeiculo);
         this._express.use("/api/v1/estados", this._passportMiddleware, routes.estado);
         this._express.use("/api/v1/cidades", this._passportMiddleware, routes.cidade);
