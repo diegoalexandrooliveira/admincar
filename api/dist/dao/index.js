@@ -9,4 +9,5 @@ __export(require("./modelo.dao"));
 __export(require("./tipo.veiculo.dao"));
 __export(require("./estado.dao"));
 __export(require("./cidade.dao"));
+__export(require("./veiculo.dao"));
 //# sourceMappingURL=index.js.map

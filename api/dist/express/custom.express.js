@@ -33,7 +33,8 @@ class CustomExpress {
         this._express.use("/api/v1/usuarios", this._passportMiddleware, routes.usuario);
         this._express.use("/api/v1/tiposVeiculo", this._passportMiddleware, routes.tipoDeVeiculo);
         this._express.use("/api/v1/estados", this._passportMiddleware, routes.estado);
-        this._express.use("/api/v1/cidades", this._passportMiddleware, routes.cidade);
+        this._express.use("/api/v1/veiculos", this._passportMiddleware, routes.veiculo);
+        // this._express.use("/api/v1/veiculos", VeiculoController.expressGraphQl);
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);

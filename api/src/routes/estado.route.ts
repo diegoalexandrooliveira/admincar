@@ -1,48 +1,25 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { EstadoDAO } from "../dao/index";
-import { logger } from "../utils";
-import { Estado, Mensagem, Resposta } from "../model";
-
+import { Router } from "express";
+import { EstadoController, CidadeController } from "../controllers/index";
 
 class EstadoRoute {
+  private router: Router;
 
-    private router: Router;
+  constructor() {
+    this.router = Router();
+    this.init();
+  }
 
+  public getRouter(): Router {
+    return this.router;
+  }
 
-    constructor() {
-        this.router = Router();
-        this.init();
-    }
-
-    public getRouter(): Router {
-        return this.router;
-    }
-
-    private getTodosEstados(req: Request, res: Response, next: NextFunction): void {
-        EstadoDAO.buscaTodosEstados()
-            .then((resultado: Estado[]) => {
-                res.json(new Resposta(null, null, resultado));
-            }).catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
-
-    private getEstadoPorId(req: Request, res: Response, next: NextFunction): void {
-        let idEstado = req.params["id"];
-        EstadoDAO.buscaEstadoPorId(idEstado)
-            .then((resultado: Estado) => {
-                res.json(new Resposta(null, null, resultado));
-            })
-            .catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
-
-    private init(): void {
-        this.router.get("/", this.getTodosEstados);
-        this.router.get("/:id", this.getEstadoPorId);
-    }
-
+  private init(): void {
+    this.router.get("/", EstadoController.buscarTodosEstados);
+    this.router.get(
+      "/:idEstado/cidades",
+      CidadeController.buscarTodasCidadesPorEstado
+    );
+  }
 }
 
 export let estado: Router = new EstadoRoute().getRouter();

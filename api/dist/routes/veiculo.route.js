@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const index_1 = require("../controllers/index");
-class EstadoRoute {
+class VeiculoRoute {
     constructor() {
         this.router = express_1.Router();
         this.init();
@@ -11,9 +11,8 @@ class EstadoRoute {
         return this.router;
     }
     init() {
-        this.router.get("/", index_1.EstadoController.buscarTodosEstados);
-        this.router.get("/:idEstado/cidades", index_1.CidadeController.buscarTodasCidadesPorEstado);
+        this.router.get("/", index_1.VeiculoController.veiculoGraphQL());
     }
 }
-exports.estado = new EstadoRoute().getRouter();
-//# sourceMappingURL=estado.route.js.map
+exports.veiculo = new VeiculoRoute().getRouter();
+//# sourceMappingURL=veiculo.route.js.map

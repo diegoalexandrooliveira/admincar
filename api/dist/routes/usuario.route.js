@@ -14,18 +14,22 @@ class UsuarioRoute {
     }
     inserirUsuario(req, res, next) {
         let usuario = new model_1.Usuario(req.body.usuario, req.body.senha);
-        usuario.validaUsuario(true)
+        usuario
+            .validaUsuario(true)
             .then((erros) => {
             if (erros.length > 0) {
                 res.status(400).json(new model_1.Resposta(null, erros));
             }
             else {
-                database_1.clientFactory.getClient()
+                database_1.clientFactory
+                    .getClient()
                     .then((client) => {
                     usuario.codificaSenha();
                     index_1.UsuarioDAO.inserirUsuario(client, usuario)
                         .then(() => database_1.clientFactory.commit(client))
-                        .then(() => res.status(201).json(new model_1.Resposta(new model_1.Mensagem(`Usuário ${usuario.$usuario} incluído com sucesso.`, "info"), null, { "usuario": usuario.$usuario })))
+                        .then(() => res
+                        .status(201)
+                        .json(new model_1.Resposta(new model_1.Mensagem(`Usuário ${usuario.$usuario} incluído com sucesso.`, "info"), null, { usuario: usuario.$usuario })))
                         .catch((erro) => {
                         res.status(500).json(new model_1.Resposta(erro));
                         database_1.clientFactory.rollback(client);

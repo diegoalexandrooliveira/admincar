@@ -7,5 +7,5 @@ __export(require("./usuario.route"));
 __export(require("./autenticacao.route"));
 __export(require("./tipo.veiculo.route"));
 __export(require("./estado.route"));
-__export(require("./cidade.route"));
+__export(require("./veiculo.route"));
 //# sourceMappingURL=index.js.map

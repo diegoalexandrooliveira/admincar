@@ -6,3 +6,4 @@ export * from "./resposta.model";
 export * from "./tipo.veiculo.model";
 export * from "./estado.model";
 export * from "./cidade.model";
+export * from "./veiculo.model";

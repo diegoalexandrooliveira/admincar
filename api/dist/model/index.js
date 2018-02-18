@@ -11,4 +11,5 @@ __export(require("./resposta.model"));
 __export(require("./tipo.veiculo.model"));
 __export(require("./estado.model"));
 __export(require("./cidade.model"));
+__export(require("./veiculo.model"));
 //# sourceMappingURL=index.js.map
