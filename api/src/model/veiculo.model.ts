@@ -1,3 +1,5 @@
+import { Mensagem, Cidade, Cor } from "./index";
+import { CidadeDAO, ModeloDAO, CorDAO, CombustivelDAO } from "../dao";
 export class Veiculo {
   constructor() {}
   private id: number;
@@ -233,5 +235,96 @@ export class Veiculo {
 
   public set $descricaoCombustivel(value: string) {
     this.descricaoCombustivel = value;
+  }
+
+  public async validarVeiculo(ehInsercao: boolean) {
+    let erros: Mensagem[] = [];
+    if (!ehInsercao && !this.$id) {
+      erros.push(
+        new Mensagem("Identificador do veículo não informado.", "erro")
+      );
+    }
+    if (!this.$idModelo) {
+      erros.push(new Mensagem("É obrigatório informar um modelo.", "erro"));
+    } else {
+      let modelo = await ModeloDAO.buscarModeloPorId(this.$idModelo);
+      if (!modelo) {
+        erros.push(new Mensagem("Modelo informado não cadastrado.", "erro"));
+      }
+    }
+
+    if (!this.$anoFabricacao) {
+      erros.push(
+        new Mensagem("É obrigatório informar o ano de fabricação.", "erro")
+      );
+    }
+
+    if (!this.$anoModelo) {
+      erros.push(
+        new Mensagem("É obrigatório informar o ano do modelo.", "erro")
+      );
+    }
+
+    if (this.$idCidade) {
+      let cidade: Cidade = await CidadeDAO.buscaCidadePorId(this.$idCidade);
+      if (!cidade) {
+        erros.push(
+          new Mensagem(
+            `Cidade informada (${this.$idCidade}) não cadastrada.`,
+            "erro"
+          )
+        );
+      }
+    }
+
+    if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
+      erros.push(
+        new Mensagem("É obrigatório informar um valor para anuncio.", "erro")
+      );
+    }
+
+    if (this.$valorCompra && this.$valorCompra <= 0) {
+      erros.push(new Mensagem("Valor de compra inválido.", "erro"));
+    }
+
+    if (this.$valorVenda && this.$valorVenda <= 0) {
+      erros.push(new Mensagem("Valor de venda inválido.", "erro"));
+    }
+
+    if (!this.$idCor) {
+      erros.push(new Mensagem("É obrigatório informar uma cor.", "erro"));
+    } else {
+      let cor: Cor = await CorDAO.buscaCorPorId(this.$idCor);
+      if (!cor) {
+        erros.push(
+          new Mensagem(`Cor informada (${this.$idCor}) não cadastrada.`, "erro")
+        );
+      }
+    }
+
+    if (this.$idCombustivel) {
+      let combustivel = await CombustivelDAO.buscaCombustivelPorId(
+        this.$idCombustivel
+      );
+      if (!combustivel) {
+        erros.push(
+          new Mensagem(
+            `Combustível informado (${this.$idCombustivel}) não cadastrado.`,
+            "erro"
+          )
+        );
+      }
+    }
+    return erros;
+  }
+
+  public bodyParaModel(body: Object): void {
+    let instanciaObj = this;
+    let atributos = Object.keys(body);
+    atributos.forEach((atributo: string) => {
+      if (typeof instanciaObj[atributo] !== "function") {
+        instanciaObj[atributo] = body[atributo];
+      }
+    });
   }
 }

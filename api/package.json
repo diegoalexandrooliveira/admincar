@@ -45,7 +45,6 @@
     "express": "^4.16.2",
     "express-graphql": "^0.6.11",
     "graphql": "^0.10.5",
-    "graphql-date": "^1.0.3",
     "helmet": "^3.11.0",
     "jwt-simple": "^0.5.1",
     "moment": "^2.20.1",

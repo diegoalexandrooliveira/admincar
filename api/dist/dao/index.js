@@ -10,4 +10,6 @@ __export(require("./tipo.veiculo.dao"));
 __export(require("./estado.dao"));
 __export(require("./cidade.dao"));
 __export(require("./veiculo.dao"));
+__export(require("./cor.dao"));
+__export(require("./combustivel.dao"));
 //# sourceMappingURL=index.js.map

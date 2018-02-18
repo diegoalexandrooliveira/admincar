@@ -30,6 +30,29 @@ class ModeloDAO {
             });
         });
     }
+    static buscarModeloPorId(id) {
+        let query = `   select modelo.descricao as modelo_descricao, marca.id as marca_id,
+                        marca.descricao as marca_descricao, marca.tipo_veiculo_id 
+                        from modelo inner join 
+                        marca on modelo.marca_id = marca.id
+                        where modelo.id = $1`;
+        return new Promise((resolve, reject) => {
+            index_1.clientFactory
+                .query(query, [id])
+                .then((result) => {
+                let retorno;
+                let dado = result.rows[0];
+                if (dado) {
+                    retorno = new index_2.Modelo(id, dado.modelo_descricao, new index_2.Marca(dado.marca_id, dado.marca_descricao, dado.tipo_veiculo_id));
+                }
+                resolve(retorno);
+            })
+                .catch(error => {
+                utils_1.logger.error(`modelo.dao.buscarModeloPorId - ${error}`);
+                reject(new index_2.Mensagem(`Erro ao tentar recuperar o modelo ${id}`, "erro"));
+            });
+        });
+    }
 }
 exports.ModeloDAO = ModeloDAO;
 //# sourceMappingURL=modelo.dao.js.map

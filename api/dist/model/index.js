@@ -12,4 +12,6 @@ __export(require("./tipo.veiculo.model"));
 __export(require("./estado.model"));
 __export(require("./cidade.model"));
 __export(require("./veiculo.model"));
+__export(require("./cor.model"));
+__export(require("./combustivel.model"));
 //# sourceMappingURL=index.js.map

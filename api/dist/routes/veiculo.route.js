@@ -12,6 +12,7 @@ class VeiculoRoute {
     }
     init() {
         this.router.get("/", index_1.VeiculoController.veiculoGraphQL());
+        this.router.post("/", index_1.VeiculoController.inserirVeiculo);
     }
 }
 exports.veiculo = new VeiculoRoute().getRouter();
