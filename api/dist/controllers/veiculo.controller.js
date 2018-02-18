@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
 const graphql = require("graphql");
@@ -20,11 +12,7 @@ class VeiculoController {
                 fields: {
                     veiculos: {
                         type: new graphql.GraphQLList(VeiculoController.veiculoType),
-                        resolve: function () {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                return yield index_1.VeiculoDAO.buscarTodosVeiculos();
-                            });
-                        }
+                        resolve: () => index_1.VeiculoDAO.buscarTodosVeiculos()
                     }
                 }
             })
@@ -33,7 +21,7 @@ class VeiculoController {
     static veiculoGraphQL() {
         return graphqlExpress({
             schema: VeiculoController.schemaVeiculo(),
-            pretty: true
+            pretty: false
         });
     }
 }

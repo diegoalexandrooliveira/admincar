@@ -62,9 +62,7 @@ export class VeiculoController {
         fields: {
           veiculos: {
             type: new graphql.GraphQLList(VeiculoController.veiculoType),
-            resolve: async function() {
-              return await VeiculoDAO.buscarTodosVeiculos();
-            }
+            resolve: () => VeiculoDAO.buscarTodosVeiculos()
           }
         }
       })
@@ -74,7 +72,7 @@ export class VeiculoController {
   public static veiculoGraphQL() {
     return graphqlExpress({
       schema: VeiculoController.schemaVeiculo(),
-      pretty: true
+      pretty: false
     });
   }
 }
