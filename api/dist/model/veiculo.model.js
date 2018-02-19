@@ -222,6 +222,15 @@ class Veiculo {
             return erros;
         });
     }
+    validarExclusao() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let erros = [];
+            if (!this.$id) {
+                erros.push(new index_1.Mensagem("Identificador do veículo não informado.", "erro"));
+            }
+            return erros;
+        });
+    }
     bodyParaModel(body) {
         let instanciaObj = this;
         let atributos = Object.keys(body);

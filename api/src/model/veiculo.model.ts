@@ -318,6 +318,17 @@ export class Veiculo {
     return erros;
   }
 
+  public async validarExclusao(): Promise<Mensagem[]> {
+    let erros: Mensagem[] = [];
+
+    if (!this.$id) {
+      erros.push(
+        new Mensagem("Identificador do veículo não informado.", "erro")
+      );
+    }
+    return erros;
+  }
+
   public bodyParaModel(body: Object): void {
     let instanciaObj = this;
     let atributos = Object.keys(body);

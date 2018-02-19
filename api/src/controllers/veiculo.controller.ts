@@ -8,11 +8,11 @@ import {
   GraphQLList,
   GraphQLInt
 } from "graphql";
-import * as graphqlDate from "graphql-date";
 import * as graphqlExpress from "express-graphql";
 import { VeiculoType } from "../graphql/index";
 import { Veiculo, Mensagem } from "../model";
 import { Client } from "pg";
+import { veiculo } from "../routes";
 
 export class VeiculoController {
   private static schemaVeiculo(): GraphQLSchema {
@@ -71,6 +71,85 @@ export class VeiculoController {
                       new Mensagem(`Veículo incluído com sucesso.`, "info"),
                       null,
                       veiculo
+                    )
+                  )
+              )
+              .catch((erro: Mensagem) => {
+                res.status(500).json(new Resposta(erro));
+                clientFactory.rollback(client);
+              });
+          })
+          .catch((erro: Mensagem) => {
+            res.status(500).json(new Resposta(erro));
+          });
+      })
+      .catch(erro => {
+        res.status(500).json(new Resposta(erro));
+      });
+  }
+
+  public static atualizarVeiculo(req: Request, res: Response) {
+    let veiculo = new Veiculo();
+    veiculo.bodyParaModel(req.body);
+    veiculo
+      .validarVeiculo(false)
+      .then((erros: Mensagem[]) => {
+        if (erros.length > 0) {
+          return res.status(400).json(new Resposta(null, erros));
+        }
+        clientFactory
+          .getClient()
+          .then((client: Client) => {
+            VeiculoDAO.atualizarVeiculo(client, veiculo)
+              .then((veiculo: Veiculo) => {
+                clientFactory.commit(client);
+                return veiculo;
+              })
+              .then((veiculo: Veiculo) =>
+                res
+                  .status(200)
+                  .json(
+                    new Resposta(
+                      new Mensagem(`Veículo atualizado com sucesso.`, "info"),
+                      null,
+                      veiculo
+                    )
+                  )
+              )
+              .catch((erro: Mensagem) => {
+                res.status(500).json(new Resposta(erro));
+                clientFactory.rollback(client);
+              });
+          })
+          .catch((erro: Mensagem) => {
+            res.status(500).json(new Resposta(erro));
+          });
+      })
+      .catch(erro => {
+        res.status(500).json(new Resposta(erro));
+      });
+  }
+
+  public static excluirVeiculo(req: Request, res: Response) {
+    let veiculo = new Veiculo();
+    veiculo.$id = req.params["idVeiculo"];
+    veiculo
+      .validarExclusao()
+      .then((erros: Mensagem[]) => {
+        if (erros.length > 0) {
+          return res.status(400).json(new Resposta(null, erros));
+        }
+        clientFactory
+          .getClient()
+          .then((client: Client) => {
+            VeiculoDAO.deletarVeiculo(client, veiculo.$id)
+              .then(() => clientFactory.commit(client))
+              .then(() =>
+                res
+                  .status(204)
+                  .json(
+                    new Resposta(
+                      new Mensagem(`Veículo excluído com sucesso.`, "info")
                     )
                   )
               )

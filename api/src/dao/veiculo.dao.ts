@@ -185,7 +185,7 @@ export class VeiculoDAO {
     client: Client,
     idVeiculo: number
   ): Promise<void> {
-    let deleteQ = `DELETE veiculo WHERE id = $1`;
+    let deleteQ = `DELETE FROM veiculo WHERE id = $1`;
 
     return new Promise((resolve, reject) => {
       client

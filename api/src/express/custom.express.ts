@@ -60,7 +60,6 @@ export class CustomExpress {
       this._passportMiddleware,
       routes.veiculo
     );
-    // this._express.use("/api/v1/veiculos", VeiculoController.expressGraphQl);
   }
 
   private publicRoutes(): void {

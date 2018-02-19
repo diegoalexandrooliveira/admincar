@@ -1,5 +1,5 @@
 export class Mensagem {
-    constructor(private mensagem: string, private level: string) {
+    constructor(private message: string, private level: string) {
 
     }
 }

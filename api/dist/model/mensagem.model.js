@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Mensagem {
-    constructor(mensagem, level) {
-        this.mensagem = mensagem;
+    constructor(message, level) {
+        this.message = message;
         this.level = level;
     }
 }
