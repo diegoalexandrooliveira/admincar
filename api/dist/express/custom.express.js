@@ -19,7 +19,7 @@ class CustomExpress {
         this._express.use(helmet());
         this._express.use(cors({
             methods: "*",
-            allowedHeaders: "*",
+            // allowedHeaders: "*",
             origin: "*"
         }));
         this._express.use(gzip());

@@ -27,7 +27,7 @@ export class CustomExpress {
     this._express.use(
       cors({
         methods: "*",
-        allowedHeaders: "*",
+        // allowedHeaders: "*",
         origin: "*"
       })
     );
