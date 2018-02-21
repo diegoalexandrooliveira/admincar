@@ -1,6 +1,5 @@
 api/node_modules
 api/logs
-api/src/config
 api/dist/config
 api/cert
 web/node_modules
