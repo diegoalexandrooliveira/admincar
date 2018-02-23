@@ -8,7 +8,7 @@ export class EstadoDAO {
   public static buscaTodosEstados(): Promise<Estado[]> {
     let query = `select id, nome, sigla
                     from estados
-                    order by nome`;
+                    order by id`;
 
     return new Promise((resolve, reject) => {
       clientFactory

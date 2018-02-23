@@ -18,10 +18,12 @@ class CidadeController {
     static getResolvers() {
         return {
             Cidade: {
-                estado: cidade => index_1.EstadoDAO.buscaEstadoPorId(cidade.estado_id)
+                estado: cidade => estados[cidade.estado_id - 1]
             }
         };
     }
 }
 exports.CidadeController = CidadeController;
+let estados;
+index_1.EstadoDAO.buscaTodosEstados().then(results => (estados = results));
 //# sourceMappingURL=cidade.controller.js.map

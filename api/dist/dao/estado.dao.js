@@ -7,7 +7,7 @@ class EstadoDAO {
     static buscaTodosEstados() {
         let query = `select id, nome, sigla
                     from estados
-                    order by nome`;
+                    order by id`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query)

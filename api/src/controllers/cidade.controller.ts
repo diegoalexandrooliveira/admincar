@@ -20,8 +20,10 @@ export class CidadeController {
   public static getResolvers(): Object {
     return {
       Cidade: {
-        estado: cidade => EstadoDAO.buscaEstadoPorId(cidade.estado_id)
+        estado: cidade => estados[cidade.estado_id - 1]
       }
     };
   }
 }
+let estados;
+EstadoDAO.buscaTodosEstados().then(results => (estados = results));
