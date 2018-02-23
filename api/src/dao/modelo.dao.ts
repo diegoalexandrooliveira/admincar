@@ -20,24 +20,19 @@ export class ModeloDAO {
         .query(query, [tipoVeiculoId, marcaId])
         .then((result: QueryResult) => {
           let retorno: Modelo[];
-          if (result.rowCount > 0) {
-            retorno = [];
-            let marca = new Marca();
-            marca.setId(marcaId);
-            result.rows.map(dado =>
-              retorno.push(new Modelo(dado.id, dado.descricao, marca))
-            );
-          }
+          // if (result.rowCount > 0) {
+          //   retorno = [];
+          //   let marca = new Marca();
+          //   marca.setId(marcaId);
+          //   result.rows.map(dado =>
+          //     retorno.push(new Modelo(dado.id, dado.descricao, marca))
+          //   );
+          // }
           resolve(retorno);
         })
         .catch(error => {
           logger.error(`modelo.dao.buscarModelosPorMarca - ${error}`);
-          reject(
-            new Mensagem(
-              `Erro ao tentar recuperar os modelos da marca ${marcaId}`,
-              "erro"
-            )
-          );
+          reject(`Erro ao tentar recuperar os modelos da marca ${marcaId}`);
         });
     });
   }
@@ -55,24 +50,22 @@ export class ModeloDAO {
         .then((result: QueryResult) => {
           let retorno: Modelo;
           let dado = result.rows[0];
-          if (dado) {
-            retorno = new Modelo(
-              id,
-              dado.modelo_descricao,
-              new Marca(
-                dado.marca_id,
-                dado.marca_descricao,
-                dado.tipo_veiculo_id
-              )
-            );
-          }
+          // if (dado) {
+          //   retorno = new Modelo(
+          //     id,
+          //     dado.modelo_descricao,
+          //     new Marca(
+          //       dado.marca_id,
+          //       dado.marca_descricao,
+          //       dado.tipo_veiculo_id
+          //     )
+          //   );
+          // }
           resolve(retorno);
         })
         .catch(error => {
           logger.error(`modelo.dao.buscarModeloPorId - ${error}`);
-          reject(
-            new Mensagem(`Erro ao tentar recuperar o modelo ${id}`, "erro")
-          );
+          reject(`Erro ao tentar recuperar o modelo ${id}`);
         });
     });
   }

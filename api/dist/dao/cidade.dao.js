@@ -15,13 +15,19 @@ class CidadeDAO {
                 let retorno;
                 if (result.rows.length > 0) {
                     retorno = [];
-                    result.rows.map(dado => retorno.push(new index_2.Cidade(dado.id, dado.nome, estado_id)));
+                    result.rows.map(dado => {
+                        let cidade = new index_2.Cidade();
+                        cidade.$id = dado.id;
+                        cidade.$nome = dado.nome;
+                        cidade.$estado_id = estado_id;
+                        retorno.push(cidade);
+                    });
                 }
                 resolve(retorno);
             })
                 .catch(error => {
                 utils_1.logger.error(`cidade.dao.buscaTodasCidadesPorEstado - ${error}`);
-                reject(new index_2.Mensagem(`Erro ao tentar recuperar as cidades do estado ${estado_id}.`, "erro"));
+                reject(`Erro ao tentar recuperar as cidades do estado ${estado_id}.`);
             });
         });
     }
@@ -32,16 +38,18 @@ class CidadeDAO {
             index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
-                let retorno;
+                let retorno = new index_2.Cidade();
                 if (result.rows.length > 0) {
                     let dado = result.rows[0];
-                    retorno = new index_2.Cidade(dado.id, dado.nome, dado.estado_id);
+                    retorno.$id = dado.id;
+                    retorno.$nome = dado.nome;
+                    retorno.$estado_id = dado.estado_id;
                 }
                 resolve(retorno);
             })
                 .catch(error => {
                 utils_1.logger.error(`cidade.dao.buscaCidadePorId - ${error}`);
-                reject(new index_2.Mensagem(`Erro ao tentar recuperar a cidade ${id}.`, "erro"));
+                reject(`Erro ao tentar recuperar a cidade ${id}.`);
             });
         });
     }

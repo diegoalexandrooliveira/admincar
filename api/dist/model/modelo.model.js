@@ -1,30 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const marca_model_1 = require("./marca.model");
 class Modelo {
-    constructor(id, descricao, marca) {
-        this.id = id;
-        this.descricao = descricao;
-        this.marca = marca;
-        marca = new marca_model_1.Marca();
-    }
-    getId() {
+    get $id() {
         return this.id;
     }
-    setId(id) {
-        this.id = id;
+    set $id(value) {
+        this.id = value;
     }
-    getDescricao() {
+    get $descricao() {
         return this.descricao;
     }
-    setDescricao(descricao) {
-        this.descricao = descricao;
+    set $descricao(value) {
+        this.descricao = value;
     }
-    getMarca() {
+    get $marca() {
         return this.marca;
     }
-    setMarca(marca) {
-        this.marca = marca;
+    set $marca(value) {
+        this.marca = value;
     }
 }
 exports.Modelo = Modelo;

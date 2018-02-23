@@ -1,11 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Estado {
-    constructor(id, nome, sigla) {
-        this.id = id;
-        this.nome = nome;
-        this.sigla = sigla;
-    }
     get $id() {
         return this.id;
     }
@@ -23,6 +18,12 @@ class Estado {
     }
     set $sigla(sigla) {
         this.sigla = sigla;
+    }
+    get $cidades() {
+        return this.cidades;
+    }
+    set $cidades(value) {
+        this.cidades = value;
     }
 }
 exports.Estado = Estado;

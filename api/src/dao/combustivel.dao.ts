@@ -21,12 +21,7 @@ export class CombustivelDAO {
         })
         .catch(error => {
           logger.error(`combustivel.dao.buscaCombustivelPorId - ${error}`);
-          reject(
-            new Mensagem(
-              `Erro ao tentar recuperar o combustível ${idCombustivel}.`,
-              "erro"
-            )
-          );
+          reject(`Erro ao tentar recuperar o combustível ${idCombustivel}.`);
         });
     });
   }
@@ -49,9 +44,7 @@ export class CombustivelDAO {
         })
         .catch(error => {
           logger.error(`combustivel.dao.buscarTodosCombustiveis - ${error}`);
-          reject(
-            new Mensagem(`Erro ao tentar recuperar os combustíveis.`, "erro")
-          );
+          reject(`Erro ao tentar recuperar os combustíveis.`);
         });
     });
   }

@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("./index");
-const dao_1 = require("../dao");
 class Veiculo {
     constructor() { }
     get $id() {
@@ -17,30 +16,6 @@ class Veiculo {
     }
     set $id(value) {
         this.id = value;
-    }
-    get $idModelo() {
-        return this.idModelo;
-    }
-    set $idModelo(value) {
-        this.idModelo = value;
-    }
-    get $descricaoModelo() {
-        return this.descricaoModelo;
-    }
-    set $descricaoModelo(value) {
-        this.descricaoModelo = value;
-    }
-    get $idMarca() {
-        return this.idMarca;
-    }
-    set $idMarca(value) {
-        this.idMarca = value;
-    }
-    get $descricaoMarca() {
-        return this.descricaoMarca;
-    }
-    set $descricaoMarca(value) {
-        this.descricaoMarca = value;
     }
     get $anoFabricacao() {
         return this.anoFabricacao;
@@ -71,48 +46,6 @@ class Veiculo {
     }
     set $chassi(value) {
         this.chassi = value;
-    }
-    get $idCor() {
-        return this.idCor;
-    }
-    set $idCor(value) {
-        this.idCor = value;
-    }
-    get $descricaoCor() {
-        return this.descricaoCor;
-    }
-    set $descricaoCor(value) {
-        this.descricaoCor = value;
-    }
-    get $idCidade() {
-        return this.idCidade;
-    }
-    set $idCidade(value) {
-        this.idCidade = value;
-    }
-    get $nomeCidade() {
-        return this.nomeCidade;
-    }
-    set $nomeCidade(value) {
-        this.nomeCidade = value;
-    }
-    get $idEstado() {
-        return this.idEstado;
-    }
-    set $idEstado(value) {
-        this.idEstado = value;
-    }
-    get $nomeEstado() {
-        return this.nomeEstado;
-    }
-    set $nomeEstado(value) {
-        this.nomeEstado = value;
-    }
-    get $siglaEstado() {
-        return this.siglaEstado;
-    }
-    set $siglaEstado(value) {
-        this.siglaEstado = value;
     }
     get $dataInclusao() {
         return this.dataInclusao;
@@ -156,69 +89,101 @@ class Veiculo {
     set $observacoes(value) {
         this.observacoes = value;
     }
-    get $idCombustivel() {
-        return this.idCombustivel;
+    get $modelo() {
+        return this.modelo;
     }
-    set $idCombustivel(value) {
-        this.idCombustivel = value;
+    set $modelo(value) {
+        this.modelo = value;
     }
-    get $descricaoCombustivel() {
-        return this.descricaoCombustivel;
+    get $cor() {
+        return this.cor;
     }
-    set $descricaoCombustivel(value) {
-        this.descricaoCombustivel = value;
+    set $cor(value) {
+        this.cor = value;
+    }
+    get $cidade() {
+        return this.cidade;
+    }
+    set $cidade(value) {
+        this.cidade = value;
+    }
+    get $combustivel() {
+        return this.combustivel;
+    }
+    set $combustivel(value) {
+        this.combustivel = value;
     }
     validarVeiculo(ehInsercao) {
         return __awaiter(this, void 0, void 0, function* () {
             let erros = [];
-            if (!ehInsercao && !this.$id) {
-                erros.push(new index_1.Mensagem("Identificador do veículo não informado.", "erro"));
-            }
-            if (!this.$idModelo) {
-                erros.push(new index_1.Mensagem("É obrigatório informar um modelo.", "erro"));
-            }
-            else {
-                let modelo = yield dao_1.ModeloDAO.buscarModeloPorId(this.$idModelo);
-                if (!modelo) {
-                    erros.push(new index_1.Mensagem("Modelo informado não cadastrado.", "erro"));
-                }
-            }
-            if (!this.$anoFabricacao) {
-                erros.push(new index_1.Mensagem("É obrigatório informar o ano de fabricação.", "erro"));
-            }
-            if (!this.$anoModelo) {
-                erros.push(new index_1.Mensagem("É obrigatório informar o ano do modelo.", "erro"));
-            }
-            if (this.$idCidade) {
-                let cidade = yield dao_1.CidadeDAO.buscaCidadePorId(this.$idCidade);
-                if (!cidade) {
-                    erros.push(new index_1.Mensagem(`Cidade informada (${this.$idCidade}) não cadastrada.`, "erro"));
-                }
-            }
-            if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
-                erros.push(new index_1.Mensagem("É obrigatório informar um valor para anuncio.", "erro"));
-            }
-            if (this.$valorCompra && this.$valorCompra <= 0) {
-                erros.push(new index_1.Mensagem("Valor de compra inválido.", "erro"));
-            }
-            if (this.$valorVenda && this.$valorVenda <= 0) {
-                erros.push(new index_1.Mensagem("Valor de venda inválido.", "erro"));
-            }
-            if (!this.$idCor) {
-                erros.push(new index_1.Mensagem("É obrigatório informar uma cor.", "erro"));
-            }
-            else {
-                let cor = yield dao_1.CorDAO.buscaCorPorId(this.$idCor);
-                if (!cor) {
-                    erros.push(new index_1.Mensagem(`Cor informada (${this.$idCor}) não cadastrada.`, "erro"));
-                }
-            }
-            if (this.$idCombustivel) {
-                let combustivel = yield dao_1.CombustivelDAO.buscaCombustivelPorId(this.$idCombustivel);
-                if (!combustivel) {
-                    erros.push(new index_1.Mensagem(`Combustível informado (${this.$idCombustivel}) não cadastrado.`, "erro"));
-                }
-            }
+            //   if (!ehInsercao && !this.$id) {
+            //     erros.push(
+            //       new Mensagem("Identificador do veículo não informado.", "erro")
+            //     );
+            //   }
+            //   if (!this.$idModelo) {
+            //     erros.push(new Mensagem("É obrigatório informar um modelo.", "erro"));
+            //   } else {
+            //     let modelo = await ModeloDAO.buscarModeloPorId(this.$idModelo);
+            //     if (!modelo) {
+            //       erros.push(new Mensagem("Modelo informado não cadastrado.", "erro"));
+            //     }
+            //   }
+            //   if (!this.$anoFabricacao) {
+            //     erros.push(
+            //       new Mensagem("É obrigatório informar o ano de fabricação.", "erro")
+            //     );
+            //   }
+            //   if (!this.$anoModelo) {
+            //     erros.push(
+            //       new Mensagem("É obrigatório informar o ano do modelo.", "erro")
+            //     );
+            //   }
+            //   if (this.$idCidade) {
+            //     let cidade: Cidade = await CidadeDAO.buscaCidadePorId(this.$idCidade);
+            //     if (!cidade) {
+            //       erros.push(
+            //         new Mensagem(
+            //           `Cidade informada (${this.$idCidade}) não cadastrada.`,
+            //           "erro"
+            //         )
+            //       );
+            //     }
+            //   }
+            //   if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
+            //     erros.push(
+            //       new Mensagem("É obrigatório informar um valor para anuncio.", "erro")
+            //     );
+            //   }
+            //   if (this.$valorCompra && this.$valorCompra <= 0) {
+            //     erros.push(new Mensagem("Valor de compra inválido.", "erro"));
+            //   }
+            //   if (this.$valorVenda && this.$valorVenda <= 0) {
+            //     erros.push(new Mensagem("Valor de venda inválido.", "erro"));
+            //   }
+            //   if (!this.$idCor) {
+            //     erros.push(new Mensagem("É obrigatório informar uma cor.", "erro"));
+            //   } else {
+            //     let cor: Cor = await CorDAO.buscaCorPorId(this.$idCor);
+            //     if (!cor) {
+            //       erros.push(
+            //         new Mensagem(`Cor informada (${this.$idCor}) não cadastrada.`, "erro")
+            //       );
+            //     }
+            //   }
+            //   if (this.$idCombustivel) {
+            //     let combustivel = await CombustivelDAO.buscaCombustivelPorId(
+            //       this.$idCombustivel
+            //     );
+            //     if (!combustivel) {
+            //       erros.push(
+            //         new Mensagem(
+            //           `Combustível informado (${this.$idCombustivel}) não cadastrado.`,
+            //           "erro"
+            //         )
+            //       );
+            //     }
+            //   }
             return erros;
         });
     }

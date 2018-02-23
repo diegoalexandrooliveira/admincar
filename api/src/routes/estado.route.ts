@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { EstadoController, CidadeController } from "../controllers/index";
+import { graphqlExpress } from "apollo-server-express";
+import { schema } from "../graphql/index";
 
 class EstadoRoute {
   private router: Router;
@@ -14,11 +16,7 @@ class EstadoRoute {
   }
 
   private init(): void {
-    this.router.get("/", EstadoController.buscarTodosEstados);
-    this.router.get(
-      "/:idEstado/cidades",
-      CidadeController.buscarTodasCidadesPorEstado
-    );
+    this.router.post("/", graphqlExpress({ schema }));
   }
 }
 

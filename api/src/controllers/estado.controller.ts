@@ -17,4 +17,8 @@ export class EstadoController {
         res.status(500).json(new Resposta(erro));
       });
   }
+
+  public static buscarEstados(): Promise<Estado[]> {
+    return EstadoDAO.buscaTodosEstados();
+  }
 }

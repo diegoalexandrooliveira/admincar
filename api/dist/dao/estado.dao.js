@@ -15,13 +15,22 @@ class EstadoDAO {
                 let retorno;
                 if (result.rows.length > 0) {
                     retorno = [];
-                    result.rows.map(dado => retorno.push(new index_2.Estado(dado.id, dado.nome, dado.sigla)));
+                    result.rows.map(dado => {
+                        let estado = new index_2.Estado();
+                        estado.$id = dado.id;
+                        estado.$nome = dado.nome;
+                        estado.$sigla = dado.sigla;
+                        // estado.$cidades = await CidadeDAO.buscaTodasCidadesPorEstado(
+                        //   dado.id
+                        // );
+                        retorno.push(estado);
+                    });
                 }
                 resolve(retorno);
             })
                 .catch(error => {
                 utils_1.logger.error(`estado.dao.buscaTodosEstados - ${error}`);
-                reject(new index_2.Mensagem("Erro ao tentar recuperar os estados.", "erro"));
+                reject("Erro ao tentar recuperar os estados.");
             });
         });
     }
@@ -32,16 +41,19 @@ class EstadoDAO {
             index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
-                let retorno;
+                let retorno = new index_2.Estado();
                 if (result.rows.length > 0) {
                     let dado = result.rows[0];
-                    retorno = new index_2.Estado(dado.id, dado.nome, dado.sigla);
+                    // retorno = new Estado(dado.id, dado.nome, dado.sigla);
+                    retorno.$id = dado.id;
+                    retorno.$nome = dado.nome;
+                    retorno.$sigla = dado.sigla;
                 }
                 resolve(retorno);
             })
                 .catch(error => {
                 utils_1.logger.error(`estado.dao.buscaEstadoPorId - ${error}`);
-                reject(new index_2.Mensagem(`Erro ao tentar recuperar o estado ${id}.`, "erro"));
+                reject(`Erro ao tentar recuperar o estado ${id}.`);
             });
         });
     }

@@ -11,7 +11,7 @@ class VeiculoRoute {
         return this.router;
     }
     init() {
-        this.router.get("/", index_1.VeiculoController.veiculoGraphQL());
+        // this.router.get("/", VeiculoController.veiculoGraphQL());
         this.router.post("/", index_1.VeiculoController.inserirVeiculo);
         this.router.put("/", index_1.VeiculoController.atualizarVeiculo);
         this.router.delete("/:idVeiculo", index_1.VeiculoController.excluirVeiculo);

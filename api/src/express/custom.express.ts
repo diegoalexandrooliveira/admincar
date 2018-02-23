@@ -1,6 +1,7 @@
 import * as express from "express";
 import { logger } from "../utils/index";
 import * as bodyParser from "body-parser";
+import * as bodyParserGraphQl from "body-parser-graphql";
 import * as routes from "../routes/index";
 import * as passport from "passport";
 import * as jwt from "jwt-simple";
@@ -9,7 +10,6 @@ import * as moment from "moment";
 import * as gzip from "compression";
 import * as cors from "cors";
 import * as helmet from "helmet";
-import { VeiculoController } from "../controllers";
 
 export class CustomExpress {
   private _express: express.Express;
@@ -27,12 +27,12 @@ export class CustomExpress {
     this._express.use(
       cors({
         methods: "*",
-        // allowedHeaders: "*",
         origin: "*"
       })
     );
     this._express.use(gzip());
     this._express.use(bodyParser.json());
+    this._express.use(bodyParserGraphQl.graphql());
     this._express.use(bodyParser.urlencoded({ extended: false }));
     this._express.use(passport.initialize());
     PassportStrategy.initialize(passport);
@@ -60,6 +60,7 @@ export class CustomExpress {
       this._passportMiddleware,
       routes.veiculo
     );
+    this._express.use("/api/graphql", this._passportMiddleware, routes.estado);
   }
 
   private publicRoutes(): void {

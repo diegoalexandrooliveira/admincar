@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const index_1 = require("../controllers/index");
+const apollo_server_express_1 = require("apollo-server-express");
+const index_1 = require("../graphql/index");
 class EstadoRoute {
     constructor() {
         this.router = express_1.Router();
@@ -11,8 +12,7 @@ class EstadoRoute {
         return this.router;
     }
     init() {
-        this.router.get("/", index_1.EstadoController.buscarTodosEstados);
-        this.router.get("/:idEstado/cidades", index_1.CidadeController.buscarTodasCidadesPorEstado);
+        this.router.post("/", apollo_server_express_1.graphqlExpress({ schema: index_1.schema }));
     }
 }
 exports.estado = new EstadoRoute().getRouter();

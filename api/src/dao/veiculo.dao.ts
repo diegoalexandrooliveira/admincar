@@ -43,36 +43,36 @@ export class VeiculoDAO {
           let retorno: Veiculo[];
           if (result.rows.length > 0) {
             retorno = [];
-            result.rows.map(row => {
-              let veiculo = new Veiculo();
-              veiculo.$id = row.id;
-              veiculo.$idModelo = row.modelo_id;
-              veiculo.$descricaoModelo = row.descricaomodelo;
-              veiculo.$idMarca = row.idmarca;
-              veiculo.$descricaoMarca = row.descricaomarca;
-              veiculo.$anoFabricacao = row.ano_fabricacao;
-              veiculo.$anoModelo = row.ano_modelo;
-              veiculo.$placa = row.placa;
-              veiculo.$renavam = row.renavam;
-              veiculo.$chassi = row.chassi;
-              veiculo.$idCor = row.idcor;
-              veiculo.$descricaoCor = row.descricaocor;
-              veiculo.$idCidade = row.idcidade;
-              veiculo.$nomeCidade = row.nomecidade;
-              veiculo.$idEstado = row.idestado;
-              veiculo.$nomeEstado = row.nomeestado;
-              veiculo.$siglaEstado = row.siglaestado;
-              veiculo.$dataInclusao = row.data_inclusao;
-              veiculo.$dataAquisicao = row.data_aquisicao;
-              veiculo.$dataVenda = row.data_venda;
-              veiculo.$valorCompra = row.valor_compra;
-              veiculo.$valorVenda = row.valor_venda;
-              veiculo.$valorAnuncio = row.valor_anunciado;
-              veiculo.$observacoes = row.observacoes;
-              veiculo.$idCombustivel = row.combustivel_id;
-              veiculo.$descricaoCombustivel = row.descricaocombustivel;
-              retorno.push(veiculo);
-            });
+            // result.rows.map(row => {
+            //   let veiculo = new Veiculo();
+            //   veiculo.$id = row.id;
+            //   veiculo.$idModelo = row.modelo_id;
+            //   veiculo.$descricaoModelo = row.descricaomodelo;
+            //   veiculo.$idMarca = row.idmarca;
+            //   veiculo.$descricaoMarca = row.descricaomarca;
+            //   veiculo.$anoFabricacao = row.ano_fabricacao;
+            //   veiculo.$anoModelo = row.ano_modelo;
+            //   veiculo.$placa = row.placa;
+            //   veiculo.$renavam = row.renavam;
+            //   veiculo.$chassi = row.chassi;
+            //   veiculo.$idCor = row.idcor;
+            //   veiculo.$descricaoCor = row.descricaocor;
+            //   veiculo.$idCidade = row.idcidade;
+            //   veiculo.$nomeCidade = row.nomecidade;
+            //   veiculo.$idEstado = row.idestado;
+            //   veiculo.$nomeEstado = row.nomeestado;
+            //   veiculo.$siglaEstado = row.siglaestado;
+            //   veiculo.$dataInclusao = row.data_inclusao;
+            //   veiculo.$dataAquisicao = row.data_aquisicao;
+            //   veiculo.$dataVenda = row.data_venda;
+            //   veiculo.$valorCompra = row.valor_compra;
+            //   veiculo.$valorVenda = row.valor_venda;
+            //   veiculo.$valorAnuncio = row.valor_anunciado;
+            //   veiculo.$observacoes = row.observacoes;
+            //   veiculo.$idCombustivel = row.combustivel_id;
+            //   veiculo.$descricaoCombustivel = row.descricaocombustivel;
+            //   retorno.push(veiculo);
+            // });
           }
           resolve(retorno);
         })
@@ -103,22 +103,22 @@ export class VeiculoDAO {
         })
         .then(() =>
           client.query(insert, [
-            veiculo.$idModelo,
-            veiculo.$anoFabricacao,
-            veiculo.$anoModelo,
-            veiculo.$placa,
-            veiculo.$renavam,
-            veiculo.$chassi,
-            veiculo.$idCidade,
-            veiculo.$dataInclusao,
-            veiculo.$valorCompra,
-            veiculo.$valorAnuncio,
-            veiculo.$valorVenda,
-            veiculo.$dataVenda,
-            veiculo.$observacoes,
-            veiculo.$dataAquisicao,
-            veiculo.$idCor,
-            veiculo.$idCombustivel
+            // veiculo.$idModelo,
+            // veiculo.$anoFabricacao,
+            // veiculo.$anoModelo,
+            // veiculo.$placa,
+            // veiculo.$renavam,
+            // veiculo.$chassi,
+            // veiculo.$idCidade,
+            // veiculo.$dataInclusao,
+            // veiculo.$valorCompra,
+            // veiculo.$valorAnuncio,
+            // veiculo.$valorVenda,
+            // veiculo.$dataVenda,
+            // veiculo.$observacoes,
+            // veiculo.$dataAquisicao,
+            // veiculo.$idCor,
+            // veiculo.$idCombustivel
           ])
         )
         .then((result: QueryResult) => {
@@ -151,22 +151,22 @@ export class VeiculoDAO {
         })
         .then(() =>
           client.query(update, [
-            veiculo.$idModelo,
-            veiculo.$anoFabricacao,
-            veiculo.$anoModelo,
-            veiculo.$placa,
-            veiculo.$renavam,
-            veiculo.$chassi,
-            veiculo.$idCidade,
-            veiculo.$valorCompra,
-            veiculo.$valorAnuncio,
-            veiculo.$valorVenda,
-            veiculo.$dataVenda,
-            veiculo.$observacoes,
-            veiculo.$dataAquisicao,
-            veiculo.$idCor,
-            veiculo.$idCombustivel,
-            veiculo.$id
+            // veiculo.$idModelo,
+            // veiculo.$anoFabricacao,
+            // veiculo.$anoModelo,
+            // veiculo.$placa,
+            // veiculo.$renavam,
+            // veiculo.$chassi,
+            // veiculo.$idCidade,
+            // veiculo.$valorCompra,
+            // veiculo.$valorAnuncio,
+            // veiculo.$valorVenda,
+            // veiculo.$dataVenda,
+            // veiculo.$observacoes,
+            // veiculo.$dataAquisicao,
+            // veiculo.$idCor,
+            // veiculo.$idCombustivel,
+            // veiculo.$id
           ])
         )
         .then((result: QueryResult) => {

@@ -10,17 +10,19 @@ class ClientFactory {
     }
     getClient() {
         return new Promise((resolve, reject) => {
-            this._pool.connect()
+            this._pool
+                .connect()
                 .then((client) => resolve(client))
                 .catch(error => {
                 utils_1.logger.error(`connection.factory.getClient - ${error}`);
-                reject(new model_1.Mensagem("Não foi possível conectar ao banco de dados", "erro"));
+                reject("Não foi possível conectar ao banco de dados");
             });
         });
     }
     commit(client) {
         return new Promise((resolve, reject) => {
-            client.query("COMMIT")
+            client
+                .query("COMMIT")
                 .then((result) => client.end())
                 .then(() => resolve())
                 .catch(error => {
@@ -31,7 +33,8 @@ class ClientFactory {
     }
     rollback(client) {
         return new Promise((resolve, reject) => {
-            client.query("ROLLBACK")
+            client
+                .query("ROLLBACK")
                 .then((result) => client.end())
                 .then(() => resolve())
                 .catch(error => {

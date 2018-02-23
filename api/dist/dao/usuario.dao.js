@@ -7,7 +7,8 @@ class UsuarioDAO {
     static buscaUsuario(usuario) {
         let query = `select usuario, senha from usuario where usuario = $1`;
         return new Promise((resolve, reject) => {
-            index_2.clientFactory.query(query, [usuario])
+            index_2.clientFactory
+                .query(query, [usuario])
                 .then((result) => {
                 let user = new index_1.Usuario();
                 if (result.rowCount > 0) {
@@ -16,16 +17,17 @@ class UsuarioDAO {
                 }
                 resolve(user);
             })
-                .catch((error) => {
+                .catch(error => {
                 utils_1.logger.error(`usuario.dao.buscaUsuario - ${error}`);
-                reject(new index_1.Mensagem(`Erro ao tentar recuperar o usuário ${usuario}`, "erro"));
+                reject(`Erro ao tentar recuperar o usuário ${usuario}`);
             });
         });
     }
     static inserirUsuario(client, usuario) {
         let insert = `insert into usuario (usuario, senha) values ($1, $2)`;
         return new Promise((resolve, reject) => {
-            client.query("BEGIN")
+            client
+                .query("BEGIN")
                 .then((begin) => {
                 return;
             })

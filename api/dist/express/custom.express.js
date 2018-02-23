@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const bodyParser = require("body-parser");
+const bodyParserGraphQl = require("body-parser-graphql");
 const routes = require("../routes/index");
 const passport = require("passport");
 const index_1 = require("../auth/index");
@@ -19,11 +20,11 @@ class CustomExpress {
         this._express.use(helmet());
         this._express.use(cors({
             methods: "*",
-            // allowedHeaders: "*",
             origin: "*"
         }));
         this._express.use(gzip());
         this._express.use(bodyParser.json());
+        this._express.use(bodyParserGraphQl.graphql());
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(passport.initialize());
         index_1.PassportStrategy.initialize(passport);
@@ -34,6 +35,7 @@ class CustomExpress {
         this._express.use("/api/v1/tiposVeiculo", this._passportMiddleware, routes.tipoDeVeiculo);
         this._express.use("/api/v1/estados", this._passportMiddleware, routes.estado);
         this._express.use("/api/v1/veiculos", this._passportMiddleware, routes.veiculo);
+        this._express.use("/api/graphql", this._passportMiddleware, routes.estado);
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);

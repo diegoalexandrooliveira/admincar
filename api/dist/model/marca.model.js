@@ -1,28 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Marca {
-    constructor(id, descricao, tipo_veiculo_id) {
-        this.id = id;
-        this.descricao = descricao;
-        this.tipo_veiculo_id = tipo_veiculo_id;
-    }
-    getId() {
+    get $id() {
         return this.id;
     }
-    setId(id) {
-        this.id = id;
+    set $id(value) {
+        this.id = value;
     }
-    getDescricao() {
+    get $descricao() {
         return this.descricao;
     }
-    setDescricao(descricao) {
-        this.descricao = descricao;
+    set $descricao(value) {
+        this.descricao = value;
     }
-    getTipoVeiculoId() {
-        return this.tipo_veiculo_id;
+    get $tipoVeiculo() {
+        return this.tipoVeiculo;
     }
-    setTipoVeiculoId(tipo_veiculo_id) {
-        this.tipo_veiculo_id = tipo_veiculo_id;
+    set $tipoVeiculo(value) {
+        this.tipoVeiculo = value;
+    }
+    get $modelos() {
+        return this.modelos;
+    }
+    set $modelos(value) {
+        this.modelos = value;
     }
 }
 exports.Marca = Marca;

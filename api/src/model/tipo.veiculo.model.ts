@@ -1,23 +1,31 @@
+import { Marca } from ".";
+
 export class TipoVeiculo {
+  private id: number;
+  private descricao: string;
+  private marcas: Marca[];
 
+  public get $id(): number {
+    return this.id;
+  }
 
-    constructor(private id?: number, private descricao?: string) {
+  public set $id(value: number) {
+    this.id = value;
+  }
 
-    }
+  public get $descricao(): string {
+    return this.descricao;
+  }
 
-    public get $id(): number {
-        return this.id;
-    }
+  public set $descricao(value: string) {
+    this.descricao = value;
+  }
 
-    public set $id(id: number) {
-        this.id = id;
-    }
+  public get $marcas(): Marca[] {
+    return this.marcas;
+  }
 
-    public get $descricao(): string {
-        return this.descricao;
-    }
-
-    public set $descricao(descricao: string) {
-        this.descricao = descricao;
-    }
+  public set $marcas(value: Marca[]) {
+    this.marcas = value;
+  }
 }

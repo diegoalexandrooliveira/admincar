@@ -4,4 +4,3 @@ api/src/config
 api/dist/config
 api/cert
 web/node_modules
-api/src/config/configs.ts

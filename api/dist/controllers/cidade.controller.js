@@ -13,6 +13,9 @@ class CidadeController {
             res.status(500).json(new model_1.Resposta(erro));
         });
     }
+    static bucarTodasCidades() {
+        return index_1.CidadeDAO.buscaTodasCidades();
+    }
 }
 exports.CidadeController = CidadeController;
 //# sourceMappingURL=cidade.controller.js.map

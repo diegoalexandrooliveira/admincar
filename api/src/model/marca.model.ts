@@ -1,26 +1,40 @@
+import { TipoVeiculo, Modelo } from ".";
+
 export class Marca {
+  private id: number;
+  private descricao: string;
+  private tipoVeiculo: TipoVeiculo;
+  private modelos: Modelo[];
 
-    constructor(private id?: Number, private descricao?: string, private tipo_veiculo_id?: Number) {
-    }
+  public get $id(): number {
+    return this.id;
+  }
 
-    public getId(): Number {
-        return this.id;
-    }
-    public setId(id: Number): void {
-        this.id = id;
-    }
+  public set $id(value: number) {
+    this.id = value;
+  }
 
-    public getDescricao(): string {
-        return this.descricao;
-    }
-    public setDescricao(descricao: string): void {
-        this.descricao = descricao;
-    }
+  public get $descricao(): string {
+    return this.descricao;
+  }
 
-    public getTipoVeiculoId(): Number {
-        return this.tipo_veiculo_id;
-    }
-    public setTipoVeiculoId(tipo_veiculo_id: Number): void {
-        this.tipo_veiculo_id = tipo_veiculo_id;
-    }
+  public set $descricao(value: string) {
+    this.descricao = value;
+  }
+
+  public get $tipoVeiculo(): TipoVeiculo {
+    return this.tipoVeiculo;
+  }
+
+  public set $tipoVeiculo(value: TipoVeiculo) {
+    this.tipoVeiculo = value;
+  }
+
+  public get $modelos(): Modelo[] {
+    return this.modelos;
+  }
+
+  public set $modelos(value: Modelo[]) {
+    this.modelos = value;
+  }
 }

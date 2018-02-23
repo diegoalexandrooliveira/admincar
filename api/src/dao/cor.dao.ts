@@ -19,9 +19,7 @@ export class CorDAO {
         })
         .catch(error => {
           logger.error(`cor.dao.buscaCorPorId - ${error}`);
-          reject(
-            new Mensagem(`Erro ao tentar recuperar a cor ${idCor}.`, "erro")
-          );
+          reject(`Erro ao tentar recuperar a cor ${idCor}.`);
         });
     });
   }
@@ -44,7 +42,7 @@ export class CorDAO {
         })
         .catch(error => {
           logger.error(`cor.dao.buscarTodasCores - ${error}`);
-          reject(new Mensagem(`Erro ao tentar recuperar as cores.`, "erro"));
+          reject(`Erro ao tentar recuperar as cores.`);
         });
     });
   }

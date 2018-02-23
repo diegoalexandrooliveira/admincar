@@ -19,7 +19,7 @@ class CombustivelDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`combustivel.dao.buscaCombustivelPorId - ${error}`);
-                reject(new index_2.Mensagem(`Erro ao tentar recuperar o combustível ${idCombustivel}.`, "erro"));
+                reject(`Erro ao tentar recuperar o combustível ${idCombustivel}.`);
             });
         });
     }
@@ -39,7 +39,7 @@ class CombustivelDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`combustivel.dao.buscarTodosCombustiveis - ${error}`);
-                reject(new index_2.Mensagem(`Erro ao tentar recuperar os combustíveis.`, "erro"));
+                reject(`Erro ao tentar recuperar os combustíveis.`);
             });
         });
     }

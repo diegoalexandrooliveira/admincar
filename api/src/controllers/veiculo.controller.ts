@@ -8,41 +8,41 @@ import {
   GraphQLList,
   GraphQLInt
 } from "graphql";
-import * as graphqlExpress from "express-graphql";
-import { VeiculoType } from "../graphql/index";
+// import * as graphqlExpress from "express-graphql";
+// import { VeiculoType } from "../graphql/index";
 import { Veiculo, Mensagem } from "../model";
 import { Client } from "pg";
 import { veiculo } from "../routes";
 
 export class VeiculoController {
-  private static schemaVeiculo(): GraphQLSchema {
-    return new GraphQLSchema({
-      query: new GraphQLObjectType({
-        name: "VeiculoSchema",
-        fields: {
-          veiculos: {
-            type: new GraphQLList(VeiculoType),
-            resolve: () => VeiculoDAO.buscarTodosVeiculos()
-          },
-          veiculo: {
-            type: VeiculoType,
-            args: {
-              id: {
-                type: GraphQLInt
-              }
-            },
-            resolve: (obj, args) => VeiculoDAO.buscarVeiculoPorId(args.id)
-          }
-        }
-      })
-    });
-  }
+  // private static schemaVeiculo(): GraphQLSchema {
+  //   return new GraphQLSchema({
+  //     query: new GraphQLObjectType({
+  //       name: "VeiculoSchema",
+  //       fields: {
+  //         veiculos: {
+  //           type: new GraphQLList(VeiculoType),
+  //           resolve: () => VeiculoDAO.buscarTodosVeiculos()
+  //         },
+  //         veiculo: {
+  //           type: VeiculoType,
+  //           args: {
+  //             id: {
+  //               type: GraphQLInt
+  //             }
+  //           },
+  //           resolve: (obj, args) => VeiculoDAO.buscarVeiculoPorId(args.id)
+  //         }
+  //       }
+  //     })
+  //   });
+  // }
 
   public static veiculoGraphQL() {
-    return graphqlExpress({
-      schema: VeiculoController.schemaVeiculo(),
-      pretty: false
-    });
+    // return graphqlExpress({
+    //   schema: VeiculoController.schemaVeiculo(),
+    //   pretty: false
+    // });
   }
 
   public static inserirVeiculo(req: Request, res: Response) {

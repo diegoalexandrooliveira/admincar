@@ -18,4 +18,8 @@ export class CidadeController {
         res.status(500).json(new Resposta(erro));
       });
   }
+
+  public static bucarTodasCidades(): Promise<Cidade[]> {
+    return CidadeDAO.buscaTodasCidades();
+  }
 }

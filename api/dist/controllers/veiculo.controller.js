@@ -3,38 +3,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_factory_1 = require("../database/client.factory");
 const resposta_model_1 = require("../model/resposta.model");
 const index_1 = require("../dao/index");
-const graphql_1 = require("graphql");
-const graphqlExpress = require("express-graphql");
-const index_2 = require("../graphql/index");
+// import * as graphqlExpress from "express-graphql";
+// import { VeiculoType } from "../graphql/index";
 const model_1 = require("../model");
 class VeiculoController {
-    static schemaVeiculo() {
-        return new graphql_1.GraphQLSchema({
-            query: new graphql_1.GraphQLObjectType({
-                name: "VeiculoSchema",
-                fields: {
-                    veiculos: {
-                        type: new graphql_1.GraphQLList(index_2.VeiculoType),
-                        resolve: () => index_1.VeiculoDAO.buscarTodosVeiculos()
-                    },
-                    veiculo: {
-                        type: index_2.VeiculoType,
-                        args: {
-                            id: {
-                                type: graphql_1.GraphQLInt
-                            }
-                        },
-                        resolve: (obj, args) => index_1.VeiculoDAO.buscarVeiculoPorId(args.id)
-                    }
-                }
-            })
-        });
-    }
+    // private static schemaVeiculo(): GraphQLSchema {
+    //   return new GraphQLSchema({
+    //     query: new GraphQLObjectType({
+    //       name: "VeiculoSchema",
+    //       fields: {
+    //         veiculos: {
+    //           type: new GraphQLList(VeiculoType),
+    //           resolve: () => VeiculoDAO.buscarTodosVeiculos()
+    //         },
+    //         veiculo: {
+    //           type: VeiculoType,
+    //           args: {
+    //             id: {
+    //               type: GraphQLInt
+    //             }
+    //           },
+    //           resolve: (obj, args) => VeiculoDAO.buscarVeiculoPorId(args.id)
+    //         }
+    //       }
+    //     })
+    //   });
+    // }
     static veiculoGraphQL() {
-        return graphqlExpress({
-            schema: VeiculoController.schemaVeiculo(),
-            pretty: false
-        });
+        // return graphqlExpress({
+        //   schema: VeiculoController.schemaVeiculo(),
+        //   pretty: false
+        // });
     }
     static inserirVeiculo(req, res) {
         let veiculo = new model_1.Veiculo();

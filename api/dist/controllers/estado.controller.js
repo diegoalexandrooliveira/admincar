@@ -12,6 +12,9 @@ class EstadoController {
             res.status(500).json(new model_1.Resposta(erro));
         });
     }
+    static buscarEstados() {
+        return index_1.EstadoDAO.buscaTodosEstados();
+    }
 }
 exports.EstadoController = EstadoController;
 //# sourceMappingURL=estado.controller.js.map
