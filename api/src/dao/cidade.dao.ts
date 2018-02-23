@@ -19,11 +19,7 @@ export class CidadeDAO {
           if (result.rows.length > 0) {
             retorno = [];
             result.rows.map(dado => {
-              let cidade: Cidade = new Cidade();
-              cidade.$id = dado.id;
-              cidade.$nome = dado.nome;
-              cidade.$estado_id = estado_id;
-              retorno.push(cidade);
+              retorno.push(new Cidade(dado.id, dado.nome, estado_id));
             });
           }
           resolve(retorno);
@@ -43,12 +39,10 @@ export class CidadeDAO {
       clientFactory
         .query(query, [id])
         .then((result: QueryResult) => {
-          let retorno: Cidade = new Cidade();
+          let retorno: Cidade;
           if (result.rows.length > 0) {
             let dado = result.rows[0];
-            retorno.$id = dado.id;
-            retorno.$nome = dado.nome;
-            retorno.$estado_id = dado.estado_id;
+            retorno = new Cidade(dado.id, dado.nome, dado.estado_id);
           }
           resolve(retorno);
         })

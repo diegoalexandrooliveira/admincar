@@ -1,9 +1,13 @@
-import { Estado } from ".";
-
 export class Cidade {
   private id: number;
   private nome: string;
   private estado_id: number;
+
+  constructor(id?: number, nome?: string, estado_id?: number) {
+    this.id = id;
+    this.nome = nome;
+    this.estado_id = estado_id;
+  }
 
   public get $id(): number {
     return this.id;

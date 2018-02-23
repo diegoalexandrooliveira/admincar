@@ -10,6 +10,8 @@ import * as moment from "moment";
 import * as gzip from "compression";
 import * as cors from "cors";
 import * as helmet from "helmet";
+import { GraphQlSchemaFactory } from "../graphql";
+import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 
 export class CustomExpress {
   private _express: express.Express;
@@ -40,27 +42,27 @@ export class CustomExpress {
   }
 
   private privateRoutes(): void {
+    // this._express.use(
+    //   "/api/v1/usuarios",
+    //   this._passportMiddleware,
+    //   routes.usuario
+    // );
+    // this._express.use(
+    //   "/api/v1/veiculos",
+    //   this._passportMiddleware,
+    //   routes.veiculo
+    // );
     this._express.use(
-      "/api/v1/usuarios",
+      "/api/graphql",
       this._passportMiddleware,
-      routes.usuario
+      graphqlExpress({ schema: GraphQlSchemaFactory.createSchema() })
     );
+
     this._express.use(
-      "/api/v1/tiposVeiculo",
+      "/api/graphiql",
       this._passportMiddleware,
-      routes.tipoDeVeiculo
+      graphiqlExpress({ endpointURL: "/api/graphql" })
     );
-    this._express.use(
-      "/api/v1/estados",
-      this._passportMiddleware,
-      routes.estado
-    );
-    this._express.use(
-      "/api/v1/veiculos",
-      this._passportMiddleware,
-      routes.veiculo
-    );
-    this._express.use("/api/graphql", this._passportMiddleware, routes.estado);
   }
 
   private publicRoutes(): void {

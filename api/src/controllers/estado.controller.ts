@@ -1,24 +1,26 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { EstadoDAO } from "../dao/index";
-import { logger } from "../utils";
-import { Estado, Mensagem, Resposta } from "../model";
-
+import { EstadoDAO, CidadeDAO } from "../dao/index";
 export class EstadoController {
-  public static buscarTodosEstados(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): void {
-    EstadoDAO.buscaTodosEstados()
-      .then((resultado: Estado[]) => {
-        res.json(new Resposta(null, null, resultado));
-      })
-      .catch((erro: Mensagem) => {
-        res.status(500).json(new Resposta(erro));
-      });
+  public static getType(): string {
+    return `type Estado { id: Int, nome: String, sigla: String, cidades: [Cidade] }`;
   }
 
-  public static buscarEstados(): Promise<Estado[]> {
-    return EstadoDAO.buscaTodosEstados();
+  public static getQueries(): string {
+    return `estados: [Estado]
+            estado(id: Int): Estado`;
+  }
+
+  public static getQueryResolvers(): Object {
+    return {
+      estados: () => EstadoDAO.buscaTodosEstados(),
+      estado: (root, args) => EstadoDAO.buscaEstadoPorId(args.id)
+    };
+  }
+
+  public static getResolvers(): Object {
+    return {
+      Estado: {
+        cidades: estado => CidadeDAO.buscaTodasCidadesPorEstado(estado.id)
+      }
+    };
   }
 }

@@ -16,11 +16,7 @@ class CidadeDAO {
                 if (result.rows.length > 0) {
                     retorno = [];
                     result.rows.map(dado => {
-                        let cidade = new index_2.Cidade();
-                        cidade.$id = dado.id;
-                        cidade.$nome = dado.nome;
-                        cidade.$estado_id = estado_id;
-                        retorno.push(cidade);
+                        retorno.push(new index_2.Cidade(dado.id, dado.nome, estado_id));
                     });
                 }
                 resolve(retorno);
@@ -38,12 +34,10 @@ class CidadeDAO {
             index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
-                let retorno = new index_2.Cidade();
+                let retorno;
                 if (result.rows.length > 0) {
                     let dado = result.rows[0];
-                    retorno.$id = dado.id;
-                    retorno.$nome = dado.nome;
-                    retorno.$estado_id = dado.estado_id;
+                    retorno = new index_2.Cidade(dado.id, dado.nome, dado.estado_id);
                 }
                 resolve(retorno);
             })

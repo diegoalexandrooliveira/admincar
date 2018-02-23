@@ -9,6 +9,8 @@ const index_1 = require("../auth/index");
 const gzip = require("compression");
 const cors = require("cors");
 const helmet = require("helmet");
+const graphql_1 = require("../graphql");
+const apollo_server_express_1 = require("apollo-server-express");
 class CustomExpress {
     constructor() {
         this._express = express();
@@ -31,11 +33,18 @@ class CustomExpress {
         this._passportMiddleware = passport.authenticate("jwt", { session: false });
     }
     privateRoutes() {
-        this._express.use("/api/v1/usuarios", this._passportMiddleware, routes.usuario);
-        this._express.use("/api/v1/tiposVeiculo", this._passportMiddleware, routes.tipoDeVeiculo);
-        this._express.use("/api/v1/estados", this._passportMiddleware, routes.estado);
-        this._express.use("/api/v1/veiculos", this._passportMiddleware, routes.veiculo);
-        this._express.use("/api/graphql", this._passportMiddleware, routes.estado);
+        // this._express.use(
+        //   "/api/v1/usuarios",
+        //   this._passportMiddleware,
+        //   routes.usuario
+        // );
+        // this._express.use(
+        //   "/api/v1/veiculos",
+        //   this._passportMiddleware,
+        //   routes.veiculo
+        // );
+        this._express.use("/api/graphql", this._passportMiddleware, apollo_server_express_1.graphqlExpress({ schema: graphql_1.GraphQlSchemaFactory.createSchema() }));
+        this._express.use("/api/graphiql", this._passportMiddleware, apollo_server_express_1.graphiqlExpress({ endpointURL: "/api/graphql" }));
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);

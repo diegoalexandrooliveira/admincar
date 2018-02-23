@@ -1,20 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
-const model_1 = require("../model");
 class CidadeController {
-    static buscarTodasCidadesPorEstado(req, res, next) {
-        let idEstado = req.params["idEstado"];
-        index_1.CidadeDAO.buscaTodasCidadesPorEstado(idEstado)
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        })
-            .catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
+    static getType() {
+        return `type Cidade { id: Int, nome: String, estado: Estado }`;
     }
-    static bucarTodasCidades() {
-        return index_1.CidadeDAO.buscaTodasCidades();
+    static getQueries() {
+        return `    cidades(estadoId: Int): [Cidade]
+                cidade(id: Int): Cidade`;
+    }
+    static getQueryResolvers() {
+        return {
+            cidades: (root, args) => index_1.CidadeDAO.buscaTodasCidadesPorEstado(args.estadoId),
+            cidade: (root, args) => index_1.CidadeDAO.buscaCidadePorId(args.id)
+        };
+    }
+    static getResolvers() {
+        return {
+            Cidade: {
+                estado: cidade => index_1.EstadoDAO.buscaEstadoPorId(cidade.estado_id)
+            }
+        };
     }
 }
 exports.CidadeController = CidadeController;

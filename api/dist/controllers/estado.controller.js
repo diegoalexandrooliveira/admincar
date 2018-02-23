@@ -1,19 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
-const model_1 = require("../model");
 class EstadoController {
-    static buscarTodosEstados(req, res, next) {
-        index_1.EstadoDAO.buscaTodosEstados()
-            .then((resultado) => {
-            res.json(new model_1.Resposta(null, null, resultado));
-        })
-            .catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
+    static getType() {
+        return `type Estado { id: Int, nome: String, sigla: String, cidades: [Cidade] }`;
     }
-    static buscarEstados() {
-        return index_1.EstadoDAO.buscaTodosEstados();
+    static getQueries() {
+        return `estados: [Estado]
+            estado(id: Int): Estado`;
+    }
+    static getQueryResolvers() {
+        return {
+            estados: () => index_1.EstadoDAO.buscaTodosEstados(),
+            estado: (root, args) => index_1.EstadoDAO.buscaEstadoPorId(args.id)
+        };
+    }
+    static getResolvers() {
+        return {
+            Estado: {
+                cidades: estado => index_1.CidadeDAO.buscaTodasCidadesPorEstado(estado.id)
+            }
+        };
     }
 }
 exports.EstadoController = EstadoController;

@@ -16,13 +16,7 @@ class EstadoDAO {
                 if (result.rows.length > 0) {
                     retorno = [];
                     result.rows.map(dado => {
-                        let estado = new index_2.Estado();
-                        estado.$id = dado.id;
-                        estado.$nome = dado.nome;
-                        estado.$sigla = dado.sigla;
-                        // estado.$cidades = await CidadeDAO.buscaTodasCidadesPorEstado(
-                        //   dado.id
-                        // );
+                        let estado = new index_2.Estado(dado.id, dado.nome, dado.sigla);
                         retorno.push(estado);
                     });
                 }
@@ -41,13 +35,10 @@ class EstadoDAO {
             index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
-                let retorno = new index_2.Estado();
+                let retorno;
                 if (result.rows.length > 0) {
                     let dado = result.rows[0];
-                    // retorno = new Estado(dado.id, dado.nome, dado.sigla);
-                    retorno.$id = dado.id;
-                    retorno.$nome = dado.nome;
-                    retorno.$sigla = dado.sigla;
+                    retorno = new index_2.Estado(dado.id, dado.nome, dado.sigla);
                 }
                 resolve(retorno);
             })

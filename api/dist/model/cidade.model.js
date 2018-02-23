@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Cidade {
+    constructor(id, nome, estado_id) {
+        this.id = id;
+        this.nome = nome;
+        this.estado_id = estado_id;
+    }
     get $id() {
         return this.id;
     }

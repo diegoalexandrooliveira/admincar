@@ -1,10 +1,14 @@
-import { Cidade } from ".";
-
 export class Estado {
   private id: number;
   private nome: string;
   private sigla: string;
-  private cidades: Cidade[];
+
+  constructor(id?: number, nome?: string, sigla?: string) {
+    this.id = id;
+    this.nome = nome;
+    this.sigla = sigla;
+  }
+
   public get $id(): number {
     return this.id;
   }
@@ -24,12 +28,5 @@ export class Estado {
   }
   public set $sigla(sigla: string) {
     this.sigla = sigla;
-  }
-  public get $cidades(): Cidade[] {
-    return this.cidades;
-  }
-
-  public set $cidades(value: Cidade[]) {
-    this.cidades = value;
   }
 }

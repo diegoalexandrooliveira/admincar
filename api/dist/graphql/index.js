@@ -4,6 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./veiculo.type"));
-__export(require("./cidade.type"));
-__export(require("./estado.type"));
+__export(require("./graphql.schema.factory"));
 //# sourceMappingURL=index.js.map

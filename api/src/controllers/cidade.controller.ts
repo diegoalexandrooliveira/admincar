@@ -1,25 +1,27 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { CidadeDAO } from "../dao/index";
-import { logger } from "../utils";
-import { Cidade, Mensagem, Resposta } from "../model";
-
+import { EstadoDAO, CidadeDAO } from "../dao/index";
 export class CidadeController {
-  public static buscarTodasCidadesPorEstado(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): void {
-    let idEstado = req.params["idEstado"];
-    CidadeDAO.buscaTodasCidadesPorEstado(idEstado)
-      .then((resultado: Cidade[]) => {
-        res.json(new Resposta(null, null, resultado));
-      })
-      .catch((erro: Mensagem) => {
-        res.status(500).json(new Resposta(erro));
-      });
+  public static getType(): string {
+    return `type Cidade { id: Int, nome: String, estado: Estado }`;
   }
 
-  public static bucarTodasCidades(): Promise<Cidade[]> {
-    return CidadeDAO.buscaTodasCidades();
+  public static getQueries(): string {
+    return `    cidades(estadoId: Int): [Cidade]
+                cidade(id: Int): Cidade`;
+  }
+
+  public static getQueryResolvers(): Object {
+    return {
+      cidades: (root, args) =>
+        CidadeDAO.buscaTodasCidadesPorEstado(args.estadoId),
+      cidade: (root, args) => CidadeDAO.buscaCidadePorId(args.id)
+    };
+  }
+
+  public static getResolvers(): Object {
+    return {
+      Cidade: {
+        estado: cidade => EstadoDAO.buscaEstadoPorId(cidade.estado_id)
+      }
+    };
   }
 }
