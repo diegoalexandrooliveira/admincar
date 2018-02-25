@@ -3,8 +3,13 @@ import { TipoVeiculo, Modelo } from ".";
 export class Marca {
   private id: number;
   private descricao: string;
-  private tipoVeiculo: TipoVeiculo;
-  private modelos: Modelo[];
+  private tipo_veiculo_id: number;
+
+  constructor(id?: number, descricao?: string, tipo_veiculo_id?: number) {
+    this.id = id;
+    this.descricao = descricao;
+    this.tipo_veiculo_id = tipo_veiculo_id;
+  }
 
   public get $id(): number {
     return this.id;
@@ -22,19 +27,11 @@ export class Marca {
     this.descricao = value;
   }
 
-  public get $tipoVeiculo(): TipoVeiculo {
-    return this.tipoVeiculo;
+  public get $tipo_veiculo_id(): number {
+    return this.tipo_veiculo_id;
   }
 
-  public set $tipoVeiculo(value: TipoVeiculo) {
-    this.tipoVeiculo = value;
-  }
-
-  public get $modelos(): Modelo[] {
-    return this.modelos;
-  }
-
-  public set $modelos(value: Modelo[]) {
-    this.modelos = value;
+  public set $tipo_veiculo_id(value: number) {
+    this.tipo_veiculo_id = value;
   }
 }

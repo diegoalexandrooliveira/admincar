@@ -1,28 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../database/index");
+const index_2 = require("../model/index");
 const utils_1 = require("../utils");
 class ModeloDAO {
-    static buscarModelosPorTipoVeiculoEMarca(tipoVeiculoId, marcaId) {
-        let query = `   select mo.id, mo.descricao 
-                        from modelo mo inner join marca ma
-                        on mo.marca_id = ma.id
-                        where ma.tipo_veiculo_id = $1
-                        and mo.marca_id = $2
-                        order by mo.id`;
+    static buscarModelosPorMarca(marcaId) {
+        let query = `   select id, descricao from modelo where marca_id = $1`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
-                .query(query, [tipoVeiculoId, marcaId])
+                .query(query, [marcaId])
                 .then((result) => {
                 let retorno;
-                // if (result.rowCount > 0) {
-                //   retorno = [];
-                //   let marca = new Marca();
-                //   marca.setId(marcaId);
-                //   result.rows.map(dado =>
-                //     retorno.push(new Modelo(dado.id, dado.descricao, marca))
-                //   );
-                // }
+                if (result.rowCount > 0) {
+                    retorno = [];
+                    result.rows.map(dado => retorno.push(new index_2.Modelo(dado.id, dado.descricao, marcaId)));
+                }
                 resolve(retorno);
             })
                 .catch(error => {
@@ -32,28 +24,16 @@ class ModeloDAO {
         });
     }
     static buscarModeloPorId(id) {
-        let query = `   select modelo.descricao as modelo_descricao, marca.id as marca_id,
-                        marca.descricao as marca_descricao, marca.tipo_veiculo_id 
-                        from modelo inner join 
-                        marca on modelo.marca_id = marca.id
-                        where modelo.id = $1`;
+        let query = ` select id, descricao, marca_id from modelo where id = $1`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query, [id])
                 .then((result) => {
                 let retorno;
                 let dado = result.rows[0];
-                // if (dado) {
-                //   retorno = new Modelo(
-                //     id,
-                //     dado.modelo_descricao,
-                //     new Marca(
-                //       dado.marca_id,
-                //       dado.marca_descricao,
-                //       dado.tipo_veiculo_id
-                //     )
-                //   );
-                // }
+                if (dado) {
+                    retorno = new index_2.Modelo(id, dado.modelo_descricao, dado.marca_id);
+                }
                 resolve(retorno);
             })
                 .catch(error => {

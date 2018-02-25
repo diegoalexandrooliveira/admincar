@@ -3,7 +3,13 @@ import { Marca } from "./marca.model";
 export class Modelo {
   private id: number;
   private descricao: string;
-  private marca: Marca;
+  private marca_id: number;
+
+  constructor(id?: number, descricao?: string, marca_id?: number) {
+    this.id = id;
+    this.descricao = descricao;
+    this.marca_id = marca_id;
+  }
 
   public get $id(): number {
     return this.id;
@@ -21,11 +27,11 @@ export class Modelo {
     this.descricao = value;
   }
 
-  public get $marca(): Marca {
-    return this.marca;
+  public get $marca_id(): number {
+    return this.marca_id;
   }
 
-  public set $marca(value: Marca) {
-    this.marca = value;
+  public set $marca_id(value: number) {
+    this.marca_id = value;
   }
 }

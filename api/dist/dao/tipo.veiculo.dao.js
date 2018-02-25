@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../database/index");
+const index_2 = require("../model/index");
 const utils_1 = require("../utils");
 class TipoVeiculoDAO {
     static buscaTodosTipoVeiculo() {
@@ -12,12 +13,10 @@ class TipoVeiculoDAO {
                 .query(query)
                 .then((result) => {
                 let retorno;
-                // if (result.rows.length > 0) {
-                //   retorno = [];
-                //   result.rows.map(dado =>
-                //     retorno.push(new TipoVeiculo(dado.id, dado.descricao))
-                //   );
-                // }
+                if (result.rows.length > 0) {
+                    retorno = [];
+                    result.rows.map(dado => retorno.push(new index_2.TipoVeiculo(dado.id, dado.descricao)));
+                }
                 resolve(retorno);
             })
                 .catch(error => {
@@ -36,7 +35,7 @@ class TipoVeiculoDAO {
                 let retorno;
                 if (result.rows.length > 0) {
                     let dado = result.rows[0];
-                    // retorno = new TipoVeiculo(dado.id, dado.descricao);
+                    retorno = new index_2.TipoVeiculo(dado.id, dado.descricao);
                 }
                 resolve(retorno);
             })

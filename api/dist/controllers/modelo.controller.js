@@ -1,17 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
-const model_1 = require("../model");
 class ModeloController {
-    static buscarModelosPorTipoVeiculoEMarca(req, res, next) {
-        let idTipoVeiculo = req.params["idTipoVeiculo"];
-        let idMarca = req.params["idMarca"];
-        index_1.ModeloDAO.buscarModelosPorTipoVeiculoEMarca(idTipoVeiculo, idMarca)
-            .then((result) => {
-            res.json(new model_1.Resposta(null, null, result));
-        }).catch((erro) => {
-            res.status(500).json(new model_1.Resposta(erro));
-        });
+    static getType() {
+        return `type Modelo { id: Int, descricao: String, marca: Marca }`;
+    }
+    static getQueries() {
+        return `modelos(marcaId: Int, limite: Int = 0): [Modelo]
+            modelo(id: Int): Modelo`;
+    }
+    static getQueryResolvers() {
+        return {
+            modelos: (root, args) => {
+                return index_1.ModeloDAO.buscarModelosPorMarca(args.marcaId).then(value => {
+                    let retorno = value;
+                    if (args.limite) {
+                        retorno = retorno.slice(0, args.limite);
+                    }
+                    return retorno;
+                });
+            },
+            modelo: (root, args) => index_1.ModeloDAO.buscarModeloPorId(args.id)
+        };
+    }
+    static getResolvers() {
+        return {};
     }
 }
 exports.ModeloController = ModeloController;

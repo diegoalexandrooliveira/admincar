@@ -14,12 +14,12 @@ export class TipoVeiculoDAO {
         .query(query)
         .then((result: QueryResult) => {
           let retorno: TipoVeiculo[];
-          // if (result.rows.length > 0) {
-          //   retorno = [];
-          //   result.rows.map(dado =>
-          //     retorno.push(new TipoVeiculo(dado.id, dado.descricao))
-          //   );
-          // }
+          if (result.rows.length > 0) {
+            retorno = [];
+            result.rows.map(dado =>
+              retorno.push(new TipoVeiculo(dado.id, dado.descricao))
+            );
+          }
           resolve(retorno);
         })
         .catch(error => {
@@ -40,7 +40,7 @@ export class TipoVeiculoDAO {
           let retorno: TipoVeiculo;
           if (result.rows.length > 0) {
             let dado = result.rows[0];
-            // retorno = new TipoVeiculo(dado.id, dado.descricao);
+            retorno = new TipoVeiculo(dado.id, dado.descricao);
           }
           resolve(retorno);
         })

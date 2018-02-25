@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
+const index_2 = require("../cache/index");
 class CidadeController {
     static getType() {
         return `type Cidade { id: Int, nome: String, estado: Estado }`;
@@ -18,12 +19,10 @@ class CidadeController {
     static getResolvers() {
         return {
             Cidade: {
-                estado: cidade => estados[cidade.estado_id - 1]
+                estado: cidade => index_2.estados()[cidade.estado_id - 1]
             }
         };
     }
 }
 exports.CidadeController = CidadeController;
-let estados;
-index_1.EstadoDAO.buscaTodosEstados().then(results => (estados = results));
 //# sourceMappingURL=cidade.controller.js.map

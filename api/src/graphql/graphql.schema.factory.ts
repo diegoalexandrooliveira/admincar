@@ -1,5 +1,11 @@
 import { makeExecutableSchema } from "graphql-tools";
-import { EstadoController, CidadeController } from "../controllers/index";
+import {
+  EstadoController,
+  CidadeController,
+  TipoVeiculoController,
+  MarcaController,
+  ModeloController
+} from "../controllers/index";
 import { IResolvers } from "graphql-tools/dist/Interfaces";
 import { GraphQLSchema } from "graphql";
 
@@ -13,11 +19,17 @@ export class GraphQlSchemaFactory {
   private static createTypeDefs(): string {
     let queryTypes = `type Query {
         ${EstadoController.getQueries()}
-        ${CidadeController.getQueries()}        
+        ${CidadeController.getQueries()}
+        ${TipoVeiculoController.getQueries()}
+        ${MarcaController.getQueries()}
+        ${ModeloController.getQueries()}
     }`;
     let types = `
     ${EstadoController.getType()}
     ${CidadeController.getType()}
+    ${TipoVeiculoController.getType()}
+    ${MarcaController.getType()}
+    ${ModeloController.getType()}
     `;
     let schema = `schema { query: Query }`;
     return queryTypes.concat(types).concat(schema);
@@ -28,13 +40,19 @@ export class GraphQlSchemaFactory {
     queryResolvers.Query = Object.assign(
       {},
       EstadoController.getQueryResolvers(),
-      CidadeController.getQueryResolvers()
+      CidadeController.getQueryResolvers(),
+      TipoVeiculoController.getQueryResolvers(),
+      MarcaController.getQueryResolvers(),
+      ModeloController.getQueryResolvers()
     );
     let resolvers = {};
     resolvers = Object.assign(
       {},
       EstadoController.getResolvers(),
-      CidadeController.getResolvers()
+      CidadeController.getResolvers(),
+      TipoVeiculoController.getResolvers(),
+      MarcaController.getResolvers(),
+      ModeloController.getResolvers()
     );
 
     return Object.assign({}, queryResolvers, resolvers);

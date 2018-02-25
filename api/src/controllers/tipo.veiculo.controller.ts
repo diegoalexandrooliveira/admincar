@@ -1,26 +1,28 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { TipoVeiculoDAO } from "../dao/index";
-import { logger } from "../utils";
-import { TipoVeiculo, Mensagem, Resposta } from "../model";
-
-
+import { MarcaDAO } from "../dao/index";
+import { tiposVeiculo } from "../cache/index";
 export class TipoVeiculoController {
-    public static buscarTodosTiposDeVeiculo(req: Request, res: Response, next: NextFunction): void {
-        TipoVeiculoDAO.buscaTodosTipoVeiculo()
-            .then((resultado: TipoVeiculo[]) => {
-                res.json(new Resposta(null, null, resultado));
-            }).catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
+  public static getType(): string {
+    return `type TipoVeiculo { id: Int, descricao: String, marcas: [Marca] }`;
+  }
 
-    public static buscarTipoDeVeiculoPorId(req: Request, res: Response, next: NextFunction): void {
-        let id = req.params["idTipoVeiculo"];
-        TipoVeiculoDAO.buscaTipoVeiculoPorId(id)
-            .then((resultado: TipoVeiculo) => {
-                res.json(new Resposta(null, null, resultado));
-            }).catch((erro: Mensagem) => {
-                res.status(500).json(new Resposta(erro));
-            });
-    }
+  public static getQueries(): string {
+    return `tiposVeiculo: [TipoVeiculo]
+            tipoVeiculo(id: Int): TipoVeiculo`;
+  }
+
+  public static getQueryResolvers(): Object {
+    return {
+      tiposVeiculo: () => tiposVeiculo(),
+      tipoVeiculo: (root, args) => tiposVeiculo()[args.id - 1]
+    };
+  }
+
+  public static getResolvers(): Object {
+    return {
+      TipoVeiculo: {
+        marcas: tipoVeiculo =>
+          MarcaDAO.buscarMarcasPorTipoDeVeiculo(tipoVeiculo.id)
+      }
+    };
+  }
 }

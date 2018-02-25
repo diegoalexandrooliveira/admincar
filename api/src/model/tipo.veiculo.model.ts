@@ -3,7 +3,11 @@ import { Marca } from ".";
 export class TipoVeiculo {
   private id: number;
   private descricao: string;
-  private marcas: Marca[];
+
+  constructor(id?: number, descricao?: string) {
+    this.id = id;
+    this.descricao = descricao;
+  }
 
   public get $id(): number {
     return this.id;
@@ -19,13 +23,5 @@ export class TipoVeiculo {
 
   public set $descricao(value: string) {
     this.descricao = value;
-  }
-
-  public get $marcas(): Marca[] {
-    return this.marcas;
-  }
-
-  public set $marcas(value: Marca[]) {
-    this.marcas = value;
   }
 }

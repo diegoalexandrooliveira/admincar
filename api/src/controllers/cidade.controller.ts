@@ -1,4 +1,6 @@
 import { EstadoDAO, CidadeDAO } from "../dao/index";
+import { Estado } from "../model";
+import { estados } from "../cache/index";
 export class CidadeController {
   public static getType(): string {
     return `type Cidade { id: Int, nome: String, estado: Estado }`;
@@ -20,10 +22,8 @@ export class CidadeController {
   public static getResolvers(): Object {
     return {
       Cidade: {
-        estado: cidade => estados[cidade.estado_id - 1]
+        estado: cidade => estados()[cidade.estado_id - 1]
       }
     };
   }
 }
-let estados;
-EstadoDAO.buscaTodosEstados().then(results => (estados = results));

@@ -5,7 +5,7 @@ import { logger } from "../utils";
 
 export class MarcaDAO {
   public static buscarMarcasPorTipoDeVeiculo(
-    tipoVeiculoId: Number
+    tipoVeiculoId: number
   ): Promise<Marca[]> {
     let query = `select id, descricao
                     from marca where tipo_veiculo_id = $1
@@ -18,9 +18,9 @@ export class MarcaDAO {
           let retorno: Marca[];
           if (result.rows.length > 0) {
             retorno = [];
-            // result.rows.map(dado =>
-            //   retorno.push(new Marca(dado.id, dado.descricao, tipoVeiculoId))
-            // );
+            result.rows.map(dado =>
+              retorno.push(new Marca(dado.id, dado.descricao, tipoVeiculoId))
+            );
           }
           resolve(retorno);
         })
@@ -43,11 +43,11 @@ export class MarcaDAO {
           let retorno: Marca[];
           if (result.rows.length > 0) {
             retorno = [];
-            // result.rows.map(dado =>
-            //   retorno.push(
-            //     new Marca(dado.id, dado.descricao, dado.tipo_veiculo_id)
-            //   )
-            // );
+            result.rows.map(dado =>
+              retorno.push(
+                new Marca(dado.id, dado.descricao, dado.tipo_veiculo_id)
+              )
+            );
           }
           resolve(retorno);
         })
@@ -66,13 +66,13 @@ export class MarcaDAO {
         .query(query, [id])
         .then((result: QueryResult) => {
           let retorno: Marca;
-          // if (result.rowCount > 0) {
-          //   retorno = new Marca(
-          //     id,
-          //     result.rows[0].descricao,
-          //     result.rows[0].tipo_veiculo_id
-          //   );
-          // }
+          if (result.rowCount > 0) {
+            retorno = new Marca(
+              id,
+              result.rows[0].descricao,
+              result.rows[0].tipo_veiculo_id
+            );
+          }
           resolve(retorno);
         })
         .catch(error => {

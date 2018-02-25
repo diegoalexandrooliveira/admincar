@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Modelo {
+    constructor(id, descricao, marca_id) {
+        this.id = id;
+        this.descricao = descricao;
+        this.marca_id = marca_id;
+    }
     get $id() {
         return this.id;
     }
@@ -13,11 +18,11 @@ class Modelo {
     set $descricao(value) {
         this.descricao = value;
     }
-    get $marca() {
-        return this.marca;
+    get $marca_id() {
+        return this.marca_id;
     }
-    set $marca(value) {
-        this.marca = value;
+    set $marca_id(value) {
+        this.marca_id = value;
     }
 }
 exports.Modelo = Modelo;

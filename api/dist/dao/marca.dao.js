@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../database/index");
+const index_2 = require("../model/index");
 const utils_1 = require("../utils");
 class MarcaDAO {
     static buscarMarcasPorTipoDeVeiculo(tipoVeiculoId) {
@@ -14,9 +15,7 @@ class MarcaDAO {
                 let retorno;
                 if (result.rows.length > 0) {
                     retorno = [];
-                    // result.rows.map(dado =>
-                    //   retorno.push(new Marca(dado.id, dado.descricao, tipoVeiculoId))
-                    // );
+                    result.rows.map(dado => retorno.push(new index_2.Marca(dado.id, dado.descricao, tipoVeiculoId)));
                 }
                 resolve(retorno);
             })
@@ -37,11 +36,7 @@ class MarcaDAO {
                 let retorno;
                 if (result.rows.length > 0) {
                     retorno = [];
-                    // result.rows.map(dado =>
-                    //   retorno.push(
-                    //     new Marca(dado.id, dado.descricao, dado.tipo_veiculo_id)
-                    //   )
-                    // );
+                    result.rows.map(dado => retorno.push(new index_2.Marca(dado.id, dado.descricao, dado.tipo_veiculo_id)));
                 }
                 resolve(retorno);
             })
@@ -59,13 +54,9 @@ class MarcaDAO {
                 .query(query, [id])
                 .then((result) => {
                 let retorno;
-                // if (result.rowCount > 0) {
-                //   retorno = new Marca(
-                //     id,
-                //     result.rows[0].descricao,
-                //     result.rows[0].tipo_veiculo_id
-                //   );
-                // }
+                if (result.rowCount > 0) {
+                    retorno = new index_2.Marca(id, result.rows[0].descricao, result.rows[0].tipo_veiculo_id);
+                }
                 resolve(retorno);
             })
                 .catch(error => {
