@@ -30,7 +30,7 @@
     "@types/node": "^8.9.1",
     "@types/passport": "^0.4.2",
     "@types/passport-jwt": "^3.0.1",
-    "@types/pg": "^7.4.1",
+    "@types/pg": "7.4.1",
     "@types/winston": "^2.3.7",
     "nodemon": "^1.14.12",
     "npm-run-all": "^4.1.2",
