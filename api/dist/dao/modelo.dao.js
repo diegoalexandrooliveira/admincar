@@ -32,7 +32,7 @@ class ModeloDAO {
                 let retorno;
                 let dado = result.rows[0];
                 if (dado) {
-                    retorno = new index_2.Modelo(id, dado.modelo_descricao, dado.marca_id);
+                    retorno = new index_2.Modelo(id, dado.descricao, dado.marca_id);
                 }
                 resolve(retorno);
             })

@@ -26,9 +26,9 @@ export class ModeloController {
 
   public static getResolvers(): Object {
     return {
-      //   Modelo: {
-      //     marca: modelo => MarcaDAO.buscaMarcaPorId(modelo.)
-      //   }
+      Modelo: {
+        marca: modelo => MarcaDAO.buscaMarcaPorId(modelo.marca_id)
+      }
     };
   }
 }

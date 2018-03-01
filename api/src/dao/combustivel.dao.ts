@@ -28,7 +28,7 @@ export class CombustivelDAO {
 
   public static buscarTodosCombustiveis(): Promise<Combustivel[]> {
     let query = `select id, descricao
-                     from combustivel order by descricao`;
+                     from combustivel order by id`;
     return new Promise((resolve, reject) => {
       clientFactory
         .query(query)

@@ -25,7 +25,8 @@ class CorDAO {
     }
     static buscarTodasCores() {
         let query = `select id, descricao
-                     from cor`;
+                     from cor
+                     order by id`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query)

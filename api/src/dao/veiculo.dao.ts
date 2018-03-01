@@ -17,24 +17,18 @@ export class VeiculoDAO {
   }
 
   private static buscarVeiculos(idVeiculo?: number): Promise<Veiculo[]> {
-    let query = `select v.id, v.modelo_id, mo.descricao as descricaomodelo, ma.id as idmarca, ma.descricao as descricaomarca,
-    v.ano_fabricacao, v.ano_modelo, v.placa, v.renavam, v.chassi, v.cor_id as idcor, co.descricao as descricaocor,
-    v.cidade_id as idcidade, ci.nome as nomecidade, e.id as idestado, e.nome as nomeestado, e.sigla as siglaestado,
-    v.data_inclusao, v.data_aquisicao, v.data_venda, v.valor_compra, v.valor_venda, v.valor_anunciado, v.observacoes,
-    v.combustivel_id, com.descricao as descricaocombustivel
-                    
-    from veiculo v inner join (modelo mo inner join marca ma on mo.marca_id = ma.id ) on v.modelo_id = mo.id
-     inner join cor co on v.cor_id = co.id
-     left outer join (cidades ci inner join estados e on ci.estado_id = e.id) on v.cidade_id = ci.id
-     left outer join combustivel com on v.combustivel_id = com.id`;
+    let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
+    cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
+    combustivel_id                    
+    from veiculo `;
 
     let parameters = [];
     if (idVeiculo) {
       parameters.push(idVeiculo);
-      query = query + " where v.id = $1 ";
+      query = query + " where id = $1 ";
     }
 
-    query = query + " order by v.id ";
+    query = query + " order by id ";
 
     return new Promise((resolve, reject) => {
       clientFactory
@@ -43,36 +37,29 @@ export class VeiculoDAO {
           let retorno: Veiculo[];
           if (result.rows.length > 0) {
             retorno = [];
-            // result.rows.map(row => {
-            //   let veiculo = new Veiculo();
-            //   veiculo.$id = row.id;
-            //   veiculo.$idModelo = row.modelo_id;
-            //   veiculo.$descricaoModelo = row.descricaomodelo;
-            //   veiculo.$idMarca = row.idmarca;
-            //   veiculo.$descricaoMarca = row.descricaomarca;
-            //   veiculo.$anoFabricacao = row.ano_fabricacao;
-            //   veiculo.$anoModelo = row.ano_modelo;
-            //   veiculo.$placa = row.placa;
-            //   veiculo.$renavam = row.renavam;
-            //   veiculo.$chassi = row.chassi;
-            //   veiculo.$idCor = row.idcor;
-            //   veiculo.$descricaoCor = row.descricaocor;
-            //   veiculo.$idCidade = row.idcidade;
-            //   veiculo.$nomeCidade = row.nomecidade;
-            //   veiculo.$idEstado = row.idestado;
-            //   veiculo.$nomeEstado = row.nomeestado;
-            //   veiculo.$siglaEstado = row.siglaestado;
-            //   veiculo.$dataInclusao = row.data_inclusao;
-            //   veiculo.$dataAquisicao = row.data_aquisicao;
-            //   veiculo.$dataVenda = row.data_venda;
-            //   veiculo.$valorCompra = row.valor_compra;
-            //   veiculo.$valorVenda = row.valor_venda;
-            //   veiculo.$valorAnuncio = row.valor_anunciado;
-            //   veiculo.$observacoes = row.observacoes;
-            //   veiculo.$idCombustivel = row.combustivel_id;
-            //   veiculo.$descricaoCombustivel = row.descricaocombustivel;
-            //   retorno.push(veiculo);
-            // });
+            result.rows.map(row => {
+              retorno.push(
+                new Veiculo(
+                  row.id,
+                  row.modelo_id,
+                  row.ano_fabricacao,
+                  row.ano_modelo,
+                  row.placa,
+                  row.renavam,
+                  row.chassi,
+                  row.cor_id,
+                  row.cidade_id,
+                  row.data_inclusao,
+                  row.data_aquisicao,
+                  row.data_venda,
+                  row.valor_compra,
+                  row.valor_venda,
+                  row.valor_anunciado,
+                  row.observacoes,
+                  row.combustivel_id
+                )
+              );
+            });
           }
           resolve(retorno);
         })

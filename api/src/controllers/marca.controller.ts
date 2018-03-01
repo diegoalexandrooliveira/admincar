@@ -1,4 +1,5 @@
 import { MarcaDAO, ModeloDAO } from "../dao/index";
+import { tiposVeiculo } from "../cache/index";
 export class MarcaController {
   public static getType(): string {
     return `type Marca { id: Int, descricao: String, tipoVeiculo: TipoVeiculo, modelos: [Modelo] }`;
@@ -20,7 +21,8 @@ export class MarcaController {
   public static getResolvers(): Object {
     return {
       Marca: {
-        modelos: marca => ModeloDAO.buscarModelosPorMarca(marca.id)
+        modelos: marca => ModeloDAO.buscarModelosPorMarca(marca.id),
+        tipoVeiculo: marca => tiposVeiculo()[marca.tipo_veiculo_id - 1]
       }
     };
   }

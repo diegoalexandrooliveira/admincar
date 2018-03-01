@@ -9,4 +9,7 @@ __export(require("./modelo.controller"));
 __export(require("./cidade.controller"));
 __export(require("./estado.controller"));
 __export(require("./veiculo.controller"));
+__export(require("./combustivel.controller"));
+__export(require("./cor.controller"));
+__export(require("./veiculo.controller"));
 //# sourceMappingURL=index.js.map

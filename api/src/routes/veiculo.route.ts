@@ -15,9 +15,9 @@ class VeiculoRoute {
 
   private init(): void {
     // this.router.get("/", VeiculoController.veiculoGraphQL());
-    this.router.post("/", VeiculoController.inserirVeiculo);
-    this.router.put("/", VeiculoController.atualizarVeiculo);
-    this.router.delete("/:idVeiculo", VeiculoController.excluirVeiculo);
+    // this.router.post("/", VeiculoController.inserirVeiculo);
+    // this.router.put("/", VeiculoController.atualizarVeiculo);
+    // this.router.delete("/:idVeiculo", VeiculoController.excluirVeiculo);
   }
 }
 

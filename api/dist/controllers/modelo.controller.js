@@ -24,7 +24,11 @@ class ModeloController {
         };
     }
     static getResolvers() {
-        return {};
+        return {
+            Modelo: {
+                marca: modelo => index_1.MarcaDAO.buscaMarcaPorId(modelo.marca_id)
+            }
+        };
     }
 }
 exports.ModeloController = ModeloController;

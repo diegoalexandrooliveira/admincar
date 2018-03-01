@@ -25,7 +25,7 @@ class CombustivelDAO {
     }
     static buscarTodosCombustiveis() {
         let query = `select id, descricao
-                     from combustivel order by descricao`;
+                     from combustivel order by id`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query)

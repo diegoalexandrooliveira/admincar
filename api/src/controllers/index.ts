@@ -4,3 +4,6 @@ export * from "./modelo.controller";
 export * from "./cidade.controller";
 export * from "./estado.controller";
 export * from "./veiculo.controller";
+export * from "./combustivel.controller";
+export * from "./cor.controller";
+export * from "./veiculo.controller";
