@@ -1,16 +1,26 @@
+<app-mensagens [mensagens]="mensagens"></app-mensagens>
+
+
 <form class="form-signin" (submit)="autenticar($event)" action="">
+  <div class="text-center">
+    <img src="../../assets/logo.png" alt="" srcset="">
+  </div>
 
   <div class="form-label-group">
-    <input [(ngModel)]="usuario" name="usuario" type="text" id="inputUsuario" class="form-control" placeholder="Usuário" required
-      autofocus>
+    <input [(ngModel)]="usuario.nome" name="usuario" type="text" id="inputUsuario" class="form-control" placeholder="Usuário"
+      required autofocus>
     <label for="inputUsuario">Usuário</label>
   </div>
 
   <div class="form-label-group">
-    <input [(ngModel)]="senha" name="senha" type="password" id="inputSenha" class="form-control" placeholder="Senha" required>
+    <input [(ngModel)]="usuario.senha" name="senha" type="password" id="inputSenha" class="form-control" placeholder="Senha"
+      required>
     <label for="inputSenha">Senha</label>
   </div>
   <div class="text-center">
     <button type="submit" class="btn btn-success btn-lg">Entrar</button>
   </div>
 </form>
+<footer>
+  <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
+</footer>

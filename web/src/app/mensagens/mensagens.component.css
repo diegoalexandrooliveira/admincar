@@ -1,0 +1,15 @@
+#mensagens {
+  width: 90%;
+  text-align: center;
+  z-index: 1000;
+  position: fixed;
+  top: 1rem;
+  left: 5%;
+}
+
+@media (min-width: 576px) {
+  #mensagens {
+    left: 65%;
+    width: 30%;
+  }
+}
