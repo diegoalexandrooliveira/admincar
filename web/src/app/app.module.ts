@@ -13,6 +13,7 @@ import "rxjs/add/operator/catch";
 import { AuthGuardService } from "./guard/auth.guard.service";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AppLayoutComponent } from "./layouts/app.layout.component";
     MensagensComponent,
     DashboardComponent,
     LoginLayoutComponent,
-    AppLayoutComponent
+    AppLayoutComponent,
+    MenuComponent
   ],
   imports: [BrowserModule, routing, HttpModule, FormsModule],
   bootstrap: [AppComponent],

@@ -1,0 +1,7 @@
+nav {
+  background-color: var(--cor-primaria);
+}
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}

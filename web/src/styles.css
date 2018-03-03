@@ -3,6 +3,10 @@ body {
   height: 100%;
 }
 
+:root {
+  --cor-primaria: rgb(0, 44, 82);
+}
+
 footer {
   /* left: 0; */
   right: 0;
