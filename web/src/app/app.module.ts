@@ -10,16 +10,21 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginService } from "./login/login.service";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import { AuthGuardService } from "./guard/auth.guard.service";
+import { LoginLayoutComponent } from "./layouts/login.layout.component";
+import { AppLayoutComponent } from "./layouts/app.layout.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MensagensComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginLayoutComponent,
+    AppLayoutComponent
   ],
   imports: [BrowserModule, routing, HttpModule, FormsModule],
   bootstrap: [AppComponent],
-  providers: [LoginService]
+  providers: [LoginService, AuthGuardService]
 })
 export class AppModule {}

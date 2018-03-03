@@ -4,5 +4,4 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./autenticacao.route"));
-__export(require("./veiculo.route"));
 //# sourceMappingURL=index.js.map

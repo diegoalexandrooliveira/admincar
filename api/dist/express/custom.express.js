@@ -33,18 +33,9 @@ class CustomExpress {
         this._passportMiddleware = passport.authenticate("jwt", { session: false });
     }
     privateRoutes() {
-        // this._express.use(
-        //   "/api/v1/usuarios",
-        //   this._passportMiddleware,
-        //   routes.usuario
-        // );
-        // this._express.use(
-        //   "/api/v1/veiculos",
-        //   this._passportMiddleware,
-        //   routes.veiculo
-        // );
         this._express.use("/api/graphql", this._passportMiddleware, apollo_server_express_1.graphqlExpress({ schema: graphql_1.GraphQlSchemaFactory.createSchema() }));
         this._express.use("/api/graphiql", this._passportMiddleware, apollo_server_express_1.graphiqlExpress({ endpointURL: "/api/graphql" }));
+        this._express.get("/api/autenticacao", this._passportMiddleware, (req, res) => res.status(200).send("ok"));
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);
