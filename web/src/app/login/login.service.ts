@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
-
 import { Http, Response, Headers } from "@angular/http";
 import { Usuario } from "../models/usuario.model";
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
 import { Mensagem } from "../models/mensagem.model";
 import { configs } from "../config/configs";
 
@@ -51,5 +50,14 @@ export class LoginService {
           return Observable.of(false);
         });
     }
+  }
+
+  public excluirToken(): void {
+    localStorage.removeItem("usuario");
+  }
+
+  public pegarUsuario(): string {
+    let usuario = JSON.parse(localStorage.getItem("usuario"));
+    return usuario.usuario;
   }
 }

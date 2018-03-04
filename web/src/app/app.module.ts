@@ -10,10 +10,12 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginService } from "./login/login.service";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import "rxjs/add/observable/throw";
+import "rxjs/add/observable/of";
 import { AuthGuardService } from "./guard/auth.guard.service";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from "./menu/menu.component";
 
 @NgModule({
   declarations: [

@@ -2,6 +2,42 @@ nav {
   background-color: var(--cor-primaria);
 }
 .navbar-dark .navbar-brand,
-.navbar-dark .navbar-nav .nav-link {
+.navbar-dark .navbar-nav .nav-link,
+.nav-link,
+.navbar-dark .navbar-toggler {
   color: white;
+}
+
+.logo {
+  width: 45px;
+  height: 25px;
+}
+
+.navbar-dark .navbar-toggler {
+  border: transparent;
+}
+
+.alinhar-icone {
+  display: flex;
+  align-items: center;
+}
+
+.alinhar-icone > p {
+  margin: 0;
+}
+
+.traco {
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 991px) {
+  #sair {
+    padding: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .traco {
+    display: none;
+  }
 }

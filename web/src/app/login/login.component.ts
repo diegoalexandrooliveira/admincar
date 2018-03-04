@@ -10,12 +10,9 @@ import { Mensagem } from "../models/mensagem.model";
 })
 export class LoginComponent implements OnInit {
   @Input() usuario: Usuario;
-  private router: Router;
-  private mensagens: Mensagem[];
+  public mensagens: Mensagem[];
 
-  constructor(router: Router, private loginService: LoginService) {
-    this.router = router;
-  }
+  constructor(private router: Router, private loginService: LoginService) {}
 
   ngOnInit() {
     this.usuario = new Usuario();
