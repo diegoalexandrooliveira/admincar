@@ -1,11 +1,23 @@
 nav {
   background-color: var(--cor-primaria);
 }
-.navbar-dark .navbar-brand,
-.navbar-dark .navbar-nav .nav-link,
+
+.navbar {
+  border-radius: 0px 0px 25px 25px;
+  align-items: center;
+}
+
 .nav-link,
-.navbar-dark .navbar-toggler {
-  color: white;
+.navbar-brand,
+.navbar-toggler {
+  color: var(--cor-secundaria) !important;
+}
+
+.nav-link:hover,
+.navbar-brand:hover {
+  color: var(--cor-primaria) !important;
+  background-color: var(--cor-secundaria) !important;
+  border-radius: 14px;
 }
 
 .logo {

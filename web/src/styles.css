@@ -5,6 +5,7 @@ body {
 
 :root {
   --cor-primaria: rgb(0, 44, 82);
+  --cor-secundaria: white;
 }
 
 footer {
