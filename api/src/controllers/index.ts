@@ -7,3 +7,4 @@ export * from "./veiculo.controller";
 export * from "./combustivel.controller";
 export * from "./cor.controller";
 export * from "./veiculo.controller";
+export * from "./chart.comparativo.controller";

@@ -14,4 +14,5 @@ __export(require("./cidade.model"));
 __export(require("./veiculo.model"));
 __export(require("./cor.model"));
 __export(require("./combustivel.model"));
+__export(require("./chart.comparativo.model"));
 //# sourceMappingURL=index.js.map

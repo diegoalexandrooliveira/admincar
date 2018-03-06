@@ -8,7 +8,8 @@ import {
   ModeloController,
   CombustivelController,
   CorController,
-  VeiculoController
+  VeiculoController,
+  ChartComparativoController
 } from "../controllers/index";
 import { IResolvers } from "graphql-tools/dist/Interfaces";
 import { GraphQLSchema } from "graphql";
@@ -31,6 +32,7 @@ export class GraphQlSchemaFactory {
         ${CombustivelController.getQueries()}
         ${CorController.getQueries()}
         ${VeiculoController.getQueries()}
+        ${ChartComparativoController.getQueries()}
     }`;
     let types = `
     ${EstadoController.getType()}
@@ -41,6 +43,7 @@ export class GraphQlSchemaFactory {
     ${CombustivelController.getType()}
     ${CorController.getType()}
     ${VeiculoController.getType()}
+    ${ChartComparativoController.getType()}
     `;
     let schema = `schema { query: Query }`;
     return queryTypes.concat(types).concat(schema);
@@ -60,7 +63,8 @@ export class GraphQlSchemaFactory {
       ModeloController.getQueryResolvers(),
       CombustivelController.getQueryResolvers(),
       CorController.getQueryResolvers(),
-      VeiculoController.getQueryResolvers()
+      VeiculoController.getQueryResolvers(),
+      ChartComparativoController.getQueryResolvers()
     );
     let resolvers = {};
     resolvers = Object.assign(
@@ -72,7 +76,8 @@ export class GraphQlSchemaFactory {
       ModeloController.getResolvers(),
       CombustivelController.getResolvers(),
       CorController.getResolvers(),
-      VeiculoController.getResolvers()
+      VeiculoController.getResolvers(),
+      ChartComparativoController.getResolvers()
     );
 
     return Object.assign({}, queryResolvers, resolvers);

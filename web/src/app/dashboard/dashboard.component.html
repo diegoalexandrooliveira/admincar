@@ -1,3 +1,15 @@
-<p>
-  dashboard works!
-</p>
+<app-mensagens [mensagens]="mensagens"></app-mensagens>
+
+<div class="grid">
+  <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
+    [chartType]="lineChartType" *ngIf="lineChartReady"></canvas>
+  <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
+    chartType="bar" *ngIf="lineChartReady"></canvas>
+  <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
+    chartType="doughnut" *ngIf="lineChartReady"></canvas>
+  <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
+    chartType="pie" *ngIf="lineChartReady"></canvas>
+</div>
+<!-- <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)"></canvas> -->

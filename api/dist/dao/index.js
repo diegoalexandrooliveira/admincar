@@ -12,4 +12,5 @@ __export(require("./cidade.dao"));
 __export(require("./veiculo.dao"));
 __export(require("./cor.dao"));
 __export(require("./combustivel.dao"));
+__export(require("./chart.dao"));
 //# sourceMappingURL=index.js.map

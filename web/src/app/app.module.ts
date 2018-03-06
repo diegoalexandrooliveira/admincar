@@ -16,6 +16,8 @@ import { AuthGuardService } from "./guard/auth.guard.service";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
 import { MenuComponent } from "./menu/menu.component";
+import { ChartsModule } from "ng2-charts";
+import { DashboardService } from "./dashboard/dashboard.service";
 
 @NgModule({
   declarations: [
@@ -27,8 +29,8 @@ import { MenuComponent } from "./menu/menu.component";
     AppLayoutComponent,
     MenuComponent
   ],
-  imports: [BrowserModule, routing, HttpModule, FormsModule],
+  imports: [BrowserModule, routing, HttpModule, FormsModule, ChartsModule],
   bootstrap: [AppComponent],
-  providers: [LoginService, AuthGuardService]
+  providers: [LoginService, AuthGuardService, DashboardService]
 })
 export class AppModule {}

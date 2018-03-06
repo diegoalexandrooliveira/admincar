@@ -4,4 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./logger"));
+__export(require("./meses"));
 //# sourceMappingURL=index.js.map

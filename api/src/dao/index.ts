@@ -7,3 +7,4 @@ export * from "./cidade.dao";
 export * from "./veiculo.dao";
 export * from "./cor.dao";
 export * from "./combustivel.dao";
+export * from "./chart.dao";
