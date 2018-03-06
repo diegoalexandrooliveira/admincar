@@ -4,7 +4,12 @@ nav {
 
 .navbar {
   border-radius: 0px 0px 25px 25px;
-  align-items: center;
+  justify-content: center;
+}
+.navbar-toggler {
+  position: absolute;
+  left: 80%;
+  top: 12px;
 }
 
 .nav-link,
@@ -51,5 +56,9 @@ nav {
 @media (min-width: 992px) {
   .traco {
     display: none;
+  }
+
+  .navbar {
+    justify-content: space-between;
   }
 }

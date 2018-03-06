@@ -1,14 +1,15 @@
 <app-mensagens [mensagens]="mensagens"></app-mensagens>
 
-<div class="grid">
+<div class="grid container" *ngIf="lineChartReady">
+  <canvas baseChart [datasets]=" lineChartData " [labels]="lineChartLabels " [options]="lineChartOptions " [legend]="lineChartLegend "
+    [chartType]="lineChartType">
+  </canvas>
   <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
-    [chartType]="lineChartType" *ngIf="lineChartReady"></canvas>
+    chartType="bar"></canvas>
   <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
-    chartType="bar" *ngIf="lineChartReady"></canvas>
+    chartType="doughnut"></canvas>
   <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
-    chartType="doughnut" *ngIf="lineChartReady"></canvas>
-  <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend"
-    chartType="pie" *ngIf="lineChartReady"></canvas>
+    chartType="pie"></canvas>
 </div>
 <!-- <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
         [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
