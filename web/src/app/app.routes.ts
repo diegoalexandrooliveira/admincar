@@ -4,6 +4,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AuthGuardService } from "./guard/auth.guard.service";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
+import { UsuariosComponent } from "./usuarios/usuarios.component";
 
 const appRoutes: Routes = [
   {
@@ -14,6 +15,10 @@ const appRoutes: Routes = [
       {
         path: "dashboard",
         component: DashboardComponent
+      },
+      {
+        path: "usuarios",
+        component: UsuariosComponent
       }
     ]
   },

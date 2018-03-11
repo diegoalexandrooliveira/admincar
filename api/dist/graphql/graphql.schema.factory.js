@@ -21,6 +21,10 @@ class GraphQlSchemaFactory {
         ${index_1.CorController.getQueries()}
         ${index_1.VeiculoController.getQueries()}
         ${index_1.ChartComparativoController.getQueries()}
+        ${index_1.UsuarioController.getQueries()}
+    }
+    type Mutation {
+      ${index_1.UsuarioController.getMutations()}
     }`;
         let types = `
     ${index_1.EstadoController.getType()}
@@ -32,19 +36,23 @@ class GraphQlSchemaFactory {
     ${index_1.CorController.getType()}
     ${index_1.VeiculoController.getType()}
     ${index_1.ChartComparativoController.getType()}
+    ${index_1.UsuarioController.getType()}
     `;
-        let schema = `schema { query: Query }`;
+        let schema = `schema { query: Query
+                           mutation: Mutation }`;
         return queryTypes.concat(types).concat(schema);
     }
     static createResolvers() {
-        let queryResolvers = {
+        let resolvers = {
             Query: {},
+            Mutation: {},
             Date: GraphQLToolsTypes.Date({ name: "Date time" })
         };
-        queryResolvers.Query = Object.assign({}, index_1.EstadoController.getQueryResolvers(), index_1.CidadeController.getQueryResolvers(), index_1.TipoVeiculoController.getQueryResolvers(), index_1.MarcaController.getQueryResolvers(), index_1.ModeloController.getQueryResolvers(), index_1.CombustivelController.getQueryResolvers(), index_1.CorController.getQueryResolvers(), index_1.VeiculoController.getQueryResolvers(), index_1.ChartComparativoController.getQueryResolvers());
-        let resolvers = {};
-        resolvers = Object.assign({}, index_1.EstadoController.getResolvers(), index_1.CidadeController.getResolvers(), index_1.TipoVeiculoController.getResolvers(), index_1.MarcaController.getResolvers(), index_1.ModeloController.getResolvers(), index_1.CombustivelController.getResolvers(), index_1.CorController.getResolvers(), index_1.VeiculoController.getResolvers(), index_1.ChartComparativoController.getResolvers());
-        return Object.assign({}, queryResolvers, resolvers);
+        resolvers.Query = Object.assign({}, index_1.EstadoController.getQueryResolvers(), index_1.CidadeController.getQueryResolvers(), index_1.TipoVeiculoController.getQueryResolvers(), index_1.MarcaController.getQueryResolvers(), index_1.ModeloController.getQueryResolvers(), index_1.CombustivelController.getQueryResolvers(), index_1.CorController.getQueryResolvers(), index_1.VeiculoController.getQueryResolvers(), index_1.ChartComparativoController.getQueryResolvers(), index_1.UsuarioController.getQueryResolvers());
+        resolvers.Mutation = Object.assign({}, index_1.UsuarioController.getMutationsResolvers());
+        let objectResolvers = {};
+        objectResolvers = Object.assign({}, index_1.EstadoController.getResolvers(), index_1.CidadeController.getResolvers(), index_1.TipoVeiculoController.getResolvers(), index_1.MarcaController.getResolvers(), index_1.ModeloController.getResolvers(), index_1.CombustivelController.getResolvers(), index_1.CorController.getResolvers(), index_1.VeiculoController.getResolvers(), index_1.ChartComparativoController.getResolvers(), index_1.UsuarioController.getResolvers());
+        return Object.assign({}, resolvers, objectResolvers);
     }
 }
 exports.GraphQlSchemaFactory = GraphQlSchemaFactory;

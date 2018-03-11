@@ -13,4 +13,5 @@ __export(require("./combustivel.controller"));
 __export(require("./cor.controller"));
 __export(require("./veiculo.controller"));
 __export(require("./chart.comparativo.controller"));
+__export(require("./usuario.controller"));
 //# sourceMappingURL=index.js.map

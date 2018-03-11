@@ -8,3 +8,4 @@ export * from "./combustivel.controller";
 export * from "./cor.controller";
 export * from "./veiculo.controller";
 export * from "./chart.comparativo.controller";
+export * from "./usuario.controller";

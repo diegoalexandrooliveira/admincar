@@ -11,6 +11,10 @@
   margin: 0 auto;
 }
 
+img {
+  margin-bottom: 1rem;
+}
+
 .form-label-group {
   position: relative;
   margin-bottom: 1rem;

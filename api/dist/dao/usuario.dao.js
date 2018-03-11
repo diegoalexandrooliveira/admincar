@@ -23,6 +23,24 @@ class UsuarioDAO {
             });
         });
     }
+    static buscaTodosUsuarios() {
+        let query = `select usuario, senha from usuario order by usuario`;
+        return new Promise((resolve, reject) => {
+            index_2.clientFactory
+                .query(query, [])
+                .then((result) => {
+                let usuarios;
+                if (result.rowCount > 0) {
+                    usuarios = result.rows.map(usuario => new index_1.Usuario(usuario.usuario, usuario.senha));
+                }
+                resolve(usuarios);
+            })
+                .catch(error => {
+                utils_1.logger.error(`usuario.dao.buscaTodosUsuarios - ${error}`);
+                reject(`Erro ao tentar recuperar os usuários`);
+            });
+        });
+    }
     static inserirUsuario(client, usuario) {
         let insert = `insert into usuario (usuario, senha) values ($1, $2)`;
         return new Promise((resolve, reject) => {
@@ -37,7 +55,43 @@ class UsuarioDAO {
             })
                 .catch(error => {
                 utils_1.logger.error(`usuario.dao.inserirUsuario - ${error}`);
-                reject(new index_1.Mensagem(`Erro ao inserir o usuário ${usuario.$usuario}`, "erro"));
+                reject(`Erro ao inserir o usuário ${usuario.$usuario}`);
+            });
+        });
+    }
+    static alterarUsuario(client, usuario) {
+        let update = `update usuario set senha = $1 where usuario = $2`;
+        return new Promise((resolve, reject) => {
+            client
+                .query("BEGIN")
+                .then((begin) => {
+                return;
+            })
+                .then(() => client.query(update, [usuario.$senha, usuario.$usuario]))
+                .then((result) => {
+                resolve(result.rowCount);
+            })
+                .catch(error => {
+                utils_1.logger.error(`usuario.dao.alterarUsuario - ${error}`);
+                reject(`Erro ao atualizar o usuário ${usuario.$usuario}`);
+            });
+        });
+    }
+    static excluirUsuario(client, usuario) {
+        let sqlDelete = `delete from usuario where usuario = $1`;
+        return new Promise((resolve, reject) => {
+            client
+                .query("BEGIN")
+                .then((begin) => {
+                return;
+            })
+                .then(() => client.query(sqlDelete, [usuario]))
+                .then((result) => {
+                resolve(result.rowCount);
+            })
+                .catch(error => {
+                utils_1.logger.error(`usuario.dao.excluirUsuario - ${error}`);
+                reject(`Erro ao excluir o usuário ${usuario}`);
             });
         });
     }

@@ -1,0 +1,17 @@
+.acoes {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+thead {
+  color: var(--cor-secundaria);
+  background-color: var(--cor-primaria);
+}
+
+td > button {
+  margin: 0.2rem;
+}
+
+table {
+  background-color: white;
+}

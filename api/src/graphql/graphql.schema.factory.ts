@@ -9,7 +9,8 @@ import {
   CombustivelController,
   CorController,
   VeiculoController,
-  ChartComparativoController
+  ChartComparativoController,
+  UsuarioController
 } from "../controllers/index";
 import { IResolvers } from "graphql-tools/dist/Interfaces";
 import { GraphQLSchema } from "graphql";
@@ -33,6 +34,10 @@ export class GraphQlSchemaFactory {
         ${CorController.getQueries()}
         ${VeiculoController.getQueries()}
         ${ChartComparativoController.getQueries()}
+        ${UsuarioController.getQueries()}
+    }
+    type Mutation {
+      ${UsuarioController.getMutations()}
     }`;
     let types = `
     ${EstadoController.getType()}
@@ -44,17 +49,20 @@ export class GraphQlSchemaFactory {
     ${CorController.getType()}
     ${VeiculoController.getType()}
     ${ChartComparativoController.getType()}
+    ${UsuarioController.getType()}
     `;
-    let schema = `schema { query: Query }`;
+    let schema = `schema { query: Query
+                           mutation: Mutation }`;
     return queryTypes.concat(types).concat(schema);
   }
 
   private static createResolvers(): IResolvers {
-    let queryResolvers = {
+    let resolvers = {
       Query: {},
+      Mutation: {},
       Date: GraphQLToolsTypes.Date({ name: "Date time" })
     };
-    queryResolvers.Query = Object.assign(
+    resolvers.Query = Object.assign(
       {},
       EstadoController.getQueryResolvers(),
       CidadeController.getQueryResolvers(),
@@ -64,10 +72,15 @@ export class GraphQlSchemaFactory {
       CombustivelController.getQueryResolvers(),
       CorController.getQueryResolvers(),
       VeiculoController.getQueryResolvers(),
-      ChartComparativoController.getQueryResolvers()
+      ChartComparativoController.getQueryResolvers(),
+      UsuarioController.getQueryResolvers()
     );
-    let resolvers = {};
-    resolvers = Object.assign(
+    resolvers.Mutation = Object.assign(
+      {},
+      UsuarioController.getMutationsResolvers()
+    );
+    let objectResolvers = {};
+    objectResolvers = Object.assign(
       {},
       EstadoController.getResolvers(),
       CidadeController.getResolvers(),
@@ -77,9 +90,10 @@ export class GraphQlSchemaFactory {
       CombustivelController.getResolvers(),
       CorController.getResolvers(),
       VeiculoController.getResolvers(),
-      ChartComparativoController.getResolvers()
+      ChartComparativoController.getResolvers(),
+      UsuarioController.getResolvers()
     );
 
-    return Object.assign({}, queryResolvers, resolvers);
+    return Object.assign({}, resolvers, objectResolvers);
   }
 }

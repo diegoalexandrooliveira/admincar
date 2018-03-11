@@ -1,0 +1,23 @@
+<button class="btn btn-danger alinhar-icone" data-toggle="modal" [attr.data-target]="'.modal-' + identificador">
+  <i class="material-icons">remove_circle</i>
+  <span class="texto-acoes">Excluir</span>
+</button>
+<div class="modal fade modal-{{identificador}}" tabindex="-1" role="dialog" aria-labelledby="ConfirmacaoExclusao" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{mensagemConfirmacao}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="confirmarAcao()">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>

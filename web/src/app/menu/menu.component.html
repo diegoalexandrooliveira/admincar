@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand alinhar-icone" routerLink="/app/dashboard">
     <img src="../../assets/logo.png" alt="Logo" class="logo">
-    <p> AdminCar</p>
+    <span>AdminCar</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menuCollapse" aria-controls="menuCollapse"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -13,15 +13,13 @@
       <li class="nav-item active">
         <a class="nav-link alinhar-icone" routerLink="/app/dashboard">
           <i class="material-icons">dashboard</i>
-          <span> </span>
-          <p>Painel</p>
-          <!-- <span class="sr-only">(current)</span> -->
+          <span>Painel</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link alinhar-icone" routerLink="/app/veiculos">
           <i class="material-icons">directions_car</i>
-          <p> Veículos</p>
+          <span>Veículos</span>
         </a>
       </li>
 
@@ -31,16 +29,16 @@
     <ul class="navbar-nav">
       <li class="nav-item">
 
-        <span class="navbar-text alinhar-icone">
-          <i class="material-icons">person</i>
-          <p> {{usuario}}</p>
-        </span>
+        <a class="nav-link alinhar-icone" routerLink="/app/usuarios">
+          <i class="material-icons">account_circle</i>
+          <span>{{usuario}}</span>
+        </a>
       </li>
       <li class="nav-item">
 
         <a class="nav-link  alinhar-icone" routerLink="/app/login" id="sair" (click)="logout()">
           <i class="material-icons">exit_to_app</i>
-          <p> Sair</p>
+          <span>Sair</span>
         </a>
       </li>
     </ul>

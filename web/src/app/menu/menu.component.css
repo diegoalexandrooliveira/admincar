@@ -5,6 +5,7 @@ nav {
 .navbar {
   border-radius: 0px 0px 25px 25px;
   justify-content: center;
+  box-shadow: 3px 4px rgba(0, 0, 0, 0.5);
 }
 .navbar-toggler {
   position: absolute;
@@ -32,11 +33,6 @@ nav {
 
 .navbar-dark .navbar-toggler {
   border: transparent;
-}
-
-.alinhar-icone {
-  display: flex;
-  align-items: center;
 }
 
 .alinhar-icone > p {

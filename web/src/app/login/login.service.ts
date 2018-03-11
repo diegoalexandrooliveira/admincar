@@ -60,4 +60,9 @@ export class LoginService {
     let usuario = JSON.parse(localStorage.getItem("usuario"));
     return usuario.usuario;
   }
+
+  public pegarToken(): string {
+    let usuario = JSON.parse(localStorage.getItem("usuario"));
+    return usuario.token;
+  }
 }
