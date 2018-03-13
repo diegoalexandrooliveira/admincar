@@ -60,6 +60,11 @@ h1 {
   display: none;
 }
 
+.botoes-acoes {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 @media (min-width: 992px) {
   .title-header {
     -ms-grid-column: 1;

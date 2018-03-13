@@ -7,11 +7,30 @@ import { Mensagem } from "../models/mensagem.model";
   styleUrls: ["./mensagens.component.css"]
 })
 export class MensagensComponent implements OnInit {
-  @Input() mensagens: Mensagem[];
+  private _mensagens: Mensagem[];
 
   constructor() {}
 
+  @Input()
+  set mensagens(mensagens: Mensagem[]) {
+    this._mensagens = mensagens;
+    if (this._mensagens) {
+      this._mensagens.forEach((mensagem: Mensagem, index: number) => {
+        if (mensagem.nivel !== "erro") {
+          setTimeout(() => {
+            // $(`#mensagem-${index}`).alert("close");
+            // document.querySelector(`#mensagem-${index}`).classList.remove('');
+          }, 5000);
+        }
+      });
+    }
+  }
+
+  get mensagens(): Mensagem[] {
+    return this._mensagens;
+  }
+
   ngOnInit() {
-    this.mensagens = [];
+    this._mensagens = [];
   }
 }

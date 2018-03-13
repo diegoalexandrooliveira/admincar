@@ -1,0 +1,32 @@
+<app-mensagens [mensagens]="mensagens"></app-mensagens>
+<div class="container">
+  <div class="text-center title-header">
+    <h1 class="text-center">
+      <a routerLink="/app/usuarios/adicionar">{{titulo}}</a>
+    </h1>
+  </div>
+  <div class="botoes-acoes">
+    <a routerLink="/app/usuarios" class="btn btn-secondary alinhar-icone">
+      <i class="material-icons">arrow_back</i>
+      <span>Voltar</span>
+    </a>
+    <button class="btn btn-success alinhar-icone" (click)="salvar()">
+      <i class="material-icons">save</i>
+      <span>Salvar</span>
+    </button>
+  </div>
+
+  <form class="grid-form">
+    <div class="form-group">
+      <label for="usuario">Usuário</label>
+      <input [(ngModel)]="usuario.nome" name="usuario" type="text" class="form-control" id="usuario" aria-describedby="usuarioHelp"
+        placeholder="Digite um usuário..." disabled="{{edicao}}" #fieldUsuario onfocus="this.removeAttribute('readonly');"
+        readonly>
+    </div>
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input [(ngModel)]="usuario.senha" name="senha" type="password" class="form-control" id="senha" placeholder="Digita uma senha..."
+        #fieldSenha onfocus="this.removeAttribute('readonly');" readonly>
+    </div>
+  </form>
+</div>

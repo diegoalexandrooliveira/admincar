@@ -1,5 +1,6 @@
 <div id="mensagens" *ngIf="mensagens">
-  <div *ngFor="let mensagem of mensagens" class="alert alert-dismissible fade show {{mensagem.getEstilo()}}" role="alert" id="mensagem">
+  <div *ngFor="let mensagem of mensagens; index as i" #mensagemCount class="alert alert-dismissible fade show {{mensagem.getEstilo()}}"
+    role="alert" id="mensagem-{{i}}">
     {{mensagem.informativo}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>

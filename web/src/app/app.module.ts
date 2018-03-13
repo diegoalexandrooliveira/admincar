@@ -18,10 +18,13 @@ import { AppLayoutComponent } from "./layouts/app.layout.component";
 import { MenuComponent } from "./menu/menu.component";
 import { ChartsModule } from "ng2-charts";
 import { DashboardService } from "./dashboard/dashboard.service";
-import { UsuariosComponent } from './usuarios/usuarios.component';
-import { GraphqlService } from './graphql.service';
-import { UsuarioService } from './usuarios/usuario.service';
-import { BotaoExcluirComponent } from './botao-excluir/botao-excluir.component';
+import { UsuariosListaComponent } from "./usuarios/usuarios-lista.component";
+import { GraphqlService } from "./graphql.service";
+import { UsuarioService } from "./usuarios/usuario.service";
+import { BotaoExcluirComponent } from "./botao-excluir/botao-excluir.component";
+import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
+import { RouterModule } from "@angular/router";
+// import * as $ from "jquery";
 
 @NgModule({
   declarations: [
@@ -32,11 +35,18 @@ import { BotaoExcluirComponent } from './botao-excluir/botao-excluir.component';
     LoginLayoutComponent,
     AppLayoutComponent,
     MenuComponent,
-    UsuariosComponent,
+    UsuariosListaComponent,
+    UsuariosEditarComponent,
     BotaoExcluirComponent
   ],
   imports: [BrowserModule, routing, HttpModule, FormsModule, ChartsModule],
   bootstrap: [AppComponent],
-  providers: [LoginService, AuthGuardService, DashboardService, GraphqlService, UsuarioService]
+  providers: [
+    LoginService,
+    AuthGuardService,
+    DashboardService,
+    GraphqlService,
+    UsuarioService
+  ]
 })
 export class AppModule {}

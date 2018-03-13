@@ -1,5 +1,5 @@
 export class Mensagem {
-  constructor(public informativo: string, public nivel: string) {}
+  constructor(public informativo?: string, public nivel?: string) {}
 
   public getEstilo(): string {
     if (this.nivel == "erro") {

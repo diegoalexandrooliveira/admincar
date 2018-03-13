@@ -118,25 +118,28 @@ export class UsuarioController {
           )
         );
       }
-      clientFactory.getClient().then((client: Client) => {
-        UsuarioDAO.excluirUsuario(client, args.usuario)
-          .then(rows => {
-            clientFactory.commit(client);
-            return rows;
-          })
-          .then(rows => {
-            if (rows) {
-              return resolve(true);
-            } else {
-              return reject(
-                JSON.stringify(
-                  Array.of(new Mensagem("Nenhum usuário removido.", "warn"))
-                )
-              );
-            }
-          })
-          .catch(erro => reject(erro));
-      });
+      clientFactory
+        .getClient()
+        .then((client: Client) => {
+          UsuarioDAO.excluirUsuario(client, args.usuario)
+            .then(rows => {
+              clientFactory.commit(client);
+              return rows;
+            })
+            .then(rows => {
+              if (rows) {
+                return resolve(true);
+              } else {
+                return reject(
+                  JSON.stringify(
+                    Array.of(new Mensagem("Nenhum usuário removido.", "warn"))
+                  )
+                );
+              }
+            })
+            .catch(erro => reject(erro));
+        })
+        .catch(erro => erro);
     });
   }
 }

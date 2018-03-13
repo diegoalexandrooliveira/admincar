@@ -102,7 +102,9 @@ class UsuarioController {
             if (args.usuario === "admin") {
                 return reject(JSON.stringify(Array.of(new index_2.Mensagem("Não é possível excluir o usuário admin.", "erro"))));
             }
-            database_1.clientFactory.getClient().then((client) => {
+            database_1.clientFactory
+                .getClient()
+                .then((client) => {
                 index_1.UsuarioDAO.excluirUsuario(client, args.usuario)
                     .then(rows => {
                     database_1.clientFactory.commit(client);
@@ -117,7 +119,8 @@ class UsuarioController {
                     }
                 })
                     .catch(erro => reject(erro));
-            });
+            })
+                .catch(erro => erro);
         });
     }
 }

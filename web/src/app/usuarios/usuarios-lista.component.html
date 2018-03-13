@@ -2,14 +2,14 @@
 <div class="container">
   <div class="text-center title-header">
     <h1 class="text-center">
-      <a [routerLink]="['/app/usuarios', {reload: true}]">Usuários</a>
+      <a routerLink="/app/usuarios">Usuários</a>
     </h1>
   </div>
-  <div class="acoes">
-    <button class="btn btn-success alinhar-icone">
+  <div class="botoes-acoes">
+    <a routerLink="adicionar" class="btn btn-success alinhar-icone">
       <i class="material-icons">add_circle</i>
       <span>Adicionar</span>
-    </button>
+    </a>
   </div>
   <table class="table table-bordered table-sm">
     <thead>
@@ -22,10 +22,10 @@
       <tr *ngFor="let usuario of usuarios">
         <td class="text-center" scope="row">{{usuario.nome}}</td>
         <td class="text-center">
-          <button class="btn btn-secondary alinhar-icone">
+          <a class="btn btn-secondary alinhar-icone" [routerLink]="['editar/', usuario.nome]">
             <i class="material-icons">mode_edit</i>
             <span class="texto-acoes">Editar</span>
-          </button>
+          </a>
           <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o usuário {{usuario.nome}}?" identificador="{{usuario.nome}}"
             (acaoConfirmada)="excluirUsuario(usuario.nome)"></app-botao-excluir>
         </td>

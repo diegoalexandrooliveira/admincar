@@ -17,6 +17,22 @@ export class UsuarioService {
     this.excluir = `mutation { 
         excluirUsuario(usuario:"$user")
       }`;
+    this.inserir = `mutation {
+          inserirUsuario(usuario:{
+            usuario:"$nome"
+            senha: "$senha"
+          }) {
+            usuario
+          }
+        }`;
+    this.alterar = `mutation {
+            alterarUsuario(usuario:{
+              usuario:"$nome"
+              senha: "$senha"
+            }) {
+              usuario
+            }
+          }`;
   }
 
   public recuperarTodos(): Observable<Usuario[]> {
@@ -32,6 +48,44 @@ export class UsuarioService {
   public excluirUsuario(nome: string) {
     return this.graphql
       .request(this.excluir.replace("$user", nome))
+      .map((resposta: Resposta) => {
+        if (resposta.erro) {
+          let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
+            mensagem => new Mensagem(mensagem.message, mensagem.level)
+          );
+          return Observable.throw(mensagens);
+        } else {
+          return Observable.of(true);
+        }
+      });
+  }
+
+  public incluirUsuario(usuario: Usuario) {
+    return this.graphql
+      .request(
+        this.inserir
+          .replace("$nome", usuario.nome)
+          .replace("$senha", usuario.senha)
+      )
+      .map((resposta: Resposta) => {
+        if (resposta.erro) {
+          let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
+            mensagem => new Mensagem(mensagem.message, mensagem.level)
+          );
+          return Observable.throw(mensagens);
+        } else {
+          return Observable.of(true);
+        }
+      });
+  }
+
+  public alterarUsuario(usuario: Usuario) {
+    return this.graphql
+      .request(
+        this.alterar
+          .replace("$nome", usuario.nome)
+          .replace("$senha", usuario.senha)
+      )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
           let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
