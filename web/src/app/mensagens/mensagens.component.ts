@@ -14,7 +14,6 @@ export class MensagensComponent implements OnInit {
   @Input()
   set mensagens(mensagens: Mensagem[]) {
     this._mensagens = mensagens;
-
     if (this._mensagens) {
       this._mensagens.forEach((mensagem: Mensagem, index: number) => {
         if (mensagem.nivel !== "erro") {
