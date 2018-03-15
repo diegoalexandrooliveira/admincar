@@ -10,7 +10,9 @@ export class BotaoExcluirComponent implements OnInit {
   @Input() identificador: string;
   @Output() acaoConfirmada = new EventEmitter();
 
-  constructor() {}
+  constructor() {
+    
+  }
 
   ngOnInit() {}
 
