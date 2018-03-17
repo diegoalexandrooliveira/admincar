@@ -6,7 +6,7 @@ import {
   ViewChild,
   OnDestroy
 } from "@angular/core";
-import { UsuarioService } from "./usuario.service";
+import { UsuarioService } from "../usuario.service";
 import { Mensagem } from "../models/mensagem.model";
 import { Usuario } from "../models/usuario.model";
 import { ActivatedRoute, Params, Router } from "@angular/router";
@@ -78,9 +78,9 @@ export class UsuariosEditarComponent
       acao = this.service.incluirUsuario.bind(this.service);
     }
 
-    acao(this.usuario).subscribe(observable => {
-      if (observable["error"]) {
-        this.mensagens = observable["error"];
+    acao(this.usuario).subscribe(mensagensErro => {
+      if (mensagensErro) {
+        this.mensagens = mensagensErro;
       } else {
         if (this.edicao) {
           this.mensagens = Array.of(

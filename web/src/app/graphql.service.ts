@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Headers, Http, Response } from "@angular/http";
-import { LoginService } from "./login/login.service";
+import { LoginService } from "./login.service";
 import { configs } from "./config/configs";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";

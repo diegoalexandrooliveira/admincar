@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { GraphqlService } from "../graphql.service";
+import { GraphqlService } from "./graphql.service";
 import { Observable } from "rxjs/Observable";
-import { Usuario } from "../models/usuario.model";
-import { Resposta } from "../models/resposta.model";
-import { Mensagem } from "../models/mensagem.model";
+import { Usuario } from "./models/usuario.model";
+import { Resposta } from "./models/resposta.model";
+import { Mensagem } from "./models/mensagem.model";
 
 @Injectable()
 export class UsuarioService {
@@ -45,22 +45,21 @@ export class UsuarioService {
       );
   }
 
-  public excluirUsuario(nome: string) {
+  public excluirUsuario(nome: string): Observable<Mensagem[]> {
     return this.graphql
       .request(this.excluir.replace("$user", nome))
       .map((resposta: Resposta) => {
         if (resposta.erro) {
-          let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
+          let erros = JSON.parse(resposta.erro[0].message).map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
-          return Observable.throw(mensagens);
-        } else {
-          return Observable.of(true);
+          return erros;
         }
+        return null;
       });
   }
 
-  public incluirUsuario(usuario: Usuario) {
+  public incluirUsuario(usuario: Usuario): Observable<Mensagem[]> {
     return this.graphql
       .request(
         this.inserir
@@ -69,17 +68,16 @@ export class UsuarioService {
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
-          let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
+          let erros = JSON.parse(resposta.erro[0].message).map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
-          return Observable.throw(mensagens);
-        } else {
-          return Observable.of(true);
+          return erros;
         }
+        return null;
       });
   }
 
-  public alterarUsuario(usuario: Usuario) {
+  public alterarUsuario(usuario: Usuario): Observable<Mensagem[]> {
     return this.graphql
       .request(
         this.alterar
@@ -88,13 +86,12 @@ export class UsuarioService {
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
-          let mensagens: Mensagem[] = JSON.parse(resposta.erro[0].message).map(
+          let erros = JSON.parse(resposta.erro[0].message).map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
-          return Observable.throw(mensagens);
-        } else {
-          return Observable.of(true);
+          return erros;
         }
+        return null;
       });
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { ChartComparativo } from "../models/chart.comparativo.model";
-import { GraphqlService } from "../graphql.service";
-import { Resposta } from "../models/resposta.model";
+import { ChartComparativo } from "./models/chart.comparativo.model";
+import { GraphqlService } from "./graphql.service";
+import { Resposta } from "./models/resposta.model";
 
 @Injectable()
 export class DashboardService {

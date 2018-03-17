@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { UsuarioService } from "./usuario.service";
+import { UsuarioService } from "../usuario.service";
 import { Mensagem } from "../models/mensagem.model";
 import { Usuario } from "../models/usuario.model";
 import { ActivatedRoute } from "@angular/router";
@@ -18,11 +18,11 @@ import {
 export class UsuariosListaComponent implements OnInit, OnDestroy {
   public usuarios: Usuario[];
   public mensagens: Mensagem[];
-  private sub: Subscription;
+  private ngUnsub: Subscription = new Subscription();
   constructor(
     private service: UsuarioService,
     private route: ActivatedRoute,
-    private mensagemShareService: DataShareService
+    private dataShareService: DataShareService
   ) {}
 
   ngOnInit() {
@@ -30,19 +30,22 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.ngUnsub.unsubscribe();
   }
+
   private recuperarUsuarios() {
     this.service.recuperarTodos().subscribe(
       (valores: Usuario[]) => {
         this.usuarios = valores;
-        this.sub = this.mensagemShareService.dataObservable.subscribe(
-          (mensagem: DataShared) => {
-            if (mensagem && mensagem.origin === DataOrigin.USUARIOS_EDITAR) {
-              this.mensagens = mensagem.data;
-              this.mensagemShareService.limparMensagens();
+        this.ngUnsub.add(
+          this.dataShareService.dataObservable.subscribe(
+            (mensagem: DataShared) => {
+              if (mensagem && mensagem.origin === DataOrigin.USUARIOS_EDITAR) {
+                this.mensagens = mensagem.data;
+                this.dataShareService.limparMensagens();
+              }
             }
-          }
+          )
         );
       },
       error => {
@@ -51,15 +54,17 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
     );
   }
   public excluirUsuario(nome: string) {
-    this.service.excluirUsuario(nome).subscribe(observable => {
-      if (observable["error"]) {
-        this.mensagens = observable["error"];
-      } else {
-        this.mensagens = Array.of(
-          new Mensagem(`Usuário ${nome} excluído com sucesso.`, "success")
-        );
-      }
-      this.recuperarUsuarios();
-    });
+    this.ngUnsub.add(
+      this.service.excluirUsuario(nome).subscribe(mensagensErro => {
+        if (mensagensErro) {
+          this.mensagens = mensagensErro;
+        } else {
+          this.mensagens = Array.of(
+            new Mensagem(`Usuário ${nome} excluído com sucesso.`, "success")
+          );
+        }
+        this.recuperarUsuarios();
+      })
+    );
   }
 }

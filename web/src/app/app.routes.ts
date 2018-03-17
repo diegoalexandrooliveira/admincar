@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { AuthGuardService } from "./guard/auth.guard.service";
+import { AuthGuardService } from "./auth.guard.service";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { UsuariosListaComponent } from "./usuarios/usuarios-lista.component";
