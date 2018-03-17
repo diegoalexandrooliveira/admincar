@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { Mensagem } from "../models/mensagem.model";
 
 @Component({
@@ -18,9 +18,11 @@ export class MensagensComponent implements OnInit {
       this._mensagens.forEach((mensagem: Mensagem, index: number) => {
         if (mensagem.nivel !== "erro") {
           setTimeout(() => {
-            // $(`#mensagem-${index}`).alert("close");
-            // document.querySelector(`#mensagem-${index}`).classList.remove('');
-          }, 5000);
+            let elemento = document.getElementById(`mensagem-${index}`);
+            if (elemento) {
+              new ElementRef(elemento).nativeElement.click();
+            }
+          }, 8000);
         }
       });
     }

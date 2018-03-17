@@ -58,7 +58,10 @@ export class UsuarioController {
             UsuarioDAO.inserirUsuario(client, usuario)
               .then(valor => clientFactory.commit(client))
               .then(() => resolve(usuario))
-              .catch(erro => reject(erro));
+              .catch(erro => {
+                clientFactory.commit(client);
+                reject(erro);
+              });
           });
         }
       });

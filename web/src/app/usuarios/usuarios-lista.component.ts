@@ -11,6 +11,11 @@ import { Mensagem } from "../models/mensagem.model";
 import { Usuario } from "../models/usuario.model";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
+import {
+  DataShared,
+  DataShareService,
+  DataOrigin
+} from "../data-share.service";
 
 @Component({
   selector: "app-usuarios-lista",
@@ -21,20 +26,23 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
   public usuarios: Usuario[];
   public mensagens: Mensagem[];
   private sub: Subscription;
-  constructor(private service: UsuarioService, private route: ActivatedRoute) {}
+  constructor(
+    private service: UsuarioService,
+    private route: ActivatedRoute,
+    private mensagemShareService: DataShareService
+  ) {}
 
   ngOnInit() {
     this.recuperarUsuarios();
     setTimeout(() => {
-      this.sub = this.route.queryParams.subscribe(params => {
-        if (params["inserido"])
-          this.mensagens = Array.of(
-            new Mensagem(
-              `Usuário ${params["inserido"]} incluído com sucesso.`,
-              "success"
-            )
-          );
-      });
+      this.sub = this.mensagemShareService.dataObservable.subscribe(
+        (mensagem: DataShared) => {
+          if (mensagem && mensagem.origin === DataOrigin.USUARIOS_EDITAR) {
+            this.mensagens = mensagem.data;
+            this.mensagemShareService.limparMensagens();
+          }
+        }
+      );
     }, 500);
   }
 

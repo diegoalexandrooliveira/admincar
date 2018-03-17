@@ -24,7 +24,7 @@ import { UsuarioService } from "./usuarios/usuario.service";
 import { BotaoExcluirComponent } from "./botao-excluir/botao-excluir.component";
 import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
 import { RouterModule } from "@angular/router";
-// import * as $ from "jquery";
+import { DataShareService } from "./data-share.service";
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { RouterModule } from "@angular/router";
     AuthGuardService,
     DashboardService,
     GraphqlService,
-    UsuarioService
+    UsuarioService,
+    DataShareService
   ]
 })
 export class AppModule {}

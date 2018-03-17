@@ -13,6 +13,11 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
+import {
+  DataShared,
+  DataShareService,
+  DataOrigin
+} from "../data-share.service";
 
 @Component({
   selector: "app-usuarios-editar",
@@ -31,7 +36,8 @@ export class UsuariosEditarComponent
   constructor(
     private service: UsuarioService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private mensagensShare: DataShareService
   ) {}
 
   ngAfterViewInit() {
@@ -85,11 +91,17 @@ export class UsuariosEditarComponent
           );
           this.usuario.senha = "";
         } else {
-          this.router.navigate(["/app/usuarios"], {
-            queryParams: {
-              inserido: this.usuario.nome
-            }
-          });
+          let mensagem: DataShared = {
+            origin: DataOrigin.USUARIOS_EDITAR,
+            data: Array.of(
+              new Mensagem(
+                `Usuário ${this.usuario.nome} incluído com sucesso.`,
+                "success"
+              )
+            )
+          };
+          this.mensagensShare.shareData(mensagem);
+          this.router.navigate(["/app/usuarios"]);
         }
       }
     });

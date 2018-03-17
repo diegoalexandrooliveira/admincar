@@ -54,7 +54,10 @@ class UsuarioController {
                         index_1.UsuarioDAO.inserirUsuario(client, usuario)
                             .then(valor => database_1.clientFactory.commit(client))
                             .then(() => resolve(usuario))
-                            .catch(erro => reject(erro));
+                            .catch(erro => {
+                            database_1.clientFactory.commit(client);
+                            reject(erro);
+                        });
                     });
                 }
             });
