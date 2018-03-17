@@ -22,7 +22,7 @@ class ClientFactory {
     return new Promise((resolve, reject) => {
       client
         .query("COMMIT")
-        .then((result: QueryResult) => client.end())
+        .then((result: QueryResult) => client.release())
         .then(() => resolve())
         .catch(error => {
           logger.error(`connection.factory.commit - ${error}`);
@@ -35,7 +35,7 @@ class ClientFactory {
     return new Promise((resolve, reject) => {
       client
         .query("ROLLBACK")
-        .then((result: QueryResult) => client.end())
+        .then((result: QueryResult) => client.release())
         .then(() => resolve())
         .catch(error => {
           logger.error(`connection.factory.rollback - ${error}`);

@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  AfterContentInit,
-  AfterViewChecked
-} from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { UsuarioService } from "./usuario.service";
 import { Mensagem } from "../models/mensagem.model";
 import { Usuario } from "../models/usuario.model";
@@ -34,16 +27,6 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recuperarUsuarios();
-    setTimeout(() => {
-      this.sub = this.mensagemShareService.dataObservable.subscribe(
-        (mensagem: DataShared) => {
-          if (mensagem && mensagem.origin === DataOrigin.USUARIOS_EDITAR) {
-            this.mensagens = mensagem.data;
-            this.mensagemShareService.limparMensagens();
-          }
-        }
-      );
-    }, 500);
   }
 
   ngOnDestroy() {
@@ -53,6 +36,14 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
     this.service.recuperarTodos().subscribe(
       (valores: Usuario[]) => {
         this.usuarios = valores;
+        this.sub = this.mensagemShareService.dataObservable.subscribe(
+          (mensagem: DataShared) => {
+            if (mensagem && mensagem.origin === DataOrigin.USUARIOS_EDITAR) {
+              this.mensagens = mensagem.data;
+              this.mensagemShareService.limparMensagens();
+            }
+          }
+        );
       },
       error => {
         console.log(error);

@@ -22,7 +22,7 @@ export class MensagensComponent implements OnInit {
             if (elemento) {
               new ElementRef(elemento).nativeElement.click();
             }
-          }, 8000);
+          }, 5000);
         }
       });
     }

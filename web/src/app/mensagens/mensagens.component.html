@@ -1,4 +1,4 @@
-<div id="mensagens" *ngIf="mensagens">
+<div id="mensagens">
   <div *ngFor="let mensagem of mensagens; index as i">
     <div *ngIf="mensagem.informativo" #mensagemCount class="alert alert-dismissible fade show {{mensagem.getEstilo()}}" role="alert">
       {{mensagem.informativo}}
