@@ -75,10 +75,10 @@ export class VeiculoDAO {
     veiculo: Veiculo
   ): Promise<Veiculo> {
     let insert = `INSERT INTO veiculo(
-      id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, 
+      modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, 
       cidade_id, data_inclusao, valor_compra, valor_anunciado, valor_venda, 
       data_venda, observacoes, data_aquisicao, cor_id, combustivel_id)
-      VALUES (nextval('veiculo_sequence'), $1, $2, $3, $4, $5, $6, 
+      VALUES ($1, $2, $3, $4, $5, $6, 
         $7, $8, $9, $10, $11, 
         $12, $13, $14, $15, $16) returning id`;
 

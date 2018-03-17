@@ -12,7 +12,6 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/throw";
 import "rxjs/add/observable/of";
-import "rxjs/add/observable/defer";
 import { AuthGuardService } from "./auth.guard.service";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
@@ -26,7 +25,7 @@ import { BotaoExcluirComponent } from "./botao-excluir/botao-excluir.component";
 import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
 import { RouterModule } from "@angular/router";
 import { DataShareService } from "./data-share.service";
-import { VeiculosComponent } from "./veiculos/veiculos.component";
+import { VeiculosListaComponent } from "./veiculos/veiculos-lista.component";
 import { VeiculosService } from "./veiculos.service";
 
 @NgModule({
@@ -41,7 +40,7 @@ import { VeiculosService } from "./veiculos.service";
     UsuariosListaComponent,
     UsuariosEditarComponent,
     BotaoExcluirComponent,
-    VeiculosComponent
+    VeiculosListaComponent
   ],
   imports: [BrowserModule, routing, HttpModule, FormsModule, ChartsModule],
   bootstrap: [AppComponent],

@@ -6,6 +6,7 @@ import { AppLayoutComponent } from "./layouts/app.layout.component";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { UsuariosListaComponent } from "./usuarios/usuarios-lista.component";
 import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
+import { VeiculosListaComponent } from "./veiculos/veiculos-lista.component";
 
 const appRoutes: Routes = [
   {
@@ -28,6 +29,10 @@ const appRoutes: Routes = [
       {
         path: "usuarios/adicionar",
         component: UsuariosEditarComponent
+      },
+      {
+        path: "veiculos",
+        component: VeiculosListaComponent
       }
     ]
   },

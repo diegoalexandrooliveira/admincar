@@ -19,15 +19,20 @@ export class DashboardService {
       }
     }`
       )
-      .map((resposta: Resposta) =>
-        resposta.dados["comparativo"].map(
-          element =>
-            new ChartComparativo(
-              element.mesDescAno,
-              element.adquiridos,
-              element.vendidos
-            )
-        )
-      );
+      .map((resposta: Resposta) => {
+        let dados = resposta.dados["comparativo"];
+        if (dados) {
+          return dados.map(
+            element =>
+              new ChartComparativo(
+                element.mesDescAno,
+                element.adquiridos,
+                element.vendidos
+              )
+          );
+        } else {
+          return Array.of(new ChartComparativo());
+        }
+      });
   }
 }
