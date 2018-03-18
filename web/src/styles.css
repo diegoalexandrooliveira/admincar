@@ -19,9 +19,8 @@ footer {
   position: fixed;
 }
 
-.alinhar-icone > i,
-.alinhar-icone > span,
-.alinhar-icone > img {
+.alinhar-icone > *,
+.alinhar-icone > * > * {
   vertical-align: middle !important;
 }
 

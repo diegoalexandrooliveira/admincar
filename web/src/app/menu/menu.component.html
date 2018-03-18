@@ -4,22 +4,26 @@
     <span>AdminCar</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menuCollapse" aria-controls="menuCollapse"
-    aria-expanded="false" aria-label="Toggle navigation">
+    aria-expanded="false" aria-label="Toggle navigation" id="btnCollapse">
     <i class="material-icons">menu</i>
   </button>
 
-  <div class="collapse navbar-collapse" id="menuCollapse">
+  <div class="collapse navbar-collapse" id="menuCollapse" #menuCollapse>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link alinhar-icone" routerLink="/app/dashboard">
-          <i class="material-icons">dashboard</i>
-          <span>Painel</span>
+          <div data-toggle="collapse" data-target="#menuCollapse">
+            <i class="material-icons">dashboard</i>
+            <span>Painel</span>
+          </div>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link alinhar-icone" routerLink="/app/veiculos">
-          <i class="material-icons">directions_car</i>
-          <span>Veículos</span>
+          <div data-toggle="collapse" data-target="#menuCollapse">
+            <i class="material-icons">directions_car</i>
+            <span>Veículos</span>
+          </div>
         </a>
       </li>
 
@@ -30,8 +34,10 @@
       <li class="nav-item">
 
         <a class="nav-link alinhar-icone" routerLink="/app/usuarios">
-          <i class="material-icons">account_circle</i>
-          <span>{{usuario}}</span>
+          <div data-toggle="collapse" data-target="#menuCollapse">
+            <i class="material-icons">account_circle</i>
+            <span>{{usuario}}</span>
+          </div>
         </a>
       </li>
       <li class="nav-item">

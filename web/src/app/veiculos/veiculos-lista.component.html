@@ -11,25 +11,40 @@
       <span>Adicionar</span>
     </a>
   </div>
-  <!-- <table class="table table-bordered table-sm">
+  <table class="table table-bordered table-sm table-hover">
     <thead>
       <tr class="table-active">
-        <th class="text-center" scope="col">Usuário</th>
-        <th class="text-center" scope="col">Ações</th>
+        <th class="text-center" scope="col" colspan="2">Veículos</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let usuario of usuarios">
-        <td class="text-center" scope="row">{{usuario.nome}}</td>
+      <tr>
+        <td class="td-container" scope="row">
+          <div class="row-title">
+            <img class="rounded border border-dark" src="http://vocedecarro.com/direct/wp-content/uploads/2015/05/carro.jpg" alt="">
+            <div>VM - Volkswagen / Gol (novo) 1.6 Mi Total Flex 8V 4p</div>
+          </div>
+          <div class="row-detail">
+            <label for="ano">Ano:</label>
+            <p id="ano">2018/2018</p>
+          </div>
+          <div class="row-detail">
+            <label for="cor">Cor:</label>
+            <p id="cor">Vermelha</p>
+          </div>
+          <div class="row-detail">
+            <label for="placa">Placa:</label>
+            <p id="placa">AAC-1254</p>
+          </div>
+          <div class="row-detail">
+            <label for="valor-venda">Preço:</label>
+            <p id="valor-venda">R$ 18950,00</p>
+          </div>
+        </td>
         <td class="text-center">
-          <a class="btn btn-secondary alinhar-icone" [routerLink]="['editar/', usuario.nome]">
-            <i class="material-icons">mode_edit</i>
-            <span class="texto-acoes">Editar</span>
-          </a>
-          <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o usuário {{usuario.nome}}?" identificador="{{usuario.nome}}"
-            (acaoConfirmada)="excluirUsuario(usuario.nome)"></app-botao-excluir>
+          <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo Gol?" identificador="123"></app-botao-excluir>
         </td>
       </tr>
     </tbody>
-  </table> -->
+  </table>
 </div>

@@ -1,0 +1,64 @@
+thead {
+  color: var(--cor-secundaria);
+  background-color: var(--cor-primaria);
+}
+
+td > button {
+  margin: 0.2rem;
+}
+
+table {
+  background-color: white;
+}
+
+.td-container {
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.row-title {
+  grid-column: 1/3;
+  font-weight: bold;
+  color: var(--cor-primaria);
+}
+
+.row-title > img {
+  width: 80px;
+}
+
+.row-detail {
+  font-size: 0.6rem;
+}
+
+.row-detail > p,
+.row-detail > label {
+  display: inline-block;
+  margin: 0;
+}
+
+.row-detail > label {
+  font-weight: bold;
+  color: var(--cor-primaria);
+}
+
+@media (min-width: 992px) {
+  .td-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .row-title {
+    display: inline-block;
+    grid-column: 1/5;
+  }
+
+  .row-detail {
+    font-size: 0.7rem;
+  }
+
+  .row-title > div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 1rem;
+  }
+}
