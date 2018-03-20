@@ -9,3 +9,4 @@ export * from "./cor.controller";
 export * from "./veiculo.controller";
 export * from "./chart.comparativo.controller";
 export * from "./usuario.controller";
+export * from "./anexo-veiculo.controller";

@@ -64,6 +64,15 @@ h1 {
   margin-bottom: 1rem;
 }
 
+td > button > .material-icons,
+td > a > .material-icons {
+  font-size: 16px;
+}
+
+.btn-sm {
+  font-size: 0.7rem;
+}
+
 @media (min-width: 992px) {
   .title-header {
     -ms-grid-column: 1;

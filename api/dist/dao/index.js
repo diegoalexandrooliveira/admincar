@@ -13,4 +13,5 @@ __export(require("./veiculo.dao"));
 __export(require("./cor.dao"));
 __export(require("./combustivel.dao"));
 __export(require("./chart.dao"));
+__export(require("./anexo-veiculo.dao"));
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,10 @@
-import { VeiculoDAO, ModeloDAO, CidadeDAO } from "../dao/index";
-import { Veiculo } from "../model/index";
+import {
+  VeiculoDAO,
+  ModeloDAO,
+  CidadeDAO,
+  AnexoVeiculoDAO
+} from "../dao/index";
+import { Veiculo, AnexoVeiculo } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
 
 export class VeiculoController {
@@ -7,7 +12,7 @@ export class VeiculoController {
     return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel }`;
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }`;
   }
 
   public static getQueries(): string {
@@ -43,7 +48,13 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel }`;
         combustivel: (veiculo: Veiculo) =>
           combustiveis()[veiculo.$combustivel_id - 1],
         cidade: (veiculo: Veiculo) =>
-          CidadeDAO.buscaCidadePorId(veiculo.$cidade_id)
+          CidadeDAO.buscaCidadePorId(veiculo.$cidade_id),
+        anexoPrincipal: (veiculo: Veiculo) =>
+          AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(veiculo.$id).then(
+            (anexo: AnexoVeiculo) => {
+              return anexo;
+            }
+          )
       }
     };
   }

@@ -43,6 +43,10 @@ nav {
   border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+.material-icons {
+  font-size: 24px;
+}
+
 @media (max-width: 991px) {
   #sair {
     padding: 0;

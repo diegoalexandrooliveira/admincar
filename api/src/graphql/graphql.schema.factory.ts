@@ -10,7 +10,8 @@ import {
   CorController,
   VeiculoController,
   ChartComparativoController,
-  UsuarioController
+  UsuarioController,
+  AnexoVeiculoController
 } from "../controllers/index";
 import { IResolvers } from "graphql-tools/dist/Interfaces";
 import { GraphQLSchema } from "graphql";
@@ -35,6 +36,7 @@ export class GraphQlSchemaFactory {
         ${VeiculoController.getQueries()}
         ${ChartComparativoController.getQueries()}
         ${UsuarioController.getQueries()}
+        ${AnexoVeiculoController.getQueries()}
     }
     type Mutation {
       ${UsuarioController.getMutations()}
@@ -50,6 +52,7 @@ export class GraphQlSchemaFactory {
     ${VeiculoController.getType()}
     ${ChartComparativoController.getType()}
     ${UsuarioController.getType()}
+    ${AnexoVeiculoController.getType()}
     `;
     let schema = `schema { query: Query
                            mutation: Mutation }`;
@@ -73,7 +76,8 @@ export class GraphQlSchemaFactory {
       CorController.getQueryResolvers(),
       VeiculoController.getQueryResolvers(),
       ChartComparativoController.getQueryResolvers(),
-      UsuarioController.getQueryResolvers()
+      UsuarioController.getQueryResolvers(),
+      AnexoVeiculoController.getQueryResolvers()
     );
     resolvers.Mutation = Object.assign(
       {},
@@ -91,7 +95,8 @@ export class GraphQlSchemaFactory {
       CorController.getResolvers(),
       VeiculoController.getResolvers(),
       ChartComparativoController.getResolvers(),
-      UsuarioController.getResolvers()
+      UsuarioController.getResolvers(),
+      AnexoVeiculoController.getResolvers()
     );
 
     return Object.assign({}, resolvers, objectResolvers);

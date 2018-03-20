@@ -22,7 +22,7 @@
       <tr *ngFor="let usuario of usuarios">
         <td class="text-center" scope="row">{{usuario.nome}}</td>
         <td class="text-center">
-          <a class="btn btn-secondary alinhar-icone" [routerLink]="['editar/', usuario.nome]">
+          <a class="btn btn-outline-secondary btn-sm alinhar-icone" [routerLink]="['editar/', usuario.nome]">
             <i class="material-icons">mode_edit</i>
             <span class="texto-acoes">Editar</span>
           </a>

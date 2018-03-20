@@ -3,10 +3,6 @@ thead {
   background-color: var(--cor-primaria);
 }
 
-td > button {
-  margin: 0.2rem;
-}
-
 table {
   background-color: white;
 }
@@ -14,7 +10,7 @@ table {
 .td-container {
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 50% 50%;
 }
 
 .row-title {
@@ -24,7 +20,7 @@ table {
 }
 
 .row-title > img {
-  width: 80px;
+  width: 100px;
 }
 
 .row-detail {
@@ -42,9 +38,18 @@ table {
   color: var(--cor-primaria);
 }
 
+.coluna-acoes {
+  vertical-align: middle;
+}
+
+.coluna-acoes > a,
+.coluna-acoes > button {
+  margin: 0.7rem;
+}
+
 @media (min-width: 992px) {
   .td-container {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 25% 25% 25% 25%;
   }
 
   .row-title {

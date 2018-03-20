@@ -11,38 +11,43 @@
       <span>Adicionar</span>
     </a>
   </div>
-  <table class="table table-bordered table-sm table-hover">
+  <table class="table table-bordered table-sm">
     <thead>
       <tr class="table-active">
         <th class="text-center" scope="col" colspan="2">Veículos</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr *ngFor="let veiculo of veiculos">
         <td class="td-container" scope="row">
           <div class="row-title">
-            <img class="rounded border border-dark" src="http://vocedecarro.com/direct/wp-content/uploads/2015/05/carro.jpg" alt="">
-            <div>VM - Volkswagen / Gol (novo) 1.6 Mi Total Flex 8V 4p</div>
+            <img class="rounded border border-dark" src="{{veiculo.anexoPrincipal.url}}" alt="Imagem do veículo">
+            <div>{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}</div>
           </div>
           <div class="row-detail">
             <label for="ano">Ano:</label>
-            <p id="ano">2018/2018</p>
+            <p id="ano">{{veiculo.anoFabricacao}} / {{veiculo.anoModelo}}</p>
           </div>
           <div class="row-detail">
             <label for="cor">Cor:</label>
-            <p id="cor">Vermelha</p>
-          </div>
-          <div class="row-detail">
-            <label for="placa">Placa:</label>
-            <p id="placa">AAC-1254</p>
+            <p id="cor">{{veiculo.cor.descricao}}</p>
           </div>
           <div class="row-detail">
             <label for="valor-venda">Preço:</label>
-            <p id="valor-venda">R$ 18950,00</p>
+            <p id="valor-venda">{{veiculo.valorAnuncio | currency:'BRL':'symbol':'1.2-2':'pt'}}</p>
+          </div>
+          <div class="row-detail">
+            <label for="placa">Placa:</label>
+            <p id="placa">{{veiculo.placa? veiculo.placa : '-'}}</p>
           </div>
         </td>
-        <td class="text-center">
-          <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo Gol?" identificador="123"></app-botao-excluir>
+        <td class="text-center coluna-acoes">
+          <a class="btn btn-outline-primary btn-sm alinhar-icone" [routerLink]="['editar/', veiculo.id]">
+            <i class="material-icons">visibility</i>
+            <span class="texto-acoes">Visualizar</span>
+          </a>
+          <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo {{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}?"
+            [identificador]="veiculo.id"></app-botao-excluir>
         </td>
       </tr>
     </tbody>

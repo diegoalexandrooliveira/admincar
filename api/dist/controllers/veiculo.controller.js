@@ -7,7 +7,7 @@ class VeiculoController {
         return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel }`;
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }`;
     }
     static getQueries() {
         return `veiculos(limite: Int = 0, disponiveis: Boolean = false): [Veiculo]
@@ -35,7 +35,10 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel }`;
                 modelo: (veiculo) => index_1.ModeloDAO.buscarModeloPorId(veiculo.$modelo_id),
                 cor: (veiculo) => index_2.cores()[veiculo.$cor_id - 1],
                 combustivel: (veiculo) => index_2.combustiveis()[veiculo.$combustivel_id - 1],
-                cidade: (veiculo) => index_1.CidadeDAO.buscaCidadePorId(veiculo.$cidade_id)
+                cidade: (veiculo) => index_1.CidadeDAO.buscaCidadePorId(veiculo.$cidade_id),
+                anexoPrincipal: (veiculo) => index_1.AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(veiculo.$id).then((anexo) => {
+                    return anexo;
+                })
             }
         };
     }

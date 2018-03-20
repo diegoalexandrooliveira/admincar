@@ -39,6 +39,7 @@ class CustomExpress {
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);
+        this._express.use("/public/images", express.static("./dist/public"));
     }
     getExpress() {
         return this._express;

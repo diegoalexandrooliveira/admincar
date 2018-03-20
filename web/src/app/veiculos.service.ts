@@ -4,16 +4,41 @@ import { Observable } from "rxjs/Observable";
 import { Usuario } from "./models/usuario.model";
 import { Resposta } from "./models/resposta.model";
 import { Mensagem } from "./models/mensagem.model";
+import { Veiculo } from "./models/veiculo.model";
+import { Modelo } from "./models/modelo.model";
+import { Marca } from "./models/marca.model";
+import { Cor } from "./models/cor.model";
+import { AnexoVeiculo } from "./models/anexo-veiculo.model";
 
 @Injectable()
 export class VeiculosService {
   private inserir: string;
   private excluir: string;
   private alterar: string;
-  private todos: string;
+  private todosList: string;
   private porUsuario: string;
   constructor(private graphql: GraphqlService) {
-    this.todos = `{ usuarios { usuario } }`;
+    this.todosList = `{
+      veiculos{
+        id
+        modelo{
+          descricao
+          marca{
+            descricao
+          }
+        }
+        anoFabricacao
+        anoModelo
+        placa
+        cor{
+          descricao
+        }
+        valorAnuncio
+        anexoPrincipal{
+          url
+        }
+      }
+    }`;
     this.excluir = `mutation { 
         excluirUsuario(usuario:"$user")
       }`;
@@ -35,12 +60,37 @@ export class VeiculosService {
           }`;
   }
 
-  public recuperarTodos(): Observable<Usuario[]> {
+  public recuperarTodosList(): Observable<Veiculo[]> {
     return this.graphql
-      .request(this.todos)
+      .request(this.todosList)
       .map((resposta: Resposta) =>
-        resposta.dados["usuarios"].map(
-          usuario => new Usuario(usuario.usuario, usuario.senha)
+        resposta.dados["veiculos"].map(
+          veiculo =>
+            new Veiculo(
+              veiculo.id,
+              new Modelo(
+                null,
+                veiculo.modelo.descricao,
+                new Marca(null, veiculo.modelo.marca.descricao)
+              ),
+              veiculo.anoFabricacao,
+              veiculo.anoModelo,
+              veiculo.placa,
+              null,
+              null,
+              new Cor(null, veiculo.cor.descricao),
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              veiculo.valorAnuncio,
+              null,
+              null,
+              null,
+              new AnexoVeiculo(null, veiculo.anexoPrincipal.url)
+            )
         )
       );
   }

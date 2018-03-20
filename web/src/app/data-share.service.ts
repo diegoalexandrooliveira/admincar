@@ -33,5 +33,6 @@ export interface DataShared {
 
 export enum DataOrigin {
   NONE = 0,
-  USUARIOS_EDITAR = 1
+  USUARIOS_EDITAR = 1,
+  VEICULOS_EDITAR = 2
 }

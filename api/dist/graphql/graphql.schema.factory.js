@@ -22,6 +22,7 @@ class GraphQlSchemaFactory {
         ${index_1.VeiculoController.getQueries()}
         ${index_1.ChartComparativoController.getQueries()}
         ${index_1.UsuarioController.getQueries()}
+        ${index_1.AnexoVeiculoController.getQueries()}
     }
     type Mutation {
       ${index_1.UsuarioController.getMutations()}
@@ -37,6 +38,7 @@ class GraphQlSchemaFactory {
     ${index_1.VeiculoController.getType()}
     ${index_1.ChartComparativoController.getType()}
     ${index_1.UsuarioController.getType()}
+    ${index_1.AnexoVeiculoController.getType()}
     `;
         let schema = `schema { query: Query
                            mutation: Mutation }`;
@@ -48,10 +50,10 @@ class GraphQlSchemaFactory {
             Mutation: {},
             Date: GraphQLToolsTypes.Date({ name: "Date time" })
         };
-        resolvers.Query = Object.assign({}, index_1.EstadoController.getQueryResolvers(), index_1.CidadeController.getQueryResolvers(), index_1.TipoVeiculoController.getQueryResolvers(), index_1.MarcaController.getQueryResolvers(), index_1.ModeloController.getQueryResolvers(), index_1.CombustivelController.getQueryResolvers(), index_1.CorController.getQueryResolvers(), index_1.VeiculoController.getQueryResolvers(), index_1.ChartComparativoController.getQueryResolvers(), index_1.UsuarioController.getQueryResolvers());
+        resolvers.Query = Object.assign({}, index_1.EstadoController.getQueryResolvers(), index_1.CidadeController.getQueryResolvers(), index_1.TipoVeiculoController.getQueryResolvers(), index_1.MarcaController.getQueryResolvers(), index_1.ModeloController.getQueryResolvers(), index_1.CombustivelController.getQueryResolvers(), index_1.CorController.getQueryResolvers(), index_1.VeiculoController.getQueryResolvers(), index_1.ChartComparativoController.getQueryResolvers(), index_1.UsuarioController.getQueryResolvers(), index_1.AnexoVeiculoController.getQueryResolvers());
         resolvers.Mutation = Object.assign({}, index_1.UsuarioController.getMutationsResolvers());
         let objectResolvers = {};
-        objectResolvers = Object.assign({}, index_1.EstadoController.getResolvers(), index_1.CidadeController.getResolvers(), index_1.TipoVeiculoController.getResolvers(), index_1.MarcaController.getResolvers(), index_1.ModeloController.getResolvers(), index_1.CombustivelController.getResolvers(), index_1.CorController.getResolvers(), index_1.VeiculoController.getResolvers(), index_1.ChartComparativoController.getResolvers(), index_1.UsuarioController.getResolvers());
+        objectResolvers = Object.assign({}, index_1.EstadoController.getResolvers(), index_1.CidadeController.getResolvers(), index_1.TipoVeiculoController.getResolvers(), index_1.MarcaController.getResolvers(), index_1.ModeloController.getResolvers(), index_1.CombustivelController.getResolvers(), index_1.CorController.getResolvers(), index_1.VeiculoController.getResolvers(), index_1.ChartComparativoController.getResolvers(), index_1.UsuarioController.getResolvers(), index_1.AnexoVeiculoController.getResolvers());
         return Object.assign({}, resolvers, objectResolvers);
     }
 }

@@ -10,3 +10,4 @@ export * from "./veiculo.model";
 export * from "./cor.model";
 export * from "./combustivel.model";
 export * from "./chart.comparativo.model";
+export * from "./anexo-veiculo.model";

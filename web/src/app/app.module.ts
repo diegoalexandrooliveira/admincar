@@ -27,6 +27,9 @@ import { RouterModule } from "@angular/router";
 import { DataShareService } from "./data-share.service";
 import { VeiculosListaComponent } from "./veiculos/veiculos-lista.component";
 import { VeiculosService } from "./veiculos.service";
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import localePt from "@angular/common/locales/pt";
+import { registerLocaleData } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -42,7 +45,14 @@ import { VeiculosService } from "./veiculos.service";
     BotaoExcluirComponent,
     VeiculosListaComponent
   ],
-  imports: [BrowserModule, routing, HttpModule, FormsModule, ChartsModule],
+  imports: [
+    BrowserModule,
+    routing,
+    HttpModule,
+    FormsModule,
+    ChartsModule,
+    CurrencyMaskModule
+  ],
   bootstrap: [AppComponent],
   providers: [
     LoginService,
@@ -55,3 +65,5 @@ import { VeiculosService } from "./veiculos.service";
   ]
 })
 export class AppModule {}
+
+registerLocaleData(localePt);

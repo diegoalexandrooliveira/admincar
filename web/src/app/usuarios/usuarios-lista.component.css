@@ -10,3 +10,11 @@ td > button {
 table {
   background-color: white;
 }
+
+.btn-outline-secondary {
+  font-size: 0.7rem;
+}
+
+.material-icons {
+  font-size: 16px;
+}

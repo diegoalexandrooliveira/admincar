@@ -8,3 +8,4 @@ export * from "./veiculo.dao";
 export * from "./cor.dao";
 export * from "./combustivel.dao";
 export * from "./chart.dao";
+export * from "./anexo-veiculo.dao";
