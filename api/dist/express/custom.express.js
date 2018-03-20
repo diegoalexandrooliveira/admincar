@@ -6,7 +6,7 @@ const bodyParserGraphQl = require("body-parser-graphql");
 const routes = require("../routes/index");
 const passport = require("passport");
 const index_1 = require("../auth/index");
-const gzip = require("compression");
+const compression = require("compression");
 const cors = require("cors");
 const helmet = require("helmet");
 const graphql_1 = require("../graphql");
@@ -24,13 +24,13 @@ class CustomExpress {
             methods: "*",
             origin: "*"
         }));
-        this._express.use(gzip());
         this._express.use(bodyParser.json());
         this._express.use(bodyParserGraphQl.graphql());
         this._express.use(bodyParser.urlencoded({ extended: false }));
         this._express.use(passport.initialize());
         index_1.PassportStrategy.initialize(passport);
         this._passportMiddleware = passport.authenticate("jwt", { session: false });
+        this._express.use(compression({ threshold: 0 }));
     }
     privateRoutes() {
         this._express.use("/api/graphql", this._passportMiddleware, apollo_server_express_1.graphqlExpress({ schema: graphql_1.GraphQlSchemaFactory.createSchema() }));

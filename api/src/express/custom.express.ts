@@ -7,7 +7,7 @@ import * as passport from "passport";
 import * as jwt from "jwt-simple";
 import { PassportStrategy } from "../auth/index";
 import * as moment from "moment";
-import * as gzip from "compression";
+import * as compression from "compression";
 import * as cors from "cors";
 import * as helmet from "helmet";
 import { GraphQlSchemaFactory } from "../graphql";
@@ -32,13 +32,13 @@ export class CustomExpress {
         origin: "*"
       })
     );
-    this._express.use(gzip());
     this._express.use(bodyParser.json());
     this._express.use(bodyParserGraphQl.graphql());
     this._express.use(bodyParser.urlencoded({ extended: false }));
     this._express.use(passport.initialize());
     PassportStrategy.initialize(passport);
     this._passportMiddleware = passport.authenticate("jwt", { session: false });
+    this._express.use(compression({ threshold: 0 }));
   }
 
   private privateRoutes(): void {
