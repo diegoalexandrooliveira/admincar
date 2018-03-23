@@ -4,7 +4,11 @@ import { Mensagem } from "../models/mensagem.model";
 import { Subscription } from "rxjs/Subscription";
 import { VeiculosService } from "../veiculos.service";
 import { ActivatedRoute } from "@angular/router";
-import { DataShareService, DataShared, DataOrigin } from "../data-share.service";
+import {
+  DataShareService,
+  DataShared,
+  DataOrigin
+} from "../data-share.service";
 
 @Component({
   selector: "app-veiculos-lista",
@@ -14,6 +18,9 @@ import { DataShareService, DataShared, DataOrigin } from "../data-share.service"
 export class VeiculosListaComponent implements OnInit {
   public veiculos: Veiculo[];
   public mensagens: Mensagem[];
+  private situacaoVendidos: string = "vendidos";
+  private situacaoDisponiveis: string = "disponiveis";
+  private situacaoTodos: string = "todos";
   private ngUnsub: Subscription = new Subscription();
   constructor(
     private service: VeiculosService,
@@ -22,15 +29,27 @@ export class VeiculosListaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.recuperarVeiculos();
+    this.recuperarVeiculos(this.situacaoDisponiveis);
   }
 
   ngOnDestroy() {
     this.ngUnsub.unsubscribe();
   }
 
-  private recuperarVeiculos() {
-    this.service.recuperarTodosList().subscribe(
+  public vendidos() {
+    this.recuperarVeiculos(this.situacaoVendidos);
+  }
+
+  public todos() {
+    this.recuperarVeiculos(this.situacaoTodos);
+  }
+
+  public disponiveis() {
+    this.recuperarVeiculos(this.situacaoDisponiveis);
+  }
+
+  private recuperarVeiculos(situacao: string) {
+    this.service.recuperarTodosList(situacao).subscribe(
       (valores: Veiculo[]) => {
         this.veiculos = valores;
         this.ngUnsub.add(

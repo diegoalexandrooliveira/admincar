@@ -10,7 +10,7 @@ class VeiculoController {
 valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }`;
     }
     static getQueries() {
-        return `veiculos(limite: Int = 0, disponiveis: Boolean = false): [Veiculo]
+        return `veiculos(limite: Int = 0, situacao: String = "todos"): [Veiculo]
             veiculo(id: Int): Veiculo`;
     }
     static getQueryResolvers() {
@@ -18,8 +18,9 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
             veiculos: (root, args) => {
                 return index_1.VeiculoDAO.buscarTodosVeiculos().then((veiculos) => {
                     let veiculosFiltrados = veiculos;
-                    if (args.disponiveis) {
-                        veiculosFiltrados = veiculos.filter((veiculo) => !veiculo.$dataVenda);
+                    if (args.situacao &&
+                        (args.situacao == "vendidos" || args.situacao == "disponiveis")) {
+                        veiculosFiltrados = veiculos.filter((veiculo) => VeiculoController.situacaoDesejada(args.situacao, veiculo.$dataVenda != undefined));
                     }
                     return args.limite
                         ? veiculosFiltrados.slice(0, args.limite)
@@ -28,6 +29,17 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
             },
             veiculo: (root, args) => index_1.VeiculoDAO.buscarVeiculoPorId(args.id)
         };
+    }
+    static situacaoDesejada(situacao, vendido) {
+        if (situacao == "vendidos" && vendido) {
+            return true;
+        }
+        else if (situacao == "disponiveis" && !vendido) {
+            return true;
+        }
+        else {
+            false;
+        }
     }
     static getResolvers() {
         return {

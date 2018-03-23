@@ -47,6 +47,15 @@ table {
   margin: 0.7rem;
 }
 
+.badge {
+  margin-left: 0.5rem;
+}
+
+.input-group-text {
+  background-color: var(--cor-primaria);
+  color: var(--cor-secundaria);
+}
+
 @media (min-width: 992px) {
   .td-container {
     grid-template-columns: 25% 25% 25% 25%;

@@ -16,7 +16,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
   }
 
   public static getQueries(): string {
-    return `veiculos(limite: Int = 0, disponiveis: Boolean = false): [Veiculo]
+    return `veiculos(limite: Int = 0, situacao: String = "todos"): [Veiculo]
             veiculo(id: Int): Veiculo`;
   }
 
@@ -25,9 +25,15 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
       veiculos: (root, args) => {
         return VeiculoDAO.buscarTodosVeiculos().then((veiculos: Veiculo[]) => {
           let veiculosFiltrados: Veiculo[] = veiculos;
-          if (args.disponiveis) {
-            veiculosFiltrados = veiculos.filter(
-              (veiculo: Veiculo) => !veiculo.$dataVenda
+          if (
+            args.situacao &&
+            (args.situacao == "vendidos" || args.situacao == "disponiveis")
+          ) {
+            veiculosFiltrados = veiculos.filter((veiculo: Veiculo) =>
+              VeiculoController.situacaoDesejada(
+                args.situacao,
+                veiculo.$dataVenda != undefined
+              )
             );
           }
           return args.limite
@@ -37,6 +43,16 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
       },
       veiculo: (root, args) => VeiculoDAO.buscarVeiculoPorId(args.id)
     };
+  }
+
+  private static situacaoDesejada(situacao: string, vendido: boolean): boolean {
+    if (situacao == "vendidos" && vendido) {
+      return true;
+    } else if (situacao == "disponiveis" && !vendido) {
+      return true;
+    } else {
+      false;
+    }
   }
 
   public static getResolvers(): Object {

@@ -19,7 +19,7 @@ export class VeiculosService {
   private porUsuario: string;
   constructor(private graphql: GraphqlService) {
     this.todosList = `{
-      veiculos{
+      veiculos(situacao:"$1"){
         id
         modelo{
           descricao
@@ -37,6 +37,7 @@ export class VeiculosService {
         anexoPrincipal{
           url
         }
+        dataVenda
       }
     }`;
     this.excluir = `mutation { 
@@ -60,9 +61,9 @@ export class VeiculosService {
           }`;
   }
 
-  public recuperarTodosList(): Observable<Veiculo[]> {
+  public recuperarTodosList(situacao: string = "todos"): Observable<Veiculo[]> {
     return this.graphql
-      .request(this.todosList)
+      .request(this.todosList.replace("$1", situacao))
       .map((resposta: Resposta) =>
         resposta.dados["veiculos"].map(
           veiculo =>
@@ -82,7 +83,7 @@ export class VeiculosService {
               null,
               null,
               null,
-              null,
+              veiculo.dataVenda,
               null,
               null,
               veiculo.valorAnuncio,

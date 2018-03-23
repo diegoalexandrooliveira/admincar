@@ -11,6 +11,23 @@
       <span>Adicionar</span>
     </a>
   </div>
+  <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+    <label class="btn btn-outline-success btn-sm" (click)="todos()">
+      <input type="radio" id="option1" autocomplete="off"> Todos
+    </label>
+    <label class="btn btn-outline-danger btn-sm" (click)="vendidos()">
+      <input type="radio" id="option2" autocomplete="off"> Vendidos
+    </label>
+    <label class="btn btn-outline-primary active btn-sm" (click)="disponiveis()">
+      <input type="radio" id="option3" autocomplete="off" checked> Disponíveis
+    </label>
+  </div>
+  <div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Procurar</span>
+    </div>
+    <input [(ngModel)]="textoProcurar" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+  </div>
   <table class="table table-bordered table-sm">
     <thead>
       <tr class="table-active">
@@ -18,11 +35,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let veiculo of veiculos">
+      <tr *ngFor="let veiculo of veiculos | veiculosFilter: textoProcurar ">
         <td class="td-container" scope="row">
           <div class="row-title">
             <img class="rounded border border-dark" src="{{veiculo.anexoPrincipal.url}}" alt="Imagem do veículo">
-            <div>{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}</div>
+            <div>{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}
+              <span *ngIf="veiculo.dataVenda" class="badge badge-danger badge-pill">Vendido</span>
+            </div>
           </div>
           <div class="row-detail">
             <label for="ano">Ano:</label>
