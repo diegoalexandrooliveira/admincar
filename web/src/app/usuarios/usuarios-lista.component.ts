@@ -18,6 +18,7 @@ import {
 export class UsuariosListaComponent implements OnInit, OnDestroy {
   public usuarios: Usuario[];
   public mensagens: Mensagem[];
+  public carregando: boolean = false;
   private ngUnsub: Subscription = new Subscription();
   constructor(
     private service: UsuarioService,
@@ -34,6 +35,7 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
   }
 
   private recuperarUsuarios() {
+    this.carregando = true;
     this.service.recuperarTodos().subscribe(
       (valores: Usuario[]) => {
         this.usuarios = valores;
@@ -47,13 +49,22 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
             }
           )
         );
+        this.carregando = false;
       },
       error => {
         console.log(error);
+        this.carregando = false;
+        this.mensagens = Array.of(
+          new Mensagem(
+            "Problemas ao recuperar os dados. Tente novamente mais tarde.",
+            "erro"
+          )
+        );
       }
     );
   }
   public excluirUsuario(nome: string) {
+    this.carregando = true;
     this.ngUnsub.add(
       this.service.excluirUsuario(nome).subscribe(mensagensErro => {
         if (mensagensErro) {
@@ -63,6 +74,7 @@ export class UsuariosListaComponent implements OnInit, OnDestroy {
             new Mensagem(`Usuário ${nome} excluído com sucesso.`, "success")
           );
         }
+        this.carregando = false;
         this.recuperarUsuarios();
       })
     );

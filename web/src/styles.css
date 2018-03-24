@@ -24,17 +24,21 @@ footer {
   vertical-align: middle !important;
 }
 
-.container {
+.corpo {
   background-color: rgba(250, 250, 250, 0.8);
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  width: 98%;
+  width: 95%;
   border-radius: 1rem;
-  -webkit-box-shadow: 3px 4px rgba(0, 0, 0, 0.5);
-  box-shadow: 3px 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.5);
   border: 10px black;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .title-header {

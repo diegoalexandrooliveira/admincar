@@ -31,6 +31,7 @@ import { VeiculosService } from "./veiculos.service";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import localePt from "@angular/common/locales/pt";
 import { registerLocaleData } from "@angular/common";
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { registerLocaleData } from "@angular/common";
     UsuariosEditarComponent,
     BotaoExcluirComponent,
     VeiculosListaComponent,
-    VeiculosPipe
+    VeiculosPipe,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

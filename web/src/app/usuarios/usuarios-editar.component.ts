@@ -32,6 +32,7 @@ export class UsuariosEditarComponent
   private edicao: boolean = false;
   @ViewChild("fieldUsuario") private fieldUsuario: ElementRef;
   @ViewChild("fieldSenha") private fieldSenha: ElementRef;
+  public carregando: boolean = false;
   private sub: Subscription;
   constructor(
     private service: UsuarioService,
@@ -78,6 +79,8 @@ export class UsuariosEditarComponent
       acao = this.service.incluirUsuario.bind(this.service);
     }
 
+    this.carregando = true;
+
     acao(this.usuario).subscribe(mensagensErro => {
       if (mensagensErro) {
         this.mensagens = mensagensErro;
@@ -104,6 +107,7 @@ export class UsuariosEditarComponent
           this.router.navigate(["/app/usuarios"]);
         }
       }
+      this.carregando = false;
     });
   }
 }

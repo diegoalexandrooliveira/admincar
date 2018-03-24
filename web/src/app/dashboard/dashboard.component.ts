@@ -11,6 +11,7 @@ import { Mensagem } from "../models/mensagem.model";
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
   public mensagens: Mensagem[];
+  public carregando: boolean = false;
   public lineChartData: Array<any> = [];
   public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {
@@ -41,9 +42,9 @@ export class DashboardComponent implements OnInit {
   public lineChartType: string = "line";
 
   ngOnInit() {
-    this.dashboardService
-      .dadosComparativos()
-      .subscribe((dados: ChartComparativo[]) => {
+    this.carregando = true;
+    this.dashboardService.dadosComparativos().subscribe(
+      (dados: ChartComparativo[]) => {
         let bottomLabels: string[] = [];
         let dataAdquiridos: number[] = [];
         let dataVendidos: number[] = [];
@@ -58,6 +59,18 @@ export class DashboardComponent implements OnInit {
         ];
         this.lineChartLabels = bottomLabels;
         this.lineChartReady = true;
-      }, error => (this.mensagens = error));
+        this.carregando = false;
+      },
+      error => {
+        console.log(error);
+        this.carregando = false;
+        this.mensagens = Array.of(
+          new Mensagem(
+            "Problemas ao recuperar os dados. Tente novamente mais tarde.",
+            "erro"
+          )
+        );
+      }
+    );
   }
 }

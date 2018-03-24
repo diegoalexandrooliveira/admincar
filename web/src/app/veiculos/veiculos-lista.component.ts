@@ -21,6 +21,7 @@ export class VeiculosListaComponent implements OnInit {
   private situacaoVendidos: string = "vendidos";
   private situacaoDisponiveis: string = "disponiveis";
   private situacaoTodos: string = "todos";
+  public carregando: boolean = false;
   private ngUnsub: Subscription = new Subscription();
   constructor(
     private service: VeiculosService,
@@ -49,6 +50,7 @@ export class VeiculosListaComponent implements OnInit {
   }
 
   private recuperarVeiculos(situacao: string) {
+    this.carregando = true;
     this.service.recuperarTodosList(situacao).subscribe(
       (valores: Veiculo[]) => {
         this.veiculos = valores;
@@ -62,9 +64,17 @@ export class VeiculosListaComponent implements OnInit {
             }
           )
         );
+        this.carregando = false;
       },
       error => {
         console.log(error);
+        this.carregando = false;
+        this.mensagens = Array.of(
+          new Mensagem(
+            "Problemas ao recuperar os dados. Tente novamente mais tarde.",
+            "erro"
+          )
+        );
       }
     );
   }

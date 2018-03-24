@@ -3,7 +3,18 @@ thead {
   background-color: var(--cor-primaria);
 }
 
-table {
+thead,
+th,
+thead > tr {
+  border-collapse: separate;
+  border-top-color: transparent;
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+  /* border-top-left-radius: 24%;
+  border-top-right-radius: 24%; */
+}
+
+tbody {
   background-color: white;
 }
 

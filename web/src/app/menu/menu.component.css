@@ -5,7 +5,7 @@ nav {
 .navbar {
   border-radius: 0px 0px 25px 25px;
   justify-content: center;
-  box-shadow: 3px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.5);
 }
 .navbar-toggler {
   position: absolute;
