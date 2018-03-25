@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, AfterViewChecked } from "@angular/core";
 import { Veiculo } from "../models/veiculo.model";
 import { Mensagem } from "../models/mensagem.model";
 import { Subscription } from "rxjs/Subscription";
