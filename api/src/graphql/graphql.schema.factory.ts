@@ -40,6 +40,7 @@ export class GraphQlSchemaFactory {
     }
     type Mutation {
       ${UsuarioController.getMutations()}
+      ${VeiculoController.getMutations()}
     }`;
     let types = `
     ${EstadoController.getType()}
@@ -81,7 +82,8 @@ export class GraphQlSchemaFactory {
     );
     resolvers.Mutation = Object.assign(
       {},
-      UsuarioController.getMutationsResolvers()
+      UsuarioController.getMutationsResolvers(),
+      VeiculoController.getMutationsResolvers()
     );
     let objectResolvers = {};
     objectResolvers = Object.assign(

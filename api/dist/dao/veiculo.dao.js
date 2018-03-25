@@ -29,9 +29,8 @@ class VeiculoDAO {
             index_1.clientFactory
                 .query(query, parameters)
                 .then((result) => {
-                let retorno;
+                let retorno = [];
                 if (result.rows.length > 0) {
-                    retorno = [];
                     result.rows.map(row => {
                         retorno.push(new index_2.Veiculo(row.id, row.modelo_id, row.ano_fabricacao, row.ano_modelo, row.placa, row.renavam, row.chassi, row.cor_id, row.cidade_id, row.data_inclusao, row.data_aquisicao, row.data_venda, row.valor_compra, row.valor_venda, row.valor_anunciado, row.observacoes, row.combustivel_id));
                     });
@@ -102,7 +101,7 @@ class VeiculoDAO {
             })
                 .then(() => client.query(deleteQ, [idVeiculo]))
                 .then((result) => {
-                resolve();
+                resolve(result.rowCount);
             })
                 .catch(error => {
                 utils_1.logger.error(`veiculo.dao.deletarVeiculo - ${error}`);

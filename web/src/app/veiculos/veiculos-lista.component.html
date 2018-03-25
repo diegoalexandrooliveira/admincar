@@ -14,13 +14,13 @@
   </div>
   <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
     <label class="btn btn-outline-success btn-sm" (click)="todos()">
-      <input type="radio" id="option1" autocomplete="off"> Todos
+      <input type="radio" id="todos" autocomplete="off"> Todos
     </label>
     <label class="btn btn-outline-danger btn-sm" (click)="vendidos()">
-      <input type="radio" id="option2" autocomplete="off"> Vendidos
+      <input type="radio" id="vendidos" autocomplete="off"> Vendidos
     </label>
     <label class="btn btn-outline-primary active btn-sm" (click)="disponiveis()">
-      <input type="radio" id="option3" autocomplete="off" checked> Disponíveis
+      <input type="radio" id="disponiveis" autocomplete="off" checked> Disponíveis
     </label>
   </div>
   <div class="input-group input-group-sm mb-3">
@@ -36,6 +36,13 @@
       </tr>
     </thead>
     <tbody>
+      <tr *ngIf="veiculos.length == 0">
+        <td colspan="2">
+          <div class="alert alert-primary" role="alert">
+            Nenhum veículo cadastrado.
+          </div>
+        </td>
+      </tr>
       <tr *ngFor="let veiculo of veiculos | veiculosFilter: textoProcurar ">
         <td class="td-container" scope="row">
           <div class="row-title">
@@ -67,7 +74,7 @@
             <span class="texto-acoes">Visualizar</span>
           </a>
           <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo {{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}?"
-            [identificador]="veiculo.id"></app-botao-excluir>
+            [identificador]="veiculo.id" (acaoConfirmada)="excluirVeiculo(veiculo.id)"></app-botao-excluir>
         </td>
       </tr>
     </tbody>

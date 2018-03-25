@@ -34,9 +34,8 @@ export class VeiculoDAO {
       clientFactory
         .query(query, parameters)
         .then((result: QueryResult) => {
-          let retorno: Veiculo[];
+          let retorno: Veiculo[] = [];
           if (result.rows.length > 0) {
-            retorno = [];
             result.rows.map(row => {
               retorno.push(
                 new Veiculo(
@@ -171,7 +170,7 @@ export class VeiculoDAO {
   public static deletarVeiculo(
     client: Client,
     idVeiculo: number
-  ): Promise<void> {
+  ): Promise<number> {
     let deleteQ = `DELETE FROM veiculo WHERE id = $1`;
 
     return new Promise((resolve, reject) => {
@@ -182,7 +181,7 @@ export class VeiculoDAO {
         })
         .then(() => client.query(deleteQ, [idVeiculo]))
         .then((result: QueryResult) => {
-          resolve();
+          resolve(result.rowCount);
         })
         .catch(error => {
           logger.error(`veiculo.dao.deletarVeiculo - ${error}`);

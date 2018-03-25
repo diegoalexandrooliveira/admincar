@@ -4,8 +4,10 @@ import {
   CidadeDAO,
   AnexoVeiculoDAO
 } from "../dao/index";
-import { Veiculo, AnexoVeiculo } from "../model/index";
+import { Veiculo, AnexoVeiculo, Mensagem } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
+import { clientFactory } from "../database";
+import { Client } from "pg";
 
 export class VeiculoController {
   public static getType(): string {
@@ -20,39 +22,21 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
             veiculo(id: Int): Veiculo`;
   }
 
+  public static getMutations(): string {
+    return `excluirVeiculo(id: Int): Boolean`;
+  }
+
   public static getQueryResolvers(): Object {
     return {
-      veiculos: (root, args) => {
-        return VeiculoDAO.buscarTodosVeiculos().then((veiculos: Veiculo[]) => {
-          let veiculosFiltrados: Veiculo[] = veiculos;
-          if (
-            args.situacao &&
-            (args.situacao == "vendidos" || args.situacao == "disponiveis")
-          ) {
-            veiculosFiltrados = veiculos.filter((veiculo: Veiculo) =>
-              VeiculoController.situacaoDesejada(
-                args.situacao,
-                veiculo.$dataVenda != undefined
-              )
-            );
-          }
-          return args.limite
-            ? veiculosFiltrados.slice(0, args.limite)
-            : veiculosFiltrados;
-        });
-      },
+      veiculos: this.buscarVeiculos,
       veiculo: (root, args) => VeiculoDAO.buscarVeiculoPorId(args.id)
     };
   }
 
-  private static situacaoDesejada(situacao: string, vendido: boolean): boolean {
-    if (situacao == "vendidos" && vendido) {
-      return true;
-    } else if (situacao == "disponiveis" && !vendido) {
-      return true;
-    } else {
-      false;
-    }
+  public static getMutationsResolvers(): Object {
+    return {
+      excluirVeiculo: this.excluirVeiculo
+    };
   }
 
   public static getResolvers(): Object {
@@ -67,11 +51,75 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
           CidadeDAO.buscaCidadePorId(veiculo.$cidade_id),
         anexoPrincipal: (veiculo: Veiculo) =>
           AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(veiculo.$id).then(
-            (anexo: AnexoVeiculo) => {
-              return anexo;
-            }
+            (anexo: AnexoVeiculo) => anexo
           )
       }
     };
+  }
+
+  private static buscarVeiculos(root, args) {
+    return VeiculoDAO.buscarTodosVeiculos().then((veiculos: Veiculo[]) => {
+      let veiculosFiltrados: Veiculo[] = veiculos;
+      if (
+        args.situacao &&
+        (args.situacao == "vendidos" || args.situacao == "disponiveis")
+      ) {
+        veiculosFiltrados = veiculos.filter((veiculo: Veiculo) =>
+          VeiculoController.situacaoDesejada(
+            args.situacao,
+            veiculo.$dataVenda != undefined
+          )
+        );
+      }
+      return args.limite
+        ? veiculosFiltrados.slice(0, args.limite)
+        : veiculosFiltrados;
+    });
+  }
+
+  private static situacaoDesejada(situacao: string, vendido: boolean): boolean {
+    if (situacao == "vendidos" && vendido) {
+      return true;
+    } else if (situacao == "disponiveis" && !vendido) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private static excluirVeiculo(root, args): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      clientFactory
+        .getClient()
+        .then((client: Client) => {
+          AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
+            .then((row: number) => {
+              VeiculoDAO.deletarVeiculo(client, args.id)
+                .then(rows => {
+                  clientFactory.commit(client);
+                  if (rows) {
+                    return resolve(true);
+                  } else {
+                    return reject(
+                      JSON.stringify(
+                        Array.of(
+                          new Mensagem("Nenhum veículo removido.", "warn")
+                        )
+                      )
+                    );
+                  }
+                })
+                .catch(erro => {
+                  clientFactory.rollback(client);
+                  reject(erro);
+                });
+            })
+            .catch(erro => {
+              clientFactory.rollback(client);
+              reject(erro);
+            });
+        })
+        .catch(erro => reject(erro));
+    });
   }
 }

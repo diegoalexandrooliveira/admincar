@@ -41,7 +41,7 @@ export class VeiculosService {
       }
     }`;
     this.excluir = `mutation { 
-        excluirUsuario(usuario:"$user")
+        excluirVeiculo(id:$id)
       }`;
     this.inserir = `mutation {
           inserirUsuario(usuario:{
@@ -96,9 +96,9 @@ export class VeiculosService {
       );
   }
 
-  public excluirUsuario(nome: string): Observable<Mensagem[]> {
+  public excluirVeiculo(id: number): Observable<Mensagem[]> {
     return this.graphql
-      .request(this.excluir.replace("$user", nome))
+      .request(this.excluir.replace("$id", id.toString()))
       .map((resposta: Resposta) => {
         if (resposta.erro) {
           let erros = JSON.parse(resposta.erro[0].message).map(

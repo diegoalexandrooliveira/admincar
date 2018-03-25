@@ -21,6 +21,7 @@ export class VeiculosListaComponent implements OnInit {
   private situacaoVendidos: string = "vendidos";
   private situacaoDisponiveis: string = "disponiveis";
   private situacaoTodos: string = "todos";
+  private situacaoEscolhida: string;
   public carregando: boolean = false;
   private ngUnsub: Subscription = new Subscription();
   constructor(
@@ -50,6 +51,7 @@ export class VeiculosListaComponent implements OnInit {
   }
 
   private recuperarVeiculos(situacao: string) {
+    this.situacaoEscolhida = situacao;
     this.carregando = true;
     this.service.recuperarTodosList(situacao).subscribe(
       (valores: Veiculo[]) => {
@@ -78,18 +80,18 @@ export class VeiculosListaComponent implements OnInit {
       }
     );
   }
-  // public excluirUsuario(nome: string) {
-  //   this.ngUnsub.add(
-  //     this.service.excluirUsuario(nome).subscribe(mensagensErro => {
-  //       if (mensagensErro) {
-  //         this.mensagens = mensagensErro;
-  //       } else {
-  //         this.mensagens = Array.of(
-  //           new Mensagem(`Usuário ${nome} excluído com sucesso.`, "success")
-  //         );
-  //       }
-  //       this.recuperarVeiculos();
-  //     })
-  //   );
-  // }
+  public excluirVeiculo(id: number) {
+    this.ngUnsub.add(
+      this.service.excluirVeiculo(id).subscribe(mensagensErro => {
+        if (mensagensErro) {
+          this.mensagens = mensagensErro;
+        } else {
+          this.mensagens = Array.of(
+            new Mensagem(`Veículo ${id} excluído com sucesso.`, "success")
+          );
+        }
+        this.recuperarVeiculos(this.situacaoEscolhida);
+      })
+    );
+  }
 }

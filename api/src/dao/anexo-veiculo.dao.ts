@@ -100,26 +100,47 @@ export class AnexoVeiculoDAO {
   //   });
   // }
 
-  // public static excluirUsuario(
-  //   client: Client,
-  //   usuario: string
-  // ): Promise<number> {
-  //   let sqlDelete = `delete from usuario where usuario = $1`;
+  public static excluirAnexoVeiculo(
+    client: Client,
+    id: number
+  ): Promise<number> {
+    let sqlDelete = `delete from anexo_veiculo where id = $1`;
 
-  //   return new Promise((resolve, reject) => {
-  //     client
-  //       .query("BEGIN")
-  //       .then((begin: QueryResult) => {
-  //         return;
-  //       })
-  //       .then(() => client.query(sqlDelete, [usuario]))
-  //       .then((result: QueryResult) => {
-  //         resolve(result.rowCount);
-  //       })
-  //       .catch(error => {
-  //         logger.error(`usuario.dao.excluirUsuario - ${error}`);
-  //         reject(`Erro ao excluir o usuário ${usuario}`);
-  //       });
-  //   });
-  // }
+    return new Promise((resolve, reject) => {
+      client
+        .query("BEGIN")
+        .then((begin: QueryResult) => {
+          return;
+        })
+        .then(() => client.query(sqlDelete, [id]))
+        .then((result: QueryResult) => resolve(result.rowCount))
+        .catch(error => {
+          logger.error(`anexo-veiculo.dao.excluirAnexoVeiculo - ${error}`);
+          reject(`Erro ao excluir o anexo ${id}`);
+        });
+    });
+  }
+
+  public static excluirTodosAnexoPorVeiculo(
+    client: Client,
+    veiculoId: number
+  ): Promise<number> {
+    let sqlDelete = `delete from anexo_veiculo where veiculo_id = $1`;
+
+    return new Promise((resolve, reject) => {
+      client
+        .query("BEGIN")
+        .then((begin: QueryResult) => {
+          return;
+        })
+        .then(() => client.query(sqlDelete, [veiculoId]))
+        .then((result: QueryResult) => resolve(result.rowCount))
+        .catch(error => {
+          logger.error(
+            `anexo-veiculo.dao.excluirTodosAnexoPorVeiculo - ${error}`
+          );
+          reject(`Erro ao excluir os anexos do veículo ${veiculoId}`);
+        });
+    });
+  }
 }
