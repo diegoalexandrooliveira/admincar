@@ -41,8 +41,10 @@ footer {
   margin-left: auto;
 }
 
-.title-header {
+.title-header,
+.title-header > h1 {
   width: 100%;
+  font-size: 1.6rem;
 }
 
 .title-header > h1 > a,
@@ -54,10 +56,10 @@ footer {
   text-decoration-color: var(--cor-primaria);
 }
 
-h1 {
+/* h1 {
   width: 50%;
   display: inline-block;
-}
+} */
 
 .texto-acoes {
   display: none;

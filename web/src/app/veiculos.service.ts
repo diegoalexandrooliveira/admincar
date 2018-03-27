@@ -9,6 +9,7 @@ import { Modelo } from "./models/modelo.model";
 import { Marca } from "./models/marca.model";
 import { Cor } from "./models/cor.model";
 import { AnexoVeiculo } from "./models/anexo-veiculo.model";
+import { TipoVeiculo } from "./models/tipo-veiculo.model";
 
 @Injectable()
 export class VeiculosService {
@@ -17,6 +18,9 @@ export class VeiculosService {
   private alterar: string;
   private todosList: string;
   private porUsuario: string;
+  private tipoVeiculo: string;
+  private marcas: string;
+  private modelos: string;
   constructor(private graphql: GraphqlService) {
     this.todosList = `{
       veiculos(situacao:"$1"){
@@ -42,6 +46,28 @@ export class VeiculosService {
     }`;
     this.excluir = `mutation { 
         excluirVeiculo(id:$id)
+      }`;
+
+    this.tipoVeiculo = `{
+        tiposVeiculo{
+          id
+          descricao
+        }
+      }`;
+
+    this.marcas = `
+      {
+        marcas(tipoVeiculoId:$tipoVeiculoId){
+          id
+          descricao
+        }
+      }`;
+
+    this.modelos = `{
+        modelos(marcaId:$marcaId){
+          id
+          descricao
+        }
       }`;
     this.inserir = `mutation {
           inserirUsuario(usuario:{
@@ -108,6 +134,38 @@ export class VeiculosService {
         }
         return null;
       });
+  }
+
+  public buscarTiposVeiculo(): Observable<TipoVeiculo[]> {
+    return this.graphql
+      .request(this.tipoVeiculo)
+      .map((resposta: Resposta) =>
+        resposta.dados["tiposVeiculo"].map(
+          tipoVeiculo => new TipoVeiculo(tipoVeiculo.id, tipoVeiculo.descricao)
+        )
+      );
+  }
+
+  public buscarMarcasPorTipoVeiculo(
+    tipoVeiculoId: number
+  ): Observable<Marca[]> {
+    return this.graphql
+      .request(this.marcas.replace("$tipoVeiculoId", tipoVeiculoId.toString()))
+      .map((resposta: Resposta) =>
+        resposta.dados["marcas"].map(
+          marca => new Marca(marca.id, marca.descricao)
+        )
+      );
+  }
+
+  public buscarModelosPorMarca(marcaId: number): Observable<Modelo[]> {
+    return this.graphql
+      .request(this.modelos.replace("$marcaId", marcaId.toString()))
+      .map((resposta: Resposta) =>
+        resposta.dados["modelos"].map(
+          modelo => new Modelo(modelo.id, modelo.descricao)
+        )
+      );
   }
 
   public incluirUsuario(usuario: Usuario): Observable<Mensagem[]> {

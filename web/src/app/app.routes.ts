@@ -7,6 +7,7 @@ import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { UsuariosListaComponent } from "./usuarios/usuarios-lista.component";
 import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
 import { VeiculosListaComponent } from "./veiculos/veiculos-lista.component";
+import { VeiculoEditarComponent } from "./veiculos/veiculo-editar.component";
 
 const appRoutes: Routes = [
   {
@@ -33,6 +34,14 @@ const appRoutes: Routes = [
       {
         path: "veiculos",
         component: VeiculosListaComponent
+      },
+      {
+        path: "veiculos/adicionar",
+        component: VeiculoEditarComponent
+      },
+      {
+        path: "veiculos/editar/:id",
+        component: VeiculoEditarComponent
       }
     ]
   },

@@ -1,0 +1,40 @@
+<app-mensagens [mensagens]="mensagens"></app-mensagens>
+<app-loading [carregando]="carregando"></app-loading>
+<div class="corpo">
+  <div class="text-center title-header">
+    <h1 class="text-center">
+      <a routerLink="/app/veiculos/adicionar">{{titulo}}</a>
+    </h1>
+  </div>
+  <div class="botoes-acoes">
+    <a routerLink="/app/veiculos" class="btn btn-secondary alinhar-icone">
+      <i class="material-icons">arrow_back</i>
+      <span>Voltar</span>
+    </a>
+    <button class="btn btn-success alinhar-icone" (click)="salvar()">
+      <i class="material-icons">save</i>
+      <span>Salvar</span>
+    </button>
+  </div>
+  <form class="grid-form">
+    <div class="form-group">
+      <label for="tipoVeiculo">Tipo veículo</label>
+      <select class="custom-select" [(ngModel)]="veiculo.modelo.marca.tipoVeiculo.id" name="tipoVeiculo" (change)="selecionouTipoVeiculo()">
+        <option *ngFor="let tipoVeiculo of tiposVeiculo" value="{{tipoVeiculo.id}}">{{tipoVeiculo.descricao}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="marca">Marca</label>
+      <select class="custom-select" [(ngModel)]="veiculo.modelo.marca.id" name="marca" (change)="selecionouMarca()">
+        <option *ngFor="let marca of marcas" value="{{marca.id}}">{{marca.descricao}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="modelo">Modelo</label>
+      <select class="custom-select" [(ngModel)]="veiculo.modelo.id" name="modelo">
+        <option *ngFor="let modelo of modelos" value="{{modelo.id}}">{{modelo.descricao}}</option>
+      </select>
+    </div>
+    <br> {{veiculo | json}}
+  </form>
+</div>

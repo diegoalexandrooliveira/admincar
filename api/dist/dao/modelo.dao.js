@@ -5,7 +5,7 @@ const index_2 = require("../model/index");
 const utils_1 = require("../utils");
 class ModeloDAO {
     static buscarModelosPorMarca(marcaId) {
-        let query = `   select id, descricao from modelo where marca_id = $1`;
+        let query = `   select id, descricao from modelo where marca_id = $1 order by descricao`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query, [marcaId])

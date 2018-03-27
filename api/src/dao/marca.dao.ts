@@ -9,7 +9,7 @@ export class MarcaDAO {
   ): Promise<Marca[]> {
     let query = `select id, descricao
                     from marca where tipo_veiculo_id = $1
-                    order by id`;
+                    order by descricao`;
 
     return new Promise((resolve, reject) => {
       clientFactory

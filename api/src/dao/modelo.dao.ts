@@ -5,7 +5,7 @@ import { logger } from "../utils";
 
 export class ModeloDAO {
   public static buscarModelosPorMarca(marcaId: number): Promise<Modelo[]> {
-    let query = `   select id, descricao from modelo where marca_id = $1`;
+    let query = `   select id, descricao from modelo where marca_id = $1 order by descricao`;
 
     return new Promise((resolve, reject) => {
       clientFactory
