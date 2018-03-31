@@ -18,22 +18,68 @@
   </div>
   <form class="grid-form">
     <div class="form-group">
-      <label for="tipoVeiculo">Tipo veículo</label>
-      <select class="custom-select" [(ngModel)]="veiculo.modelo.marca.tipoVeiculo.id" name="tipoVeiculo" (change)="selecionouTipoVeiculo()">
-        <option *ngFor="let tipoVeiculo of tiposVeiculo" value="{{tipoVeiculo.id}}">{{tipoVeiculo.descricao}}</option>
-      </select>
+      <label for="tipoVeiculo">Tipo veículo
+        <span class="obrigatorio"> *</span>
+      </label>
+      <app-dropdown-typeahead name="tipoVeiculo" [values]="tiposVeiculo" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo.marca.tipoVeiculo"
+        (whenSelectItem)="selecionouTipoVeiculo()" fieldValue="id">
+      </app-dropdown-typeahead>
+
     </div>
     <div class="form-group">
-      <label for="marca">Marca</label>
-      <select class="custom-select" [(ngModel)]="veiculo.modelo.marca.id" name="marca" (change)="selecionouMarca()">
-        <option *ngFor="let marca of marcas" value="{{marca.id}}">{{marca.descricao}}</option>
-      </select>
+      <label for="marca">Marca
+        <span class="obrigatorio"> *</span>
+      </label>
+      <app-dropdown-typeahead name="marca" [values]="marcas" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo.marca"
+        (whenSelectItem)="selecionouMarca()" fieldValue="id">
+      </app-dropdown-typeahead>
     </div>
     <div class="form-group">
-      <label for="modelo">Modelo</label>
-      <select class="custom-select" [(ngModel)]="veiculo.modelo.id" name="modelo">
-        <option *ngFor="let modelo of modelos" value="{{modelo.id}}">{{modelo.descricao}}</option>
-      </select>
+      <label for="modelo">Modelo
+        <span class="obrigatorio"> *</span>
+      </label>
+      <app-dropdown-typeahead name="modelo" [values]="modelos" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo"
+        fieldValue="id">
+      </app-dropdown-typeahead>
+    </div>
+    <div class="form-group">
+      <label for="anos">Ano Fabricação/Modelo
+        <span class="obrigatorio"> *</span>
+      </label>
+      <div name="anos" class="form-row">
+        <div class="col">
+          <input class="form-control" type="number" name="anoFab" [(ngModel)]="veiculo.anoFabricacao">
+        </div>
+        <div class="col">
+          <input class="form-control" type="number" name="anoModelo" [(ngModel)]="veiculo.anoModelo">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cor">Cor
+        <span class="obrigatorio"> *</span>
+      </label>
+      <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.cor"
+        fieldValue="id">
+      </app-dropdown-typeahead>
+    </div>
+    <div class="form-group">
+      <label for="combustivel">Combustível</label>
+      <app-dropdown-typeahead name="combustivel" [values]="combustiveis" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.combustivel"
+        fieldValue="id">
+      </app-dropdown-typeahead>
+    </div>
+    <div class="form-group">
+      <label for="estado">Estado</label>
+      <app-dropdown-typeahead name="estado" [values]="estados" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.cidade.estado"
+        fieldValue="id" (whenSelectItem)="selecionouEstado()">
+      </app-dropdown-typeahead>
+    </div>
+    <div class="form-group">
+      <label for="cidade">Cidade</label>
+      <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.cidade"
+        fieldValue="id">
+      </app-dropdown-typeahead>
     </div>
     <br> {{veiculo | json}}
   </form>

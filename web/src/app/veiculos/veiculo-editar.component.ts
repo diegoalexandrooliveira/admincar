@@ -1,8 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Veiculo } from "../models/veiculo.model";
 import { Mensagem } from "../models/mensagem.model";
-import { Subscription } from "rxjs/Subscription";
-import { zip } from "rxjs/observable/zip";
 import { VeiculosService } from "../veiculos.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import {
@@ -13,13 +11,20 @@ import {
 import { TipoVeiculo } from "../models/tipo-veiculo.model";
 import { Modelo } from "../models/modelo.model";
 import { Marca } from "../models/marca.model";
+import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs/Observable";
+import { Cor } from "../models/cor.model";
+import { Combustivel } from "../models/combustivel.model";
+import { Estado } from "../models/estado.model";
+import { Cidade } from "../models/cidade.model";
 
 @Component({
   selector: "app-veiculo-editar",
   templateUrl: "./veiculo-editar.component.html",
   styleUrls: ["./veiculo-editar.component.css"]
 })
-export class VeiculoEditarComponent implements OnInit, OnDestroy {
+export class VeiculoEditarComponent implements OnInit {
   public veiculo: Veiculo;
   public mensagens: Mensagem[];
   public carregando: boolean = false;
@@ -28,7 +33,10 @@ export class VeiculoEditarComponent implements OnInit, OnDestroy {
   public tiposVeiculo: TipoVeiculo[];
   public marcas: Marca[] = [];
   public modelos: Modelo[] = [];
-  private ngUnsub: Subscription = new Subscription();
+  public cores: Cor[] = [];
+  public combustiveis: Combustivel[] = [];
+  public estados: Estado[] = [];
+  public cidades: Cidade[] = [];
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,
@@ -37,52 +45,92 @@ export class VeiculoEditarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.carregando = true;
-    this.ngUnsub.add(
-      this.route.params.subscribe((params: Params) => {
-        let idVeiculo = params["id"];
-        if (idVeiculo) {
-          this.edicao = true;
-          // this.titulo = `Editar ${nomeUsuario}`;
-        } else {
-          this.titulo = "Adicionar um veículo";
-          this.edicao = false;
-          this.veiculo = new Veiculo();
-          this.veiculo.$modelo = new Modelo();
-          this.veiculo.$modelo.$marca = new Marca();
-          this.veiculo.$modelo.$marca.$tipoVeiculo = new TipoVeiculo();
-        }
-      })
-    );
-    zip(this.service.buscarTiposVeiculo()).subscribe(([tiposVeiculo]) => {
-      this.tiposVeiculo = tiposVeiculo;
-      this.carregando = false;
+    this.veiculo = new Veiculo();
+    this.veiculo.$modelo = new Modelo();
+    this.veiculo.$modelo.$marca = new Marca();
+    this.veiculo.$modelo.$marca.$tipoVeiculo = new TipoVeiculo();
+    this.veiculo.$cor = new Cor();
+    this.veiculo.$combustivel = new Combustivel();
+    this.veiculo.$cidade = new Cidade();
+    this.veiculo.$cidade.$estado = new Estado();
+    this.route.params.subscribe((params: Params) => {
+      let idVeiculo = params["id"];
+      let promises: Array<Promise<any>> = [];
+      promises.push(this.service.buscarTiposVeiculo());
+      promises.push(this.service.buscarCores());
+      promises.push(this.service.buscarCombustiveis());
+      promises.push(this.service.buscarEstados());
+      if (idVeiculo) {
+        this.edicao = true;
+        // this.titulo = `Editar ${nomeUsuario}`;
+      } else {
+        this.titulo = "Adicionar um veículo";
+        this.edicao = false;
+      }
+      Promise.all(promises)
+        .then(value => {
+          this.tiposVeiculo = value[0];
+          this.cores = value[1];
+          this.combustiveis = value[2];
+          this.estados = value[3];
+          if (this.edicao) {
+            // carregar veiculo
+          }
+          this.carregando = false;
+        })
+        .catch(this.erroBackEnd.bind(this));
     });
   }
 
-  ngOnDestroy() {
-    this.ngUnsub.unsubscribe();
-  }
-
   public selecionouTipoVeiculo() {
-    this.carregando = true;
     this.veiculo.$modelo.$marca.$id = null;
     this.veiculo.$modelo.$id = null;
+    this.marcas = [];
+    this.modelos = [];
+    this.carregando = true;
     this.service
       .buscarMarcasPorTipoVeiculo(this.veiculo.$modelo.$marca.$tipoVeiculo.$id)
-      .subscribe((marcas: Marca[]) => {
+      .then((marcas: Marca[]) => {
         this.marcas = marcas;
         this.carregando = false;
-      });
+      })
+      .catch(this.erroBackEnd.bind(this));
   }
 
   public selecionouMarca() {
     this.carregando = true;
     this.veiculo.$modelo.$id = null;
+    this.modelos = [];
     this.service
       .buscarModelosPorMarca(this.veiculo.$modelo.$marca.$id)
-      .subscribe((modelos: Modelo[]) => {
+      .then((modelos: Modelo[]) => {
         this.modelos = modelos;
         this.carregando = false;
-      });
+      })
+      .catch(this.erroBackEnd.bind(this));
+  }
+
+  public selecionouEstado() {
+    this.carregando = true;
+    this.veiculo.$cidade.$id = null;
+    this.cidades = [];
+    this.service
+      .buscarCidades(this.veiculo.$cidade.$estado.$id)
+      .then((cidades: Cidade[]) => {
+        this.cidades = cidades;
+        this.carregando = false;
+      })
+      .catch(this.erroBackEnd.bind(this));
+  }
+
+  private erroBackEnd(error) {
+    console.log(error);
+    this.carregando = false;
+    this.mensagens = Array.of(
+      new Mensagem(
+        "Problemas ao comunicar-se com o servidor. Tente novamente mais tarde.",
+        "erro"
+      )
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Veiculo } from "../models/veiculo.model";
 import { Mensagem } from "../models/mensagem.model";
 import { Subscription } from "rxjs/Subscription";
@@ -53,22 +53,23 @@ export class VeiculosListaComponent implements OnInit {
   private recuperarVeiculos(situacao: string) {
     this.situacaoEscolhida = situacao;
     this.carregando = true;
-    this.service.recuperarTodosList(situacao).subscribe(
-      (valores: Veiculo[]) => {
+    this.service
+      .recuperarTodosList(situacao)
+      .then((valores: Veiculo[]) => {
         this.veiculos = valores;
-        this.ngUnsub.add(
-          this.dataShareService.dataObservable.subscribe(
-            (mensagem: DataShared) => {
-              if (mensagem && mensagem.origin === DataOrigin.VEICULOS_EDITAR) {
-                this.mensagens = mensagem.data;
-                this.dataShareService.limparMensagens();
-              }
-            }
-          )
-        );
+        // this.ngUnsub.add(
+        //   this.dataShareService.dataObservable.subscribe(
+        //     (mensagem: DataShared) => {
+        //       if (mensagem && mensagem.origin === DataOrigin.VEICULOS_EDITAR) {
+        //         this.mensagens = mensagem.data;
+        //         this.dataShareService.limparMensagens();
+        //       }
+        //     }
+        //   )
+        // );
         this.carregando = false;
-      },
-      error => {
+      })
+      .catch(error => {
         console.log(error);
         this.carregando = false;
         this.mensagens = Array.of(
@@ -77,12 +78,13 @@ export class VeiculosListaComponent implements OnInit {
             "erro"
           )
         );
-      }
-    );
+      });
   }
   public excluirVeiculo(id: number) {
-    this.ngUnsub.add(
-      this.service.excluirVeiculo(id).subscribe(mensagensErro => {
+    this.carregando = true;
+    this.service
+      .excluirVeiculo(id)
+      .then(mensagensErro => {
         if (mensagensErro) {
           this.mensagens = mensagensErro;
         } else {
@@ -90,8 +92,18 @@ export class VeiculosListaComponent implements OnInit {
             new Mensagem(`Veículo ${id} excluído com sucesso.`, "success")
           );
         }
+        this.carregando = false;
         this.recuperarVeiculos(this.situacaoEscolhida);
       })
-    );
+      .catch(error => {
+        console.log(error);
+        this.carregando = false;
+        this.mensagens = Array.of(
+          new Mensagem(
+            "Problemas ao excluir o veículo. Tente novamente mais tarde.",
+            "erro"
+          )
+        );
+      });
   }
 }

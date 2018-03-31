@@ -1,6 +1,8 @@
 import { Modelo } from "./modelo.model";
 import { Cor } from "./cor.model";
 import { AnexoVeiculo } from "./anexo-veiculo.model";
+import { Combustivel } from "./combustivel.model";
+import { Cidade } from "./cidade.model";
 
 export class Veiculo {
   constructor(
@@ -12,7 +14,7 @@ export class Veiculo {
     renavam?: string,
     chassi?: string,
     cor?: Cor,
-    cidade_id?: number,
+    cidade?: Cidade,
     dataInclusao?: Date,
     dataAquisicao?: Date,
     dataVenda?: Date,
@@ -20,7 +22,7 @@ export class Veiculo {
     valorVenda?: number,
     valorAnuncio?: number,
     observacoes?: string,
-    combustivel_id?: number,
+    combustivel?: Combustivel,
     anexos?: AnexoVeiculo[],
     anexoPrincipal?: AnexoVeiculo
   ) {
@@ -32,7 +34,7 @@ export class Veiculo {
     this.renavam = renavam;
     this.chassi = chassi;
     this.cor = cor;
-    this.cidade_id = cidade_id;
+    this.cidade = cidade;
     this.dataInclusao = dataInclusao;
     this.dataAquisicao = dataAquisicao;
     this.dataVenda = dataVenda;
@@ -40,7 +42,7 @@ export class Veiculo {
     this.valorVenda = valorVenda;
     this.valorAnuncio = valorAnuncio;
     this.observacoes = observacoes;
-    this.combustivel_id = combustivel_id;
+    this.combustivel = combustivel;
     this.anexos = anexos;
     this.anexoPrincipal = anexoPrincipal;
   }
@@ -52,7 +54,7 @@ export class Veiculo {
   private renavam: string;
   private chassi: string;
   private cor: Cor;
-  private cidade_id: number;
+  private cidade: Cidade;
   private dataInclusao: Date;
   private dataAquisicao: Date;
   private dataVenda: Date;
@@ -60,7 +62,7 @@ export class Veiculo {
   private valorVenda: number;
   private valorAnuncio: number;
   private observacoes: string;
-  private combustivel_id: number;
+  private combustivel: Combustivel;
   private anexos: AnexoVeiculo[];
   private anexoPrincipal: AnexoVeiculo;
 
@@ -184,20 +186,20 @@ export class Veiculo {
     this.cor = value;
   }
 
-  public get $cidade_id(): number {
-    return this.cidade_id;
+  public get $cidade(): Cidade {
+    return this.cidade;
   }
 
-  public set $cidade_id(value: number) {
-    this.cidade_id = value;
+  public set $cidade(value: Cidade) {
+    this.cidade = value;
   }
 
-  public get $combustivel_id(): number {
-    return this.combustivel_id;
+  public get $combustivel(): Combustivel {
+    return this.combustivel;
   }
 
-  public set $combustivel_id(value: number) {
-    this.combustivel_id = value;
+  public set $combustivel(value: Combustivel) {
+    this.combustivel = value;
   }
 
   public get $anexos() {

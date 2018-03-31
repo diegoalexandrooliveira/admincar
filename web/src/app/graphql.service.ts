@@ -3,7 +3,6 @@ import { Headers, Http, Response } from "@angular/http";
 import { LoginService } from "./login.service";
 import { configs } from "./config/configs";
 import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
 import { Resposta } from "./models/resposta.model";
 
 @Injectable()

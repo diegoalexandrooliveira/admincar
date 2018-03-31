@@ -12,6 +12,11 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/throw";
 import "rxjs/add/observable/of";
+import "rxjs/add/operator/toPromise";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/filter";
+import "rxjs/add/operator/merge";
 import { AuthGuardService } from "./auth.guard.service";
 import { LoginLayoutComponent } from "./layouts/login.layout.component";
 import { AppLayoutComponent } from "./layouts/app.layout.component";
@@ -33,6 +38,8 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import localePt from "@angular/common/locales/pt";
 import { registerLocaleData } from "@angular/common";
 import { LoadingComponent } from "./loading/loading.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { DropdownTypeaheadComponent } from './dropdown-typeahead/dropdown-typeahead.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +56,8 @@ import { LoadingComponent } from "./loading/loading.component";
     VeiculosListaComponent,
     VeiculoEditarComponent,
     VeiculosPipe,
-    LoadingComponent
+    LoadingComponent,
+    DropdownTypeaheadComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +65,8 @@ import { LoadingComponent } from "./loading/loading.component";
     HttpModule,
     FormsModule,
     ChartsModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    NgbModule.forRoot()
   ],
   bootstrap: [AppComponent],
   providers: [
