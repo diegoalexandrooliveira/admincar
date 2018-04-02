@@ -17,6 +17,9 @@
     </button>
   </div>
   <form class="grid-form">
+    <p class="aviso-obrigatorio">Campos obrigatórios
+      <span class="obrigatorio"> *</span>
+    </p>
     <div class="form-group">
       <label for="tipoVeiculo">Tipo veículo
         <span class="obrigatorio"> *</span>
@@ -55,13 +58,26 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <label for="cor">Cor
-        <span class="obrigatorio"> *</span>
-      </label>
-      <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.cor"
-        fieldValue="id">
-      </app-dropdown-typeahead>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="cor">Cor
+            <span class="obrigatorio"> *</span>
+          </label>
+          <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.cor"
+            fieldValue="id">
+          </app-dropdown-typeahead>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="valorAnuncio">Valor anúncio
+            <span class="obrigatorio"> *</span>
+          </label>
+          <input currencyMask name="valorAnuncio" class="form-control" [(ngModel)]="veiculo.valorAnuncio" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          />
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label for="combustivel">Combustível</label>
@@ -80,6 +96,44 @@
       <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.cidade"
         fieldValue="id">
       </app-dropdown-typeahead>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="placa">Placa</label>
+          <input type="text" name="placa" [(ngModel)]="veiculo.placa" class="form-control">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="renavam">Renavam</label>
+          <input type="text" name="renavam" [(ngModel)]="veiculo.renavam" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="chassi">Chassi</label>
+      <input type="text" name="chassi" [(ngModel)]="veiculo.chassi" class="form-control">
+    </div>
+    <div class="form-group" *ngIf="edicao">
+      <label for="dataInclusao">Data Inclusão</label>
+      <input class="form-control" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.dataInclusao" ngbDatepicker>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="dataAquisicao">Data aquisição</label>
+          <input class="form-control" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()" [(ngModel)]="veiculo.dataAquisicao"
+            ngbDatepicker #dataAquisicao="ngbDatepicker" autoClose="true">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="dataVenda">Data venda</label>
+          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.dataVenda"
+            ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true" placement="bottom-right">
+        </div>
+      </div>
     </div>
     <br> {{veiculo | json}}
   </form>

@@ -1,3 +1,11 @@
 .obrigatorio {
   color: red;
 }
+
+.aviso-obrigatorio {
+  font-size: 0.65rem;
+}
+
+.form-group > label {
+  font-weight: bold;
+}

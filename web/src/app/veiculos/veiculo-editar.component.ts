@@ -11,18 +11,32 @@ import {
 import { TipoVeiculo } from "../models/tipo-veiculo.model";
 import { Modelo } from "../models/modelo.model";
 import { Marca } from "../models/marca.model";
-import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbTypeahead,
+  NgbDatepickerI18n,
+  NgbDateAdapter,
+  NgbDateParserFormatter
+} from "@ng-bootstrap/ng-bootstrap";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import { Cor } from "../models/cor.model";
 import { Combustivel } from "../models/combustivel.model";
 import { Estado } from "../models/estado.model";
 import { Cidade } from "../models/cidade.model";
+import { I18n } from "../utils/i18n";
+import { DatePickeri18n } from "../utils/DatePickeri18n";
+import { DateAdapter, DateFormatter } from "../utils/DateAdapter";
 
 @Component({
   selector: "app-veiculo-editar",
   templateUrl: "./veiculo-editar.component.html",
-  styleUrls: ["./veiculo-editar.component.css"]
+  styleUrls: ["./veiculo-editar.component.css"],
+  providers: [
+    I18n,
+    { provide: NgbDatepickerI18n, useClass: DatePickeri18n },
+    { provide: NgbDateAdapter, useClass: DateAdapter },
+    { provide: NgbDateParserFormatter, useClass: DateFormatter }
+  ]
 })
 export class VeiculoEditarComponent implements OnInit {
   public veiculo: Veiculo;
