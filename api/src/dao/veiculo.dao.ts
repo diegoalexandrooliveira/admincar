@@ -72,7 +72,7 @@ export class VeiculoDAO {
   public static inserirVeiculo(
     client: Client,
     veiculo: Veiculo
-  ): Promise<Veiculo> {
+  ): Promise<{ id: number; client: Client }> {
     let insert = `INSERT INTO veiculo(
       modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, 
       cidade_id, data_inclusao, valor_compra, valor_anunciado, valor_venda, 
@@ -89,28 +89,27 @@ export class VeiculoDAO {
         })
         .then(() =>
           client.query(insert, [
-            // veiculo.$idModelo,
-            // veiculo.$anoFabricacao,
-            // veiculo.$anoModelo,
-            // veiculo.$placa,
-            // veiculo.$renavam,
-            // veiculo.$chassi,
-            // veiculo.$idCidade,
-            // veiculo.$dataInclusao,
-            // veiculo.$valorCompra,
-            // veiculo.$valorAnuncio,
-            // veiculo.$valorVenda,
-            // veiculo.$dataVenda,
-            // veiculo.$observacoes,
-            // veiculo.$dataAquisicao,
-            // veiculo.$idCor,
-            // veiculo.$idCombustivel
+            veiculo.$modelo_id,
+            veiculo.$anoFabricacao,
+            veiculo.$anoModelo,
+            veiculo.$placa,
+            veiculo.$renavam,
+            veiculo.$chassi,
+            veiculo.$cidade_id,
+            veiculo.$dataInclusao,
+            veiculo.$valorCompra,
+            veiculo.$valorAnuncio,
+            veiculo.$valorVenda,
+            veiculo.$dataVenda,
+            veiculo.$observacoes,
+            veiculo.$dataAquisicao,
+            veiculo.$cor_id,
+            veiculo.$combustivel_id
           ])
         )
-        .then((result: QueryResult) => {
-          veiculo.$id = result.rows[0].id;
-          resolve(veiculo);
-        })
+        .then((result: QueryResult) =>
+          resolve({ id: result.rows[0].id, client: client })
+        )
         .catch(error => {
           logger.error(`veiculo.dao.inserirVeiculo - ${error}`);
           reject(new Mensagem(`Erro ao inserir o veículo.`, "erro"));

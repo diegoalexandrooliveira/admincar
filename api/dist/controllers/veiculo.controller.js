@@ -9,14 +9,20 @@ class VeiculoController {
         return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }`;
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }
+
+input VeiculoInput { id: Int, modelo: Int, anoFabricacao: Int, anoModelo: Int,
+  placa: String, renavam: String, chassi: String, cor: Int, cidade: Int, 
+dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
+valorAnuncio: Float, observacoes: String, combustivel: Int }`;
     }
     static getQueries() {
         return `veiculos(limite: Int = 0, situacao: String = "todos"): [Veiculo]
             veiculo(id: Int): Veiculo`;
     }
     static getMutations() {
-        return `excluirVeiculo(id: Int): Boolean`;
+        return `excluirVeiculo(id: Int): Boolean
+    inserirVeiculo(veiculo: VeiculoInput): Int`;
     }
     static getQueryResolvers() {
         return {
@@ -26,7 +32,8 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
     }
     static getMutationsResolvers() {
         return {
-            excluirVeiculo: this.excluirVeiculo
+            excluirVeiculo: this.excluirVeiculo,
+            inserirVeiculo: this.inserirVeiculo
         };
     }
     static getResolvers() {
@@ -91,6 +98,28 @@ valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincip
                 });
             })
                 .catch(erro => reject(erro));
+        });
+    }
+    static inserirVeiculo(root, args) {
+        return new Promise((resolve, reject) => {
+            let veiculo = new index_2.Veiculo();
+            veiculo.toModel(args.veiculo);
+            veiculo.validarVeiculo(true).then((erros) => {
+                if (erros.length > 0) {
+                    reject(JSON.stringify(erros));
+                }
+                else {
+                    veiculo.$dataInclusao = new Date();
+                    database_1.clientFactory
+                        .getClient()
+                        .then((client) => index_1.VeiculoDAO.inserirVeiculo(client, veiculo))
+                        .then(retorno => {
+                        database_1.clientFactory.commit(retorno.client);
+                        resolve(retorno.id);
+                    })
+                        .catch(erro => reject(erro));
+                }
+            });
         });
     }
 }

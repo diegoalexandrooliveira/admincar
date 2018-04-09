@@ -101,14 +101,25 @@ export class VeiculosService {
         nome
       }
     }`;
-    this.inserir = `mutation {
-          inserirUsuario(usuario:{
-            usuario:"$nome"
-            senha: "$senha"
-          }) {
-            usuario
-          }
-        }`;
+    this.inserir = `mutation{
+      inserirVeiculo(veiculo:{
+        modelo: $modelo
+        anoFabricacao: $anoFabricacao
+        anoModelo: $anoModelo
+        placa: $placa
+        renavam: $renavam
+        chassi: $chassi
+        cor: $cor
+        cidade: $cidade
+        dataAquisicao: $dataAquisicao
+        dataVenda: $dataVenda
+        valorAnuncio: $valorAnuncio
+        valorCompra: $valorCompra
+        valorVenda: $valorVenda
+        observacoes: $observacoes
+        combustivel: $combustivel
+      })
+    }`;
     this.alterar = `mutation {
             alterarUsuario(usuario:{
               usuario:"$nome"
@@ -245,22 +256,81 @@ export class VeiculosService {
       .toPromise();
   }
 
-  public incluirUsuario(usuario: Usuario): Observable<Mensagem[]> {
+  public incluirVeiculo(
+    veiculo: Veiculo
+  ): Promise<{ id: number; erros: Mensagem[] }> {
     return this.graphql
       .request(
         this.inserir
-          .replace("$nome", usuario.nome)
-          .replace("$senha", usuario.senha)
+          .replace(
+            "$modelo",
+            veiculo.$modelo.$id ? veiculo.$modelo.$id.toString() : "null"
+          )
+          .replace(
+            "$anoFabricacao",
+            veiculo.$anoFabricacao ? veiculo.$anoFabricacao.toString() : "null"
+          )
+          .replace(
+            "$anoModelo",
+            veiculo.$anoModelo ? veiculo.$anoModelo.toString() : "null"
+          )
+          .replace("$placa", veiculo.$placa ? `"${veiculo.$placa}"` : "null")
+          .replace(
+            "$renavam",
+            veiculo.$renavam ? `"${veiculo.$renavam}"` : "null"
+          )
+          .replace("$chassi", veiculo.$chassi ? `"${veiculo.$chassi}"` : "null")
+          .replace(
+            "$cor",
+            veiculo.$cor.$id ? veiculo.$cor.$id.toString() : "null"
+          )
+          .replace(
+            "$cidade",
+            veiculo.$cidade.$id ? veiculo.$cidade.$id.toString() : "null"
+          )
+          .replace(
+            "$dataAquisicao",
+            veiculo.$dataAquisicao
+              ? `"${veiculo.$dataAquisicao.toJSON()}"`
+              : "null"
+          )
+          .replace(
+            "$dataVenda",
+            veiculo.$dataVenda ? `"${veiculo.$dataVenda.toJSON()}"` : "null"
+          )
+          .replace(
+            "$valorAnuncio",
+            veiculo.$valorAnuncio ? veiculo.$valorAnuncio.toString() : "null"
+          )
+          .replace(
+            "$valorCompra",
+            veiculo.$valorCompra ? veiculo.$valorCompra.toString() : "null"
+          )
+          .replace(
+            "$valorVenda",
+            veiculo.$valorVenda ? veiculo.$valorVenda.toString() : "null"
+          )
+          .replace(
+            "$observacoes",
+            veiculo.$observacoes ? `"${veiculo.$observacoes}"` : "null"
+          )
+          .replace(
+            "$combustivel",
+            veiculo.$combustivel.$id
+              ? veiculo.$combustivel.$id.toString()
+              : "null"
+          )
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
           let erros = JSON.parse(resposta.erro[0].message).map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
-          return erros;
+          return { id: null, erros: erros };
         }
-        return null;
-      });
+        return { id: resposta.dados["inserirVeiculo"], erros: null };
+      })
+      .toPromise();
   }
 
   public alterarUsuario(usuario: Usuario): Observable<Mensagem[]> {

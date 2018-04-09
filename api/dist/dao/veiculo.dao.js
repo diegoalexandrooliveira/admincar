@@ -57,11 +57,25 @@ class VeiculoDAO {
                 .then((begin) => {
                 return;
             })
-                .then(() => client.query(insert, []))
-                .then((result) => {
-                veiculo.$id = result.rows[0].id;
-                resolve(veiculo);
-            })
+                .then(() => client.query(insert, [
+                veiculo.$modelo_id,
+                veiculo.$anoFabricacao,
+                veiculo.$anoModelo,
+                veiculo.$placa,
+                veiculo.$renavam,
+                veiculo.$chassi,
+                veiculo.$cidade_id,
+                veiculo.$dataInclusao,
+                veiculo.$valorCompra,
+                veiculo.$valorAnuncio,
+                veiculo.$valorVenda,
+                veiculo.$dataVenda,
+                veiculo.$observacoes,
+                veiculo.$dataAquisicao,
+                veiculo.$cor_id,
+                veiculo.$combustivel_id
+            ]))
+                .then((result) => resolve({ id: result.rows[0].id, client: client }))
                 .catch(error => {
                 utils_1.logger.error(`veiculo.dao.inserirVeiculo - ${error}`);
                 reject(new index_2.Mensagem(`Erro ao inserir o veículo.`, "erro"));

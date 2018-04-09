@@ -192,78 +192,100 @@ export class Veiculo {
     this.combustivel_id = value;
   }
 
-  // public async validarVeiculo(ehInsercao: boolean) {
-  //   let erros: Mensagem[] = [];
-  //     if (!ehInsercao && !this.$id) {
-  //       erros.push(
-  //         new Mensagem("Identificador do veículo não informado.", "erro")
-  //       );
-  //     }
-  //     if (!this.$idModelo) {
-  //       erros.push(new Mensagem("É obrigatório informar um modelo.", "erro"));
-  //     } else {
-  //       let modelo = await ModeloDAO.buscarModeloPorId(this.$idModelo);
-  //       if (!modelo) {
-  //         erros.push(new Mensagem("Modelo informado não cadastrado.", "erro"));
-  //       }
-  //     }
-  //     if (!this.$anoFabricacao) {
-  //       erros.push(
-  //         new Mensagem("É obrigatório informar o ano de fabricação.", "erro")
-  //       );
-  //     }
-  //     if (!this.$anoModelo) {
-  //       erros.push(
-  //         new Mensagem("É obrigatório informar o ano do modelo.", "erro")
-  //       );
-  //     }
-  //     if (this.$idCidade) {
-  //       let cidade: Cidade = await CidadeDAO.buscaCidadePorId(this.$idCidade);
-  //       if (!cidade) {
-  //         erros.push(
-  //           new Mensagem(
-  //             `Cidade informada (${this.$idCidade}) não cadastrada.`,
-  //             "erro"
-  //           )
-  //         );
-  //       }
-  //     }
-  //     if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
-  //       erros.push(
-  //         new Mensagem("É obrigatório informar um valor para anuncio.", "erro")
-  //       );
-  //     }
-  //     if (this.$valorCompra && this.$valorCompra <= 0) {
-  //       erros.push(new Mensagem("Valor de compra inválido.", "erro"));
-  //     }
-  //     if (this.$valorVenda && this.$valorVenda <= 0) {
-  //       erros.push(new Mensagem("Valor de venda inválido.", "erro"));
-  //     }
-  //     if (!this.$idCor) {
-  //       erros.push(new Mensagem("É obrigatório informar uma cor.", "erro"));
-  //     } else {
-  //       let cor: Cor = await CorDAO.buscaCorPorId(this.$idCor);
-  //       if (!cor) {
-  //         erros.push(
-  //           new Mensagem(`Cor informada (${this.$idCor}) não cadastrada.`, "erro")
-  //         );
-  //       }
-  //     }
-  //     if (this.$idCombustivel) {
-  //       let combustivel = await CombustivelDAO.buscaCombustivelPorId(
-  //         this.$idCombustivel
-  //       );
-  //       if (!combustivel) {
-  //         erros.push(
-  //           new Mensagem(
-  //             `Combustível informado (${this.$idCombustivel}) não cadastrado.`,
-  //             "erro"
-  //           )
-  //         );
-  //       }
-  //     }
-  //   return erros;
-  // }
+  public toModel(object: any): void {
+    this.$id = object["id"];
+    this.$modelo_id = object["modelo"];
+    this.$anoFabricacao = object["anoFabricacao"];
+    this.$anoModelo = object["anoModelo"];
+    this.$placa = object["placa"];
+    this.$renavam = object["renavam"];
+    this.$chassi = object["chassi"];
+    this.$cor_id = object["cor"];
+    this.$cidade_id = object["cidade"];
+    this.$dataAquisicao = object["dataAquisicao"];
+    this.$dataVenda = object["dataVenda"];
+    this.$valorCompra = object["valorCompra"];
+    this.$valorAnuncio = object["valorAnuncio"];
+    this.$valorVenda = object["valorVenda"];
+    this.$observacoes = object["observacoes"];
+    this.$combustivel_id = object["combustivel"];
+  }
+
+  public async validarVeiculo(ehInsercao: boolean) {
+    let erros: Mensagem[] = [];
+    if (!ehInsercao && !this.$id) {
+      erros.push(
+        new Mensagem("Identificador do veículo não informado.", "erro")
+      );
+    }
+    if (!this.$modelo_id) {
+      erros.push(new Mensagem("É obrigatório informar um modelo.", "erro"));
+    } else {
+      let modelo = await ModeloDAO.buscarModeloPorId(this.$modelo_id);
+      if (!modelo) {
+        erros.push(new Mensagem("Modelo informado não cadastrado.", "erro"));
+      }
+    }
+    if (!this.$anoFabricacao) {
+      erros.push(
+        new Mensagem("É obrigatório informar o ano de fabricação.", "erro")
+      );
+    }
+    if (!this.$anoModelo) {
+      erros.push(
+        new Mensagem("É obrigatório informar o ano do modelo.", "erro")
+      );
+    }
+    if (this.$cidade_id) {
+      let cidade: Cidade = await CidadeDAO.buscaCidadePorId(this.$cidade_id);
+      if (!cidade) {
+        erros.push(
+          new Mensagem(
+            `Cidade informada (${this.$cidade_id}) não cadastrada.`,
+            "erro"
+          )
+        );
+      }
+    }
+    if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
+      erros.push(
+        new Mensagem("É obrigatório informar um valor para anuncio.", "erro")
+      );
+    }
+    if (this.$valorCompra && this.$valorCompra <= 0) {
+      erros.push(new Mensagem("Valor de compra inválido.", "erro"));
+    }
+    if (this.$valorVenda && this.$valorVenda <= 0) {
+      erros.push(new Mensagem("Valor de venda inválido.", "erro"));
+    }
+    if (!this.$cor_id) {
+      erros.push(new Mensagem("É obrigatório informar uma cor.", "erro"));
+    } else {
+      let cor: Cor = await CorDAO.buscaCorPorId(this.$cor_id);
+      if (!cor) {
+        erros.push(
+          new Mensagem(
+            `Cor informada (${this.$cor_id}) não cadastrada.`,
+            "erro"
+          )
+        );
+      }
+    }
+    if (this.$combustivel_id) {
+      let combustivel = await CombustivelDAO.buscaCombustivelPorId(
+        this.$combustivel_id
+      );
+      if (!combustivel) {
+        erros.push(
+          new Mensagem(
+            `Combustível informado (${this.$combustivel_id}) não cadastrado.`,
+            "erro"
+          )
+        );
+      }
+    }
+    return erros;
+  }
   // public async validarExclusao(): Promise<Mensagem[]> {
   //   let erros: Mensagem[] = [];
   //   if (!this.$id) {

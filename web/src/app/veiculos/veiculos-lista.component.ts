@@ -24,6 +24,7 @@ export class VeiculosListaComponent implements OnInit {
   private situacaoEscolhida: string;
   public carregando: boolean = false;
   private ngUnsub: Subscription = new Subscription();
+  private onInit: Boolean = false;
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,
@@ -31,6 +32,7 @@ export class VeiculosListaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.onInit = true;
     this.recuperarVeiculos(this.situacaoDisponiveis);
   }
 
@@ -57,16 +59,22 @@ export class VeiculosListaComponent implements OnInit {
       .recuperarTodosList(situacao)
       .then((valores: Veiculo[]) => {
         this.veiculos = valores;
-        // this.ngUnsub.add(
-        //   this.dataShareService.dataObservable.subscribe(
-        //     (mensagem: DataShared) => {
-        //       if (mensagem && mensagem.origin === DataOrigin.VEICULOS_EDITAR) {
-        //         this.mensagens = mensagem.data;
-        //         this.dataShareService.limparMensagens();
-        //       }
-        //     }
-        //   )
-        // );
+        if (this.onInit) {
+          this.onInit = false;
+          this.ngUnsub.add(
+            this.dataShareService.dataObservable.subscribe(
+              (mensagem: DataShared) => {
+                if (
+                  mensagem &&
+                  mensagem.origin === DataOrigin.VEICULOS_EDITAR
+                ) {
+                  this.mensagens = mensagem.data;
+                  this.dataShareService.limparMensagens();
+                }
+              }
+            )
+          );
+        }
         this.carregando = false;
       })
       .catch(error => {

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Veiculo } from "../models/veiculo.model";
 import { Mensagem } from "../models/mensagem.model";
 import { VeiculosService } from "../veiculos.service";
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   DataShareService,
   DataShared,
@@ -54,7 +54,8 @@ export class VeiculoEditarComponent implements OnInit {
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,
-    private dataShareService: DataShareService
+    private dataShareService: DataShareService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -146,5 +147,45 @@ export class VeiculoEditarComponent implements OnInit {
         "erro"
       )
     );
+  }
+
+  public salvar(): void {
+    let acao: Function;
+    if (this.edicao) {
+      // acao = this.service.alterarUsuario.bind(this.service);
+    } else {
+      acao = this.service.incluirVeiculo.bind(this.service);
+    }
+
+    this.carregando = true;
+
+    acao(this.veiculo).then(retorno => {
+      if (retorno["erros"]) {
+        this.mensagens = retorno["erros"];
+      } else {
+        if (this.edicao) {
+          // this.mensagens = Array.of(
+          //   new Mensagem(
+          //     `Usuário ${this.usuario.nome} alterado com sucesso.`,
+          //     "success"
+          //   )
+          // );
+          // this.usuario.senha = "";
+        } else {
+          let mensagem: DataShared = {
+            origin: DataOrigin.VEICULOS_EDITAR,
+            data: Array.of(
+              new Mensagem(
+                `Veículo ${retorno["id"]} incluído com sucesso.`,
+                "success"
+              )
+            )
+          };
+          this.dataShareService.shareData(mensagem);
+          this.router.navigate(["/app/veiculos"]);
+        }
+      }
+      this.carregando = false;
+    });
   }
 }

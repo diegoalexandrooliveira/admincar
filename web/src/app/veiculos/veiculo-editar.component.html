@@ -129,12 +129,34 @@
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="dataVenda">Data venda</label>
-          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.dataVenda"
-            ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true" placement="bottom-right">
+          <label for="valorAquisicao">Valor aquisição</label>
+          <input currencyMask name="valorAquisicao" class="form-control" [(ngModel)]="veiculo.valorCompra" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          />
         </div>
       </div>
     </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="dataVenda">Data venda</label>
+          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.dataVenda"
+            ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="valorVenda">Valor venda</label>
+          <input currencyMask name="valorVenda" class="form-control" [(ngModel)]="veiculo.valorVenda" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="observacoes">Observações</label>
+      <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.observacoes" class="form-control">
+        </textarea>
+    </div>
+
     <br> {{veiculo | json}}
   </form>
 </div>

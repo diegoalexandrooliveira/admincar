@@ -1,5 +1,15 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const index_1 = require("./index");
+const dao_1 = require("../dao");
 class Veiculo {
     constructor(id, modelo_id, anoFabricacao, anoModelo, placa, renavam, chassi, cor_id, cidade_id, dataInclusao, dataAquisicao, dataVenda, valorCompra, valorVenda, valorAnuncio, observacoes, combustivel_id) {
         this.id = id;
@@ -121,6 +131,78 @@ class Veiculo {
     }
     set $combustivel_id(value) {
         this.combustivel_id = value;
+    }
+    toModel(object) {
+        this.$id = object["id"];
+        this.$modelo_id = object["modelo"];
+        this.$anoFabricacao = object["anoFabricacao"];
+        this.$anoModelo = object["anoModelo"];
+        this.$placa = object["placa"];
+        this.$renavam = object["renavam"];
+        this.$chassi = object["chassi"];
+        this.$cor_id = object["cor"];
+        this.$cidade_id = object["cidade"];
+        this.$dataAquisicao = object["dataAquisicao"];
+        this.$dataVenda = object["dataVenda"];
+        this.$valorCompra = object["valorCompra"];
+        this.$valorAnuncio = object["valorAnuncio"];
+        this.$valorVenda = object["valorVenda"];
+        this.$observacoes = object["observacoes"];
+        this.$combustivel_id = object["combustivel"];
+    }
+    validarVeiculo(ehInsercao) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let erros = [];
+            if (!ehInsercao && !this.$id) {
+                erros.push(new index_1.Mensagem("Identificador do veículo não informado.", "erro"));
+            }
+            if (!this.$modelo_id) {
+                erros.push(new index_1.Mensagem("É obrigatório informar um modelo.", "erro"));
+            }
+            else {
+                let modelo = yield dao_1.ModeloDAO.buscarModeloPorId(this.$modelo_id);
+                if (!modelo) {
+                    erros.push(new index_1.Mensagem("Modelo informado não cadastrado.", "erro"));
+                }
+            }
+            if (!this.$anoFabricacao) {
+                erros.push(new index_1.Mensagem("É obrigatório informar o ano de fabricação.", "erro"));
+            }
+            if (!this.$anoModelo) {
+                erros.push(new index_1.Mensagem("É obrigatório informar o ano do modelo.", "erro"));
+            }
+            if (this.$cidade_id) {
+                let cidade = yield dao_1.CidadeDAO.buscaCidadePorId(this.$cidade_id);
+                if (!cidade) {
+                    erros.push(new index_1.Mensagem(`Cidade informada (${this.$cidade_id}) não cadastrada.`, "erro"));
+                }
+            }
+            if (!this.$valorAnuncio || this.$valorAnuncio <= 0) {
+                erros.push(new index_1.Mensagem("É obrigatório informar um valor para anuncio.", "erro"));
+            }
+            if (this.$valorCompra && this.$valorCompra <= 0) {
+                erros.push(new index_1.Mensagem("Valor de compra inválido.", "erro"));
+            }
+            if (this.$valorVenda && this.$valorVenda <= 0) {
+                erros.push(new index_1.Mensagem("Valor de venda inválido.", "erro"));
+            }
+            if (!this.$cor_id) {
+                erros.push(new index_1.Mensagem("É obrigatório informar uma cor.", "erro"));
+            }
+            else {
+                let cor = yield dao_1.CorDAO.buscaCorPorId(this.$cor_id);
+                if (!cor) {
+                    erros.push(new index_1.Mensagem(`Cor informada (${this.$cor_id}) não cadastrada.`, "erro"));
+                }
+            }
+            if (this.$combustivel_id) {
+                let combustivel = yield dao_1.CombustivelDAO.buscaCombustivelPorId(this.$combustivel_id);
+                if (!combustivel) {
+                    erros.push(new index_1.Mensagem(`Combustível informado (${this.$combustivel_id}) não cadastrado.`, "erro"));
+                }
+            }
+            return erros;
+        });
     }
 }
 exports.Veiculo = Veiculo;
