@@ -134,14 +134,21 @@ export class VeiculoEditarComponent implements OnInit {
   }
 
   public selecionouTipoVeiculo() {
-    this.veiculo.$modelo.$marca.$id = null;
-    this.veiculo.$modelo.$id = null;
     this.marcas = [];
     this.modelos = [];
     this.carregando = true;
     this.service
       .buscarMarcasPorTipoVeiculo(this.veiculo.$modelo.$marca.$tipoVeiculo.$id)
       .then((marcas: Marca[]) => {
+        this.veiculo.$modelo = new Modelo(
+          null,
+          null,
+          new Marca(
+            null,
+            null,
+            new TipoVeiculo(this.veiculo.$modelo.$marca.$tipoVeiculo.$id)
+          )
+        );
         this.marcas = marcas;
         this.carregando = false;
       })
@@ -150,11 +157,19 @@ export class VeiculoEditarComponent implements OnInit {
 
   public selecionouMarca() {
     this.carregando = true;
-    this.veiculo.$modelo.$id = null;
     this.modelos = [];
     this.service
       .buscarModelosPorMarca(this.veiculo.$modelo.$marca.$id)
       .then((modelos: Modelo[]) => {
+        this.veiculo.$modelo = new Modelo(
+          null,
+          null,
+          new Marca(
+            this.veiculo.$modelo.$marca.$id,
+            null,
+            new TipoVeiculo(this.veiculo.$modelo.$marca.$tipoVeiculo.$id)
+          )
+        );
         this.modelos = modelos;
         this.carregando = false;
       })
@@ -163,11 +178,15 @@ export class VeiculoEditarComponent implements OnInit {
 
   public selecionouEstado() {
     this.carregando = true;
-    this.veiculo.$cidade.$id = null;
     this.cidades = [];
     this.service
       .buscarCidades(this.veiculo.$cidade.$estado.$id)
       .then((cidades: Cidade[]) => {
+        this.veiculo.$cidade = new Cidade(
+          null,
+          null,
+          new Estado(this.veiculo.$cidade.$estado.$id)
+        );
         this.cidades = cidades;
         this.carregando = false;
       })

@@ -28,6 +28,8 @@ export class DropdownTypeaheadComponent {
         elemento => elemento[this.fieldValue] == value[this.fieldValue]
       )[this.fieldDisplay];
       this.elementoView.nativeElement.value = selected;
+    } else {
+      this.elementoView.nativeElement.value = "";
     }
   }
   private _model: any;

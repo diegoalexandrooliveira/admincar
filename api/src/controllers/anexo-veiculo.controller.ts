@@ -17,6 +17,10 @@ export class AnexoVeiculoController {
     return `anexoPrincipal(veiculoId: Int): AnexoVeiculo`;
   }
 
+  // public static getMutations(): string {
+  //   return `uploadFile(file: Upload): Boolean`;
+  // }
+
   public static getQueryResolvers(): Object {
     return {
       anexoPrincipal: (root, args) => {

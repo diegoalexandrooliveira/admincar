@@ -10,6 +10,9 @@ class AnexoVeiculoController {
     static getQueries() {
         return `anexoPrincipal(veiculoId: Int): AnexoVeiculo`;
     }
+    // public static getMutations(): string {
+    //   return `uploadFile(file: Upload): Boolean`;
+    // }
     static getQueryResolvers() {
         return {
             anexoPrincipal: (root, args) => {
