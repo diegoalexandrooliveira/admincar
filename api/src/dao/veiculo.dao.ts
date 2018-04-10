@@ -120,7 +120,7 @@ export class VeiculoDAO {
   public static atualizarVeiculo(
     client: Client,
     veiculo: Veiculo
-  ): Promise<Veiculo> {
+  ): Promise<{ rows: number; client: Client }> {
     let update = `UPDATE veiculo
     SET modelo_id=$1, ano_fabricacao=$2, ano_modelo=$3, placa=$4, renavam=$5, 
         chassi=$6, cidade_id=$7, valor_compra=$8, valor_anunciado=$9, 
@@ -136,26 +136,26 @@ export class VeiculoDAO {
         })
         .then(() =>
           client.query(update, [
-            // veiculo.$idModelo,
-            // veiculo.$anoFabricacao,
-            // veiculo.$anoModelo,
-            // veiculo.$placa,
-            // veiculo.$renavam,
-            // veiculo.$chassi,
-            // veiculo.$idCidade,
-            // veiculo.$valorCompra,
-            // veiculo.$valorAnuncio,
-            // veiculo.$valorVenda,
-            // veiculo.$dataVenda,
-            // veiculo.$observacoes,
-            // veiculo.$dataAquisicao,
-            // veiculo.$idCor,
-            // veiculo.$idCombustivel,
-            // veiculo.$id
+            veiculo.$modelo_id,
+            veiculo.$anoFabricacao,
+            veiculo.$anoModelo,
+            veiculo.$placa,
+            veiculo.$renavam,
+            veiculo.$chassi,
+            veiculo.$cidade_id,
+            veiculo.$valorCompra,
+            veiculo.$valorAnuncio,
+            veiculo.$valorVenda,
+            veiculo.$dataVenda,
+            veiculo.$observacoes,
+            veiculo.$dataAquisicao,
+            veiculo.$cor_id,
+            veiculo.$combustivel_id,
+            veiculo.$id
           ])
         )
         .then((result: QueryResult) => {
-          resolve(veiculo);
+          resolve({ rows: result.rowCount, client: client });
         })
         .catch(error => {
           logger.error(`veiculo.dao.atualizarVeiculo - ${error}`);

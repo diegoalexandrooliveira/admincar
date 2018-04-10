@@ -29,7 +29,8 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
 
   public static getMutations(): string {
     return `excluirVeiculo(id: Int): Boolean
-    inserirVeiculo(veiculo: VeiculoInput): Int`;
+    inserirVeiculo(veiculo: VeiculoInput): Int
+    atualizarVeiculo(veiculo: VeiculoInput): Int`;
   }
 
   public static getQueryResolvers(): Object {
@@ -42,7 +43,8 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
   public static getMutationsResolvers(): Object {
     return {
       excluirVeiculo: this.excluirVeiculo,
-      inserirVeiculo: this.inserirVeiculo
+      inserirVeiculo: this.inserirVeiculo,
+      atualizarVeiculo: this.atualizarVeiculo
     };
   }
 
@@ -147,6 +149,29 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
             .then(retorno => {
               clientFactory.commit(retorno.client);
               resolve(retorno.id);
+            })
+            .catch(erro => reject(erro));
+        }
+      });
+    });
+  }
+
+  public static atualizarVeiculo(root, args): Promise<number> {
+    return new Promise((resolve, reject) => {
+      let veiculo = new Veiculo();
+      veiculo.toModel(args.veiculo);
+      veiculo.validarVeiculo(false).then((erros: Mensagem[]) => {
+        if (erros.length > 0) {
+          reject(JSON.stringify(erros));
+        } else {
+          clientFactory
+            .getClient()
+            .then((client: Client) =>
+              VeiculoDAO.atualizarVeiculo(client, veiculo)
+            )
+            .then(retorno => {
+              clientFactory.commit(retorno.client);
+              resolve(retorno.rows);
             })
             .catch(erro => reject(erro));
         }

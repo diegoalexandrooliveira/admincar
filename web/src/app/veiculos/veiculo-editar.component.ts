@@ -77,7 +77,7 @@ export class VeiculoEditarComponent implements OnInit {
       promises.push(this.service.buscarEstados());
       if (idVeiculo) {
         this.edicao = true;
-        // this.titulo = `Editar ${nomeUsuario}`;
+        promises.push(this.service.recuperarVeiculoPorId(idVeiculo));
       } else {
         this.titulo = "Adicionar um veículo";
         this.edicao = false;
@@ -89,9 +89,45 @@ export class VeiculoEditarComponent implements OnInit {
           this.combustiveis = value[2];
           this.estados = value[3];
           if (this.edicao) {
-            // carregar veiculo
+            let veiculoRecuperado = value[4];
+            promises = [];
+            promises.push(
+              this.service.buscarMarcasPorTipoVeiculo(
+                veiculoRecuperado["modelo"]["marca"]["tipoVeiculo"]["id"]
+              )
+            );
+            promises.push(
+              this.service.buscarModelosPorMarca(
+                veiculoRecuperado["modelo"]["marca"]["id"]
+              )
+            );
+            promises.push(
+              this.service.buscarCidades(
+                veiculoRecuperado["cidade"]["estado"]["id"]
+              )
+            );
+            this.titulo = `Editar ${veiculoRecuperado.modelo.marca.descricao}/${
+              veiculoRecuperado.modelo.descricao
+            } ${veiculoRecuperado.anoFabricacao.toString()}/${veiculoRecuperado.anoModelo.toString()}`;
+            Promise.all(promises)
+              .then(value2 => {
+                this.marcas = value2[0];
+                this.modelos = value2[1];
+                this.cidades = value2[2];
+                this.veiculo = veiculoRecuperado;
+                if (!this.veiculo.$cidade) {
+                  this.veiculo.$cidade = new Cidade();
+                  this.veiculo.$cidade.$estado = new Estado();
+                }
+                if (!this.veiculo.$combustivel) {
+                  this.veiculo.$combustivel = new Combustivel();
+                }
+                this.carregando = false;
+              })
+              .catch(this.erroBackEnd.bind(this));
+          } else {
+            this.carregando = false;
           }
-          this.carregando = false;
         })
         .catch(this.erroBackEnd.bind(this));
     });
@@ -152,7 +188,7 @@ export class VeiculoEditarComponent implements OnInit {
   public salvar(): void {
     let acao: Function;
     if (this.edicao) {
-      // acao = this.service.alterarUsuario.bind(this.service);
+      acao = this.service.atualizarVeiculo.bind(this.service);
     } else {
       acao = this.service.incluirVeiculo.bind(this.service);
     }
@@ -164,13 +200,9 @@ export class VeiculoEditarComponent implements OnInit {
         this.mensagens = retorno["erros"];
       } else {
         if (this.edicao) {
-          // this.mensagens = Array.of(
-          //   new Mensagem(
-          //     `Usuário ${this.usuario.nome} alterado com sucesso.`,
-          //     "success"
-          //   )
-          // );
-          // this.usuario.senha = "";
+          this.mensagens = Array.of(
+            new Mensagem(`Veículo alterado com sucesso.`, "success")
+          );
         } else {
           let mensagem: DataShared = {
             origin: DataOrigin.VEICULOS_EDITAR,

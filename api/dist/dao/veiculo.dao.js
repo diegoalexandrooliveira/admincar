@@ -95,9 +95,26 @@ class VeiculoDAO {
                 .then((begin) => {
                 return;
             })
-                .then(() => client.query(update, []))
+                .then(() => client.query(update, [
+                veiculo.$modelo_id,
+                veiculo.$anoFabricacao,
+                veiculo.$anoModelo,
+                veiculo.$placa,
+                veiculo.$renavam,
+                veiculo.$chassi,
+                veiculo.$cidade_id,
+                veiculo.$valorCompra,
+                veiculo.$valorAnuncio,
+                veiculo.$valorVenda,
+                veiculo.$dataVenda,
+                veiculo.$observacoes,
+                veiculo.$dataAquisicao,
+                veiculo.$cor_id,
+                veiculo.$combustivel_id,
+                veiculo.$id
+            ]))
                 .then((result) => {
-                resolve(veiculo);
+                resolve({ rows: result.rowCount, client: client });
             })
                 .catch(error => {
                 utils_1.logger.error(`veiculo.dao.atualizarVeiculo - ${error}`);

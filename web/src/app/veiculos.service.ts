@@ -20,7 +20,7 @@ export class VeiculosService {
   private excluir: string;
   private alterar: string;
   private todosList: string;
-  private porUsuario: string;
+  private veiculoPorId: string;
   private tipoVeiculo: string;
   private marcas: string;
   private modelos: string;
@@ -49,6 +49,46 @@ export class VeiculosService {
           url
         }
         dataVenda
+      }
+    }`;
+    this.veiculoPorId = `{
+      veiculo(id:$id){
+        id
+        modelo{
+          id
+          descricao
+          marca{
+            id
+            descricao
+            tipoVeiculo{
+              id
+            }
+          }
+        }
+        anoFabricacao
+        anoModelo
+        placa
+        renavam
+        chassi
+        cor{
+          id
+        }
+        cidade{
+          id
+          estado{
+            id
+          }
+        }
+        dataInclusao
+        dataAquisicao
+        dataVenda
+        valorCompra
+        valorVenda
+        valorAnuncio
+        observacoes
+        combustivel{
+          id
+        }
       }
     }`;
     this.excluir = `mutation { 
@@ -120,14 +160,26 @@ export class VeiculosService {
         combustivel: $combustivel
       })
     }`;
-    this.alterar = `mutation {
-            alterarUsuario(usuario:{
-              usuario:"$nome"
-              senha: "$senha"
-            }) {
-              usuario
-            }
-          }`;
+    this.alterar = `mutation{
+      atualizarVeiculo(veiculo:{
+        modelo: $modelo
+        anoFabricacao: $anoFabricacao
+        anoModelo: $anoModelo
+        placa: $placa
+        renavam: $renavam
+        chassi: $chassi
+        cor: $cor
+        cidade: $cidade
+        dataAquisicao: $dataAquisicao
+        dataVenda: $dataVenda
+        valorAnuncio: $valorAnuncio
+        valorCompra: $valorCompra
+        valorVenda: $valorVenda
+        observacoes: $observacoes
+        combustivel: $combustivel
+        id: $id
+      })
+    }`;
   }
 
   public recuperarTodosList(situacao: string = "todos"): Promise<Veiculo[]> {
@@ -163,6 +215,50 @@ export class VeiculosService {
             )
         )
       )
+      .toPromise();
+  }
+
+  public recuperarVeiculoPorId(id: number): Promise<Veiculo> {
+    return this.graphql
+      .request(this.veiculoPorId.replace("$id", id.toString()))
+      .map((resposta: Resposta) => {
+        let veiculo = resposta.dados["veiculo"];
+        let cidade = veiculo.cidade;
+        let combustivel = veiculo.combustivel;
+        return new Veiculo(
+          veiculo.id,
+          new Modelo(
+            veiculo.modelo.id,
+            veiculo.modelo.descricao,
+            new Marca(
+              veiculo.modelo.marca.id,
+              veiculo.modelo.marca.descricao,
+              new TipoVeiculo(veiculo.modelo.marca.tipoVeiculo.id)
+            )
+          ),
+          veiculo.anoFabricacao,
+          veiculo.anoModelo,
+          veiculo.placa,
+          veiculo.renavam,
+          veiculo.chassi,
+          new Cor(veiculo.cor.id),
+          new Cidade(
+            cidade ? veiculo.cidade.id : null,
+            null,
+            new Estado(cidade ? veiculo.cidade.estado.id : null, null)
+          ),
+          veiculo.dataInclusao ? new Date(veiculo.dataInclusao) : null,
+          veiculo.dataAquisicao ? new Date(veiculo.dataAquisicao) : null,
+          veiculo.dataVenda ? new Date(veiculo.dataVenda) : null,
+          veiculo.valorCompra,
+          veiculo.valorVenda,
+          veiculo.valorAnuncio,
+          veiculo.observacoes,
+          combustivel ? new Combustivel(veiculo.combustivel.id) : null,
+          null,
+          null
+        );
+      })
       .toPromise();
   }
 
@@ -246,6 +342,9 @@ export class VeiculosService {
   }
 
   public buscarCidades(estadoId: number): Promise<Cidade[]> {
+    if (!estadoId) {
+      return null;
+    }
     return this.graphql
       .request(this.cidades.replace("$estadoId", estadoId.toString()))
       .map((resposta: Resposta) =>
@@ -316,7 +415,7 @@ export class VeiculosService {
           )
           .replace(
             "$combustivel",
-            veiculo.$combustivel.$id
+            veiculo.$combustivel && veiculo.$combustivel.$id
               ? veiculo.$combustivel.$id.toString()
               : "null"
           )
@@ -333,21 +432,81 @@ export class VeiculosService {
       .toPromise();
   }
 
-  public alterarUsuario(usuario: Usuario): Observable<Mensagem[]> {
+  public atualizarVeiculo(
+    veiculo: Veiculo
+  ): Promise<{ rows: number; erros: Mensagem[] }> {
     return this.graphql
       .request(
         this.alterar
-          .replace("$nome", usuario.nome)
-          .replace("$senha", usuario.senha)
+          .replace(
+            "$modelo",
+            veiculo.$modelo.$id ? veiculo.$modelo.$id.toString() : "null"
+          )
+          .replace(
+            "$anoFabricacao",
+            veiculo.$anoFabricacao ? veiculo.$anoFabricacao.toString() : "null"
+          )
+          .replace(
+            "$anoModelo",
+            veiculo.$anoModelo ? veiculo.$anoModelo.toString() : "null"
+          )
+          .replace("$placa", veiculo.$placa ? `"${veiculo.$placa}"` : "null")
+          .replace(
+            "$renavam",
+            veiculo.$renavam ? `"${veiculo.$renavam}"` : "null"
+          )
+          .replace("$chassi", veiculo.$chassi ? `"${veiculo.$chassi}"` : "null")
+          .replace(
+            "$cor",
+            veiculo.$cor.$id ? veiculo.$cor.$id.toString() : "null"
+          )
+          .replace(
+            "$cidade",
+            veiculo.$cidade.$id ? veiculo.$cidade.$id.toString() : "null"
+          )
+          .replace(
+            "$dataAquisicao",
+            veiculo.$dataAquisicao
+              ? `"${veiculo.$dataAquisicao.toJSON()}"`
+              : "null"
+          )
+          .replace(
+            "$dataVenda",
+            veiculo.$dataVenda ? `"${veiculo.$dataVenda.toJSON()}"` : "null"
+          )
+          .replace(
+            "$valorAnuncio",
+            veiculo.$valorAnuncio ? veiculo.$valorAnuncio.toString() : "null"
+          )
+          .replace(
+            "$valorCompra",
+            veiculo.$valorCompra ? veiculo.$valorCompra.toString() : "null"
+          )
+          .replace(
+            "$valorVenda",
+            veiculo.$valorVenda ? veiculo.$valorVenda.toString() : "null"
+          )
+          .replace(
+            "$observacoes",
+            veiculo.$observacoes ? `"${veiculo.$observacoes}"` : "null"
+          )
+          .replace(
+            "$combustivel",
+            veiculo.$combustivel && veiculo.$combustivel.$id
+              ? veiculo.$combustivel.$id.toString()
+              : "null"
+          )
+          .replace("$id", veiculo.$id ? veiculo.$id.toString() : "null")
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
           let erros = JSON.parse(resposta.erro[0].message).map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
-          return erros;
+          return { rows: null, erros: erros };
         }
-        return null;
-      });
+        return { rows: resposta.dados["atualizarVeiculo"], erros: null };
+      })
+      .toPromise();
   }
 }

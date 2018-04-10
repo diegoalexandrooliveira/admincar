@@ -1,10 +1,10 @@
 import {
   Component,
-  OnInit,
   ViewChild,
   Output,
   EventEmitter,
-  Input
+  Input,
+  ElementRef
 } from "@angular/core";
 import { Subject } from "rxjs/Subject";
 import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
@@ -15,21 +15,30 @@ import { Observable } from "rxjs/Observable";
   templateUrl: "./dropdown-typeahead.component.html",
   styleUrls: ["./dropdown-typeahead.component.css"]
 })
-export class DropdownTypeaheadComponent implements OnInit {
+export class DropdownTypeaheadComponent {
   @Input() values: any[];
   @Input() fieldFilter: string;
   @Input() fieldDisplay: string;
   @Input() fieldValue: string;
-  @Input() model: any;
+  @Input()
+  set model(value: any) {
+    this._model = value;
+    if (value && value[this.fieldValue]) {
+      let selected = this.values.find(
+        elemento => elemento[this.fieldValue] == value[this.fieldValue]
+      )[this.fieldDisplay];
+      this.elementoView.nativeElement.value = selected;
+    }
+  }
+  private _model: any;
   @Output() modelChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() whenSelectItem = new EventEmitter();
+  @ViewChild("elemento") elementoView: ElementRef;
   constructor() {}
 
-  ngOnInit() {}
-
   public selecionouItem(eventItem) {
-    this.model[this.fieldValue] = eventItem[this.fieldValue];
-    this.modelChange.emit(this.model);
+    this._model[this.fieldValue] = eventItem[this.fieldValue];
+    this.modelChange.emit(this._model);
     this.whenSelectItem.emit();
   }
 
