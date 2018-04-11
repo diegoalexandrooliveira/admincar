@@ -39,7 +39,7 @@ import localePt from "@angular/common/locales/pt";
 import { registerLocaleData } from "@angular/common";
 import { LoadingComponent } from "./loading/loading.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { DropdownTypeaheadComponent } from './dropdown-typeahead/dropdown-typeahead.component';
+import { DropdownTypeaheadComponent } from "./dropdown-typeahead/dropdown-typeahead.component";
 
 @NgModule({
   declarations: [

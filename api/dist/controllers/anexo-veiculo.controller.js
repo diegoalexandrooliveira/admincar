@@ -8,7 +8,8 @@ class AnexoVeiculoController {
             principal: Boolean}`;
     }
     static getQueries() {
-        return `anexoPrincipal(veiculoId: Int): AnexoVeiculo`;
+        return `anexoPrincipal(veiculoId: Int): AnexoVeiculo
+            anexos(veiculoId: Int): [AnexoVeiculo]`;
     }
     // public static getMutations(): string {
     //   return `uploadFile(file: Upload): Boolean`;
@@ -24,6 +25,9 @@ class AnexoVeiculoController {
                         return anexo;
                     }
                 });
+            },
+            anexos: (root, args) => {
+                return index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(args.veiculoId);
             }
         };
     }

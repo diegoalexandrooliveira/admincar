@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import { Veiculo } from "../models/veiculo.model";
 import { Mensagem } from "../models/mensagem.model";
 import { VeiculosService } from "../veiculos.service";
@@ -26,6 +32,8 @@ import { Cidade } from "../models/cidade.model";
 import { I18n } from "../utils/i18n";
 import { DatePickeri18n } from "../utils/DatePickeri18n";
 import { DateAdapter, DateFormatter } from "../utils/DateAdapter";
+import { AnexoVeiculo } from "../models/anexo-veiculo.model";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-veiculo-editar",
@@ -51,14 +59,33 @@ export class VeiculoEditarComponent implements OnInit {
   public combustiveis: Combustivel[] = [];
   public estados: Estado[] = [];
   public cidades: Cidade[] = [];
+  @ViewChild("anexoInput") anexosInput: ElementRef;
+  public anexosVeiculo: AnexoVeiculo[];
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,
     private dataShareService: DataShareService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
+    this.anexosInput.nativeElement.addEventListener(
+      "change",
+      this.uploadImagem.bind(this)
+    );
+
+    // console.log(this.anexosInput.nativeElement.files);
+    // var image = document.createElement("img");
+    // image.src = window.URL.createObjectURL(
+    //   this.anexosInput.nativeElement.files[0]
+    // );
+    // this.previewAnexo.nativeElement.appendChild(image);
+    // var reader = new FileReader();
+    // reader.onload = function(loadEvent) {
+    //   console.log(loadEvent.target);
+    // };
+    // reader.readAsDataURL(this.anexosInput.nativeElement.files[0]);
     this.carregando = true;
     this.veiculo = new Veiculo();
     this.veiculo.$modelo = new Modelo();
@@ -81,6 +108,7 @@ export class VeiculoEditarComponent implements OnInit {
       } else {
         this.titulo = "Adicionar um veículo";
         this.edicao = false;
+        this.anexosVeiculo = [];
       }
       Promise.all(promises)
         .then(value => {
@@ -115,6 +143,7 @@ export class VeiculoEditarComponent implements OnInit {
                 this.modelos = value2[1];
                 this.cidades = value2[2];
                 this.veiculo = veiculoRecuperado;
+                this.anexosVeiculo = this.veiculo.$anexos;
                 if (!this.veiculo.$cidade) {
                   this.veiculo.$cidade = new Cidade();
                   this.veiculo.$cidade.$estado = new Estado();
@@ -238,5 +267,26 @@ export class VeiculoEditarComponent implements OnInit {
       }
       this.carregando = false;
     });
+  }
+
+  private uploadImagem() {
+    let imagens = this.anexosInput.nativeElement.files;
+    for (let index = 0; index < imagens.length; index++) {
+      this.anexosVeiculo.push(
+        new AnexoVeiculo(
+          null,
+          window.URL.createObjectURL(imagens[index]),
+          false,
+          0,
+          null,
+          imagens[index]
+        )
+      );
+    }
+    imagens = [];
+  }
+
+  public sanitize(url: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }

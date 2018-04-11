@@ -157,6 +157,10 @@
         </textarea>
     </div>
 
-    <br> {{veiculo | json}}
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
+      <label class="custom-file-label" for="customFile">Escolher arquivos</label>
+    </div>
+    <img [src]="sanitize(anexo.url)" *ngFor="let anexo of anexosVeiculo" style="width: 150px;"> {{anexosVeiculo | json}}
   </form>
 </div>

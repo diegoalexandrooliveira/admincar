@@ -255,7 +255,7 @@ export class VeiculosService {
           veiculo.valorAnuncio,
           veiculo.observacoes,
           combustivel ? new Combustivel(veiculo.combustivel.id) : null,
-          null,
+          [],
           null
         );
       })

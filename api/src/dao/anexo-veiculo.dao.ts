@@ -32,6 +32,46 @@ export class AnexoVeiculoDAO {
     });
   }
 
+  public static buscarTodosAnexosPorVeiculo(
+    veiculoId: number
+  ): Promise<AnexoVeiculo[]> {
+    let query = `select id, tipo_arquivo, 
+    url, principal from anexo_veiculo where veiculo_id = $1`;
+
+    return new Promise((resolve, reject) => {
+      clientFactory
+        .query(query, [veiculoId])
+        .then((result: QueryResult) => {
+          let anexo = new AnexoVeiculo();
+          let retorno: AnexoVeiculo[] = [];
+          if (result.rowCount > 0) {
+            anexo.$id = result.rows[0].id;
+            anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
+            anexo.$url = result.rows[0].url;
+            anexo.$principal = result.rows[0].principal;
+          }
+          if (result.rows.length) {
+            retorno = result.rows.map(
+              anexo =>
+                new AnexoVeiculo(
+                  anexo.id,
+                  anexo.tipo_arquivo,
+                  anexo.url,
+                  anexo.principal
+                )
+            );
+          }
+          resolve(retorno);
+        })
+        .catch(error => {
+          logger.error(
+            `anexo-veiculo.dao.buscarTodosAnexosPorVeiculo - ${error}`
+          );
+          reject(`Erro ao tentar recuperar os anexos do veículo ${veiculoId}`);
+        });
+    });
+  }
+
   // public static buscaTodosUsuarios(): Promise<Usuario[]> {
   //   let query = `select usuario, senha from usuario order by usuario`;
 
@@ -54,28 +94,36 @@ export class AnexoVeiculoDAO {
   //   });
   // }
 
-  // public static inserirUsuario(
-  //   client: Client,
-  //   usuario: Usuario
-  // ): Promise<number> {
-  //   let insert = `insert into usuario (usuario, senha) values ($1, $2)`;
+  public static inserirAnexo(
+    client: Client,
+    anexo: AnexoVeiculo
+  ): Promise<number> {
+    let insert = `insert into anexo_veiculo (tipo_arquivo, url, principal, veiculo_id) 
+                  values ($1, $2, $3, $4)`;
 
-  //   return new Promise((resolve, reject) => {
-  //     client
-  //       .query("BEGIN")
-  //       .then((begin: QueryResult) => {
-  //         return;
-  //       })
-  //       .then(() => client.query(insert, [usuario.$usuario, usuario.$senha]))
-  //       .then((result: QueryResult) => {
-  //         resolve(result.rowCount);
-  //       })
-  //       .catch(error => {
-  //         logger.error(`usuario.dao.inserirUsuario - ${error}`);
-  //         reject(`Erro ao inserir o usuário ${usuario.$usuario}`);
-  //       });
-  //   });
-  // }
+    return new Promise((resolve, reject) => {
+      client
+        .query("BEGIN")
+        .then((begin: QueryResult) => {
+          return;
+        })
+        .then(() =>
+          client.query(insert, [
+            anexo.$tipoArquivo,
+            anexo.$url,
+            anexo.$principal,
+            anexo.$veiculoId
+          ])
+        )
+        .then((result: QueryResult) => {
+          resolve(result.rowCount);
+        })
+        .catch(error => {
+          logger.error(`anexo-veiculo.dao.inserirAnexo - ${error}`);
+          reject(`Erro ao inserir o anexo ${anexo.$url}`);
+        });
+    });
+  }
 
   // public static alterarUsuario(
   //   client: Client,

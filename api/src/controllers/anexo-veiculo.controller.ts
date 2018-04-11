@@ -14,7 +14,8 @@ export class AnexoVeiculoController {
   }
 
   public static getQueries(): string {
-    return `anexoPrincipal(veiculoId: Int): AnexoVeiculo`;
+    return `anexoPrincipal(veiculoId: Int): AnexoVeiculo
+            anexos(veiculoId: Int): [AnexoVeiculo]`;
   }
 
   // public static getMutations(): string {
@@ -39,6 +40,9 @@ export class AnexoVeiculoController {
             return anexo;
           }
         });
+      },
+      anexos: (root, args) => {
+        return AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(args.veiculoId);
       }
     };
   }

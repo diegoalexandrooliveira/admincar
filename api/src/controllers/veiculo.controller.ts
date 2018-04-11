@@ -14,7 +14,7 @@ export class VeiculoController {
     return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo }
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo, anexos: [AnexoVeiculo] }
 
 input VeiculoInput { id: Int, modelo: Int, anoFabricacao: Int, anoModelo: Int,
   placa: String, renavam: String, chassi: String, cor: Int, cidade: Int, 
@@ -61,6 +61,10 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
         anexoPrincipal: (veiculo: Veiculo) =>
           AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(veiculo.$id).then(
             (anexo: AnexoVeiculo) => anexo
+          ),
+        anexos: (veiculo: Veiculo) =>
+          AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(veiculo.$id).then(
+            (anexos: AnexoVeiculo[]) => anexos
           )
       }
     };
