@@ -157,14 +157,30 @@
         </textarea>
     </div>
 
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
-      <label class="custom-file-label" for="customFile">Escolher arquivos</label>
+    <div class="imagens-preview">
+      <div class="custom-file linha-inteira">
+        <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
+        <label class="custom-file-label" for="customFile">Escolher arquivos</label>
+      </div>
+
+      <p class="aviso aviso-obrigatorio linha-inteira">As alterações só terão efeito ao salvar o veículo!</p>
+      <p class="aviso-obrigatorio">
+        <i class="material-icons anexo-principal aviso-obrigatorio">check_circle</i> - Imagem de capa do veículo.</p>
+      <p class="aviso-obrigatorio">
+        <i class="material-icons aviso-obrigatorio">visibility</i> - Imagem visível no site.</p>
+      <p class="linha-inteira aviso-obrigatorio">
+        <i class="material-icons aviso-obrigatorio">visibility_off</i> - Imagem não aparece no site.</p>
+
+      <div class="card" *ngFor="let anexo of anexosVeiculo">
+        <img class="card-img-top" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.id}}">
+        <div class="card-body">
+          <i class="material-icons acao-anexo {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}" (click)="marcarComoPrincipal(anexo.id, anexo.principal)">check_circle</i>
+          <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo)">visibility</i>
+          <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo)">visibility_off</i>
+          <i class="material-icons acao-anexo delete-anexo">delete_forever</i>
+          <!-- <i class="material-icons acao-anexo delete-anexo">undo</i> -->
+        </div>
+      </div>
     </div>
-    <img [src]="sanitize(anexo.url)" *ngFor="let anexo of anexosVeiculo" style="width: 150px;">
-    <button (click)="subirImagens()">Subir!</button>
-    {{anexosVeiculo | json}}
-
-
   </form>
 </div>

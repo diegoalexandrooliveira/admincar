@@ -265,8 +265,8 @@ export class VeiculoEditarComponent implements OnInit {
           null,
           window.URL.createObjectURL(imagens[index]),
           false,
-          0,
-          0,
+          1,
+          this.veiculo.$id,
           imagens[index]
         )
       );
@@ -294,5 +294,21 @@ export class VeiculoEditarComponent implements OnInit {
 
   public sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  public marcarComoPrincipal(id: number, principal: boolean) {
+    if (principal) {
+      return;
+    }
+    for (let index = 0; index < this.anexosVeiculo.length; index++) {
+      this.anexosVeiculo[index].$principal =
+        this.anexosVeiculo[index].$id == id;
+    }
+  }
+
+  public alterarPrivacidade(id: number, tipoArquivo: number) {
+    tipoArquivo = tipoArquivo ? 0 : 1;
+    let index = this.anexosVeiculo.findIndex(value => value.$id == id);
+    this.anexosVeiculo[index].$tipoArquivo = tipoArquivo;
   }
 }

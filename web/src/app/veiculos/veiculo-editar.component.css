@@ -1,4 +1,6 @@
-.obrigatorio {
+.obrigatorio,
+.delete-anexo,
+.aviso {
   color: red;
 }
 
@@ -8,4 +10,31 @@
 
 .form-group > label {
   font-weight: bold;
+}
+
+.imagens-preview {
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: 50% 50%;
+}
+
+.imagens-preview > img {
+  width: 100%;
+}
+
+.linha-inteira {
+  grid-column: 1/3;
+}
+
+.acao-anexo {
+  margin: 2px;
+  font-size: 28px;
+}
+
+.anexo-principal {
+  color: green;
+}
+
+.anexo-secundario {
+  color: grey;
 }
