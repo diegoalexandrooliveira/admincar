@@ -47,7 +47,8 @@
         <td class="td-container" scope="row">
           <div class="row-title">
             <img class="rounded border border-dark" src="{{veiculo.anexoPrincipal.url}}" alt="Imagem do veículo">
-            <div>{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}
+            <div>
+              <a class="title" [routerLink]="['editar/', veiculo.id]">{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}</a>
               <span *ngIf="veiculo.dataVenda" class="badge badge-danger badge-pill">Vendido</span>
             </div>
           </div>

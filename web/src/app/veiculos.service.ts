@@ -13,6 +13,7 @@ import { TipoVeiculo } from "./models/tipo-veiculo.model";
 import { Combustivel } from "./models/combustivel.model";
 import { Estado } from "./models/estado.model";
 import { Cidade } from "./models/cidade.model";
+import { HttpService } from "./http.service";
 
 @Injectable()
 export class VeiculosService {
@@ -28,7 +29,10 @@ export class VeiculosService {
   private combustiveis: string;
   private estados: string;
   private cidades: string;
-  constructor(private graphql: GraphqlService) {
+  constructor(
+    private graphql: GraphqlService,
+    private httpService: HttpService
+  ) {
     this.todosList = `{
       veiculos(situacao:"$1"){
         id
@@ -88,6 +92,12 @@ export class VeiculosService {
         observacoes
         combustivel{
           id
+        }
+        anexos{
+          id
+          tipoArquivo
+          url
+          principal
         }
       }
     }`;
@@ -225,6 +235,18 @@ export class VeiculosService {
         let veiculo = resposta.dados["veiculo"];
         let cidade = veiculo.cidade;
         let combustivel = veiculo.combustivel;
+        let anexos: AnexoVeiculo[] = [];
+        veiculo.anexos.forEach(anexo => {
+          anexos.push(
+            new AnexoVeiculo(
+              anexo.id,
+              anexo.url,
+              Boolean(anexo.principal),
+              anexo.tipoArquivo,
+              veiculo.id
+            )
+          );
+        });
         return new Veiculo(
           veiculo.id,
           new Modelo(
@@ -255,7 +277,7 @@ export class VeiculosService {
           veiculo.valorAnuncio,
           veiculo.observacoes,
           combustivel ? new Combustivel(veiculo.combustivel.id) : null,
-          [],
+          anexos,
           null
         );
       })
@@ -506,6 +528,27 @@ export class VeiculosService {
           return { rows: null, erros: erros };
         }
         return { rows: resposta.dados["atualizarVeiculo"], erros: null };
+      })
+      .toPromise();
+  }
+
+  public subirAnexo(anexo: AnexoVeiculo): Promise<AnexoVeiculo> {
+    let body = new FormData();
+    body.append("imagem", anexo.$file);
+    body.append("veiculoId", anexo.$veiculoId.toString());
+    body.append("tipoArquivo", anexo.$tipoArquivo.toString());
+    body.append("principal", String(anexo.$principal));
+    return this.httpService
+      .postMultiPart("uploadFile", body)
+      .map((resposta: Resposta) => {
+        if (resposta.erro) {
+          let erro: Mensagem[] = resposta.erro.map(
+            mensagem => new Mensagem(mensagem.message, mensagem.level)
+          );
+          throw erro;
+        }
+        let retorno: AnexoVeiculo = resposta.dados[0];
+        return retorno;
       })
       .toPromise();
   }

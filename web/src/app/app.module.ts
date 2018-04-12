@@ -40,6 +40,7 @@ import { registerLocaleData } from "@angular/common";
 import { LoadingComponent } from "./loading/loading.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DropdownTypeaheadComponent } from "./dropdown-typeahead/dropdown-typeahead.component";
+import { HttpService } from './http.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { DropdownTypeaheadComponent } from "./dropdown-typeahead/dropdown-typeah
     GraphqlService,
     UsuarioService,
     DataShareService,
-    VeiculosService
+    VeiculosService,
+    HttpService
   ]
 })
 export class AppModule {}

@@ -74,18 +74,6 @@ export class VeiculoEditarComponent implements OnInit {
       "change",
       this.uploadImagem.bind(this)
     );
-
-    // console.log(this.anexosInput.nativeElement.files);
-    // var image = document.createElement("img");
-    // image.src = window.URL.createObjectURL(
-    //   this.anexosInput.nativeElement.files[0]
-    // );
-    // this.previewAnexo.nativeElement.appendChild(image);
-    // var reader = new FileReader();
-    // reader.onload = function(loadEvent) {
-    //   console.log(loadEvent.target);
-    // };
-    // reader.readAsDataURL(this.anexosInput.nativeElement.files[0]);
     this.carregando = true;
     this.veiculo = new Veiculo();
     this.veiculo.$modelo = new Modelo();
@@ -278,12 +266,30 @@ export class VeiculoEditarComponent implements OnInit {
           window.URL.createObjectURL(imagens[index]),
           false,
           0,
-          null,
+          0,
           imagens[index]
         )
       );
     }
     imagens = [];
+  }
+
+  public subirImagens() {
+    this.anexosVeiculo.forEach((imagem: AnexoVeiculo, index: number) => {
+      if (!imagem.$id) {
+        this.carregando = true;
+        this.service
+          .subirAnexo(imagem)
+          .then(imagemUpada => {
+            this.anexosVeiculo[index] = imagemUpada;
+            this.carregando = false;
+          })
+          .catch(erro => {
+            this.carregando = false;
+            this.mensagens = erro;
+          });
+      }
+    });
   }
 
   public sanitize(url: string) {

@@ -30,6 +30,10 @@ tbody {
   color: var(--cor-primaria);
 }
 
+.title {
+  color: var(--cor-primaria);
+}
+
 .row-title > img {
   width: 100px;
 }

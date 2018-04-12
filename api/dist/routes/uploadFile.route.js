@@ -73,15 +73,16 @@ class UploadFileRoute {
             client = result;
             return index_1.AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
         })
-            .then(() => {
+            .then((id) => {
             database_1.clientFactory.commit(client);
-            return res.send();
+            anexoVeiculo.$id = id;
+            return res.json({ data: anexoVeiculo });
         })
             .catch(error => {
             if (client) {
                 database_1.clientFactory.rollback(client);
             }
-            return res.status(400).json(new model_1.Mensagem(error.message, "erro"));
+            return res.json({ erro: new model_1.Mensagem(error.message, "erro") });
         });
     }
     init() {

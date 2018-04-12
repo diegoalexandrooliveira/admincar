@@ -161,6 +161,10 @@
       <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
       <label class="custom-file-label" for="customFile">Escolher arquivos</label>
     </div>
-    <img [src]="sanitize(anexo.url)" *ngFor="let anexo of anexosVeiculo" style="width: 150px;"> {{anexosVeiculo | json}}
+    <img [src]="sanitize(anexo.url)" *ngFor="let anexo of anexosVeiculo" style="width: 150px;">
+    <button (click)="subirImagens()">Subir!</button>
+    {{anexosVeiculo | json}}
+
+
   </form>
 </div>

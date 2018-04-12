@@ -74,7 +74,7 @@ class AnexoVeiculoDAO {
     // }
     static inserirAnexo(client, anexo) {
         let insert = `insert into anexo_veiculo (tipo_arquivo, url, principal, veiculo_id) 
-                  values ($1, $2, $3, $4)`;
+                  values ($1, $2, $3, $4) returning id`;
         return new Promise((resolve, reject) => {
             client
                 .query("BEGIN")
@@ -88,7 +88,7 @@ class AnexoVeiculoDAO {
                 anexo.$veiculoId
             ]))
                 .then((result) => {
-                resolve(result.rowCount);
+                resolve(result.rows[0].id);
             })
                 .catch(error => {
                 utils_1.logger.error(`anexo-veiculo.dao.inserirAnexo - ${error}`);

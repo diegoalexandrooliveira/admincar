@@ -68,7 +68,7 @@ class UploadFileRoute {
         .status(400)
         .json(new Mensagem("Imagem deve ser do tipo jpg.", "erro"));
     }
-    let anexoVeiculo = null;
+    let anexoVeiculo: AnexoVeiculo = null;
     let client = null;
     VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
       .then((veiculo: Veiculo) => {
@@ -105,15 +105,16 @@ class UploadFileRoute {
         client = result;
         return AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
       })
-      .then(() => {
+      .then((id: number) => {
         clientFactory.commit(client);
-        return res.send();
+        anexoVeiculo.$id = id;
+        return res.json({ data: anexoVeiculo });
       })
       .catch(error => {
         if (client) {
           clientFactory.rollback(client);
         }
-        return res.status(400).json(new Mensagem(error.message, "erro"));
+        return res.json({ erro: new Mensagem(error.message, "erro") });
       });
   }
 
