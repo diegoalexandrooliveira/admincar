@@ -36,7 +36,7 @@ export class AnexoVeiculoDAO {
     veiculoId: number
   ): Promise<AnexoVeiculo[]> {
     let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where veiculo_id = $1`;
+    url, principal from anexo_veiculo where veiculo_id = $1 order by principal desc, id`;
 
     return new Promise((resolve, reject) => {
       clientFactory
@@ -72,28 +72,6 @@ export class AnexoVeiculoDAO {
     });
   }
 
-  // public static buscaTodosUsuarios(): Promise<Usuario[]> {
-  //   let query = `select usuario, senha from usuario order by usuario`;
-
-  //   return new Promise((resolve, reject) => {
-  //     clientFactory
-  //       .query(query, [])
-  //       .then((result: QueryResult) => {
-  //         let usuarios: Usuario[];
-  //         if (result.rowCount > 0) {
-  //           usuarios = result.rows.map(
-  //             usuario => new Usuario(usuario.usuario, usuario.senha)
-  //           );
-  //         }
-  //         resolve(usuarios);
-  //       })
-  //       .catch(error => {
-  //         logger.error(`usuario.dao.buscaTodosUsuarios - ${error}`);
-  //         reject(`Erro ao tentar recuperar os usuários`);
-  //       });
-  //   });
-  // }
-
   public static inserirAnexo(
     client: Client,
     anexo: AnexoVeiculo
@@ -125,28 +103,35 @@ export class AnexoVeiculoDAO {
     });
   }
 
-  // public static alterarUsuario(
-  //   client: Client,
-  //   usuario: Usuario
-  // ): Promise<number> {
-  //   let update = `update usuario set senha = $1 where usuario = $2`;
+  public static atualizarAnexo(
+    client: Client,
+    anexo: AnexoVeiculo
+  ): Promise<number> {
+    let update = `update anexo_veiculo set tipo_arquivo = $1, principal= $2
+                  where id = $3`;
 
-  //   return new Promise((resolve, reject) => {
-  //     client
-  //       .query("BEGIN")
-  //       .then((begin: QueryResult) => {
-  //         return;
-  //       })
-  //       .then(() => client.query(update, [usuario.$senha, usuario.$usuario]))
-  //       .then((result: QueryResult) => {
-  //         resolve(result.rowCount);
-  //       })
-  //       .catch(error => {
-  //         logger.error(`usuario.dao.alterarUsuario - ${error}`);
-  //         reject(`Erro ao atualizar o usuário ${usuario.$usuario}`);
-  //       });
-  //   });
-  // }
+    return new Promise((resolve, reject) => {
+      client
+        .query("BEGIN")
+        .then((begin: QueryResult) => {
+          return;
+        })
+        .then(() =>
+          client.query(update, [
+            anexo.$tipoArquivo,
+            anexo.$principal,
+            anexo.$id
+          ])
+        )
+        .then((result: QueryResult) => {
+          resolve(result.rowCount);
+        })
+        .catch(error => {
+          logger.error(`anexo-veiculo.dao.atualizarAnexo - ${error}`);
+          reject(`Erro ao atualizar o anexo ${anexo.$url}`);
+        });
+    });
+  }
 
   public static excluirAnexoVeiculo(
     client: Client,

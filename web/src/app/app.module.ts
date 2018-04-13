@@ -40,7 +40,8 @@ import { registerLocaleData } from "@angular/common";
 import { LoadingComponent } from "./loading/loading.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DropdownTypeaheadComponent } from "./dropdown-typeahead/dropdown-typeahead.component";
-import { HttpService } from './http.service';
+import { HttpService } from "./http.service";
+import { ProgressHttpModule } from "angular-progress-http";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { HttpService } from './http.service';
     FormsModule,
     ChartsModule,
     CurrencyMaskModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ProgressHttpModule
   ],
   bootstrap: [AppComponent],
   providers: [

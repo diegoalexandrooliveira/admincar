@@ -179,8 +179,14 @@
           <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo)">visibility_off</i>
           <i class="material-icons acao-anexo delete-anexo">delete_forever</i>
           <!-- <i class="material-icons acao-anexo delete-anexo">undo</i> -->
+          <div class="progress" *ngIf="anexo.file && uploadEmAndamento">
+            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar" [attr.aria-valuenow]="anexo.progressUpload"
+              aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- {{anexosVeiculo | json}} -->
   </form>
 </div>

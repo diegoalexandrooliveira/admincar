@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
-import { Headers, Http, Response } from "@angular/http";
+import { Headers, Response, Http } from "@angular/http";
 import { LoginService } from "./login.service";
 import { configs } from "./config/configs";
 import { Observable } from "rxjs/Observable";
 import { Resposta } from "./models/resposta.model";
+import { ProgressHttp } from "angular-progress-http";
 
 @Injectable()
 export class HttpService {
   private url: string;
-  constructor(private loginService: LoginService, private http: Http) {
+  constructor(private loginService: LoginService, private http: ProgressHttp) {
     this.url = configs.url + "/api/";
   }
 
@@ -19,9 +20,16 @@ export class HttpService {
     return header;
   }
 
-  public postMultiPart(service: string, body: FormData): Observable<Resposta> {
+  public postMultiPart(
+    service: string,
+    body: FormData,
+    callBackProgress: Function
+  ): Observable<Resposta> {
     let url = this.url + service;
     return this.http
+      .withUploadProgressListener(progress => {
+        callBackProgress(progress);
+      })
       .post(url, body, {
         headers: this.headers()
       })

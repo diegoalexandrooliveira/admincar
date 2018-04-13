@@ -63,7 +63,7 @@ class UploadFileRoute {
             .then(result => {
             let tipoArquivo = req.body["tipoArquivo"] >= 0 ? req.body["tipoArquivo"] : 0;
             let principal = req.body["principal"]
-                ? new Boolean(req.body["principal"])
+                ? req.body["principal"] == "true"
                 : false;
             let veiculoId = req.body["veiculoId"];
             anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, result["secure_url"], principal.valueOf(), veiculoId);

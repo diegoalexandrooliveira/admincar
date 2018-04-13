@@ -29,6 +29,7 @@
 .acao-anexo {
   margin: 2px;
   font-size: 28px;
+  cursor: pointer;
 }
 
 .anexo-principal {
@@ -37,4 +38,8 @@
 
 .anexo-secundario {
   color: grey;
+}
+
+.progress {
+  width: 100%;
 }

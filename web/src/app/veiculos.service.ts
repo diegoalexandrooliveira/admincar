@@ -14,6 +14,7 @@ import { Combustivel } from "./models/combustivel.model";
 import { Estado } from "./models/estado.model";
 import { Cidade } from "./models/cidade.model";
 import { HttpService } from "./http.service";
+import { Progress } from "angular-progress-http";
 
 @Injectable()
 export class VeiculosService {
@@ -29,6 +30,7 @@ export class VeiculosService {
   private combustiveis: string;
   private estados: string;
   private cidades: string;
+  private atualizarAnexos: string;
   constructor(
     private graphql: GraphqlService,
     private httpService: HttpService
@@ -190,6 +192,8 @@ export class VeiculosService {
         id: $id
       })
     }`;
+    this.atualizarAnexos = `update$id: atualizarAnexo(anexo: {id: $id, tipoArquivo: $tipoArquivo, principal: $principal})
+    `;
   }
 
   public recuperarTodosList(situacao: string = "todos"): Promise<Veiculo[]> {
@@ -539,9 +543,11 @@ export class VeiculosService {
     body.append("tipoArquivo", anexo.$tipoArquivo.toString());
     body.append("principal", String(anexo.$principal));
     return this.httpService
-      .postMultiPart("uploadFile", body)
+      .postMultiPart("uploadFile", body, (progress: Progress) => {
+        anexo.$progressUpload = progress.percentage;
+      })
       .map((resposta: Resposta) => {
-        if (resposta.erro) {
+        if (resposta.erro[0]) {
           let erro: Mensagem[] = resposta.erro.map(
             mensagem => new Mensagem(mensagem.message, mensagem.level)
           );
@@ -551,5 +557,30 @@ export class VeiculosService {
         return retorno;
       })
       .toPromise();
+  }
+
+  public atualizarAnexo(anexos: AnexoVeiculo[]): Promise<Mensagem[]> {
+    if (anexos.length) {
+      let payload = "";
+      anexos.forEach(anexo => {
+        payload +=
+          `
+        ` +
+          this.atualizarAnexos
+            .replace("$id", anexo.$id.toString())
+            .replace("$id", anexo.$id.toString())
+            .replace("$tipoArquivo", anexo.$tipoArquivo.toString())
+            .replace("$principal", String(anexo.$principal));
+      });
+      payload = `mutation {${payload}}`;
+      return this.graphql
+        .request(payload)
+        .map((resposta: Resposta) => {
+          return null;
+        })
+        .toPromise();
+    } else {
+      return Promise.resolve(null);
+    }
   }
 }

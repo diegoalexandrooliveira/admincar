@@ -61,6 +61,7 @@ export class VeiculoEditarComponent implements OnInit {
   public cidades: Cidade[] = [];
   @ViewChild("anexoInput") anexosInput: ElementRef;
   public anexosVeiculo: AnexoVeiculo[];
+  public uploadEmAndamento: boolean = false;
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,
@@ -72,7 +73,7 @@ export class VeiculoEditarComponent implements OnInit {
   ngOnInit() {
     this.anexosInput.nativeElement.addEventListener(
       "change",
-      this.uploadImagem.bind(this)
+      this.escolheuArquivo.bind(this)
     );
     this.carregando = true;
     this.veiculo = new Veiculo();
@@ -230,11 +231,58 @@ export class VeiculoEditarComponent implements OnInit {
     }
 
     this.carregando = true;
-
-    acao(this.veiculo).then(retorno => {
-      if (retorno["erros"]) {
-        this.mensagens = retorno["erros"];
+    let idVeiculo = this.veiculo.$id;
+    let anexosAlterados: AnexoVeiculo[] = [];
+    let anexosIncluidos: AnexoVeiculo[] = [];
+    this.anexosVeiculo.forEach(anexo => {
+      if (anexo.$file) {
+        anexosIncluidos.push(anexo);
       } else {
+        anexosAlterados.push(anexo);
+      }
+    });
+
+    acao(this.veiculo)
+      .then(retorno => {
+        if (retorno["erros"]) {
+          throw retorno["erros"];
+        }
+        return retorno["id"];
+      })
+      .then(retorno => {
+        idVeiculo = retorno;
+
+        if (this.edicao) {
+          return this.service.atualizarAnexo(anexosAlterados);
+        } else {
+          anexosIncluidos = anexosIncluidos.map(anexo => {
+            anexo.$veiculoId = idVeiculo;
+            return anexo;
+          });
+        }
+        return;
+      })
+      .then(() => this.subirImagens(anexosIncluidos))
+      .then(anexos => {
+        if (anexos.length) {
+          this.uploadEmAndamento = false;
+          this.anexosVeiculo = this.anexosVeiculo.filter(anexo => !anexo.$file);
+          anexos.forEach(value => {
+            this.anexosVeiculo.push(
+              new AnexoVeiculo(
+                value.id,
+                value.url,
+                value.principal,
+                value.tipoArquivo,
+                value.veiculoId
+              )
+            );
+          });
+        }
+        return;
+      })
+      .then(() => {
+        this.carregando = false;
         if (this.edicao) {
           this.mensagens = Array.of(
             new Mensagem(`Veículo alterado com sucesso.`, "success")
@@ -244,7 +292,7 @@ export class VeiculoEditarComponent implements OnInit {
             origin: DataOrigin.VEICULOS_EDITAR,
             data: Array.of(
               new Mensagem(
-                `Veículo ${retorno["id"]} incluído com sucesso.`,
+                `Veículo ${idVeiculo} incluído com sucesso.`,
                 "success"
               )
             )
@@ -252,17 +300,19 @@ export class VeiculoEditarComponent implements OnInit {
           this.dataShareService.shareData(mensagem);
           this.router.navigate(["/app/veiculos"]);
         }
-      }
-      this.carregando = false;
-    });
+      })
+      .catch(erro => {
+        this.mensagens = erro;
+        this.carregando = false;
+      });
   }
 
-  private uploadImagem() {
+  private escolheuArquivo() {
     let imagens = this.anexosInput.nativeElement.files;
     for (let index = 0; index < imagens.length; index++) {
       this.anexosVeiculo.push(
         new AnexoVeiculo(
-          null,
+          Math.random(),
           window.URL.createObjectURL(imagens[index]),
           false,
           1,
@@ -274,22 +324,15 @@ export class VeiculoEditarComponent implements OnInit {
     imagens = [];
   }
 
-  public subirImagens() {
-    this.anexosVeiculo.forEach((imagem: AnexoVeiculo, index: number) => {
-      if (!imagem.$id) {
-        this.carregando = true;
-        this.service
-          .subirAnexo(imagem)
-          .then(imagemUpada => {
-            this.anexosVeiculo[index] = imagemUpada;
-            this.carregando = false;
-          })
-          .catch(erro => {
-            this.carregando = false;
-            this.mensagens = erro;
-          });
-      }
-    });
+  private subirImagens(anexos: AnexoVeiculo[]) {
+    let promises: Promise<AnexoVeiculo>[] = [];
+    promises = anexos.map((anexo: AnexoVeiculo) =>
+      this.service.subirAnexo(anexo)
+    );
+    if (promises.length) {
+      this.uploadEmAndamento = true;
+    }
+    return Promise.all(promises);
   }
 
   public sanitize(url: string) {
@@ -307,6 +350,10 @@ export class VeiculoEditarComponent implements OnInit {
   }
 
   public alterarPrivacidade(id: number, tipoArquivo: number) {
+    console.log(id);
+    console.log(tipoArquivo);
+    console.log(this.anexosVeiculo);
+
     tipoArquivo = tipoArquivo ? 0 : 1;
     let index = this.anexosVeiculo.findIndex(value => value.$id == id);
     this.anexosVeiculo[index].$tipoArquivo = tipoArquivo;

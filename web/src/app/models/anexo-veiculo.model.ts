@@ -7,6 +7,7 @@ export class AnexoVeiculo {
   private tipoArquivo: number;
   private veiculoId: number;
   private file: any;
+  private progressUpload: number;
 
   constructor(
     id?: number,
@@ -67,5 +68,12 @@ export class AnexoVeiculo {
   }
   public set $file(file: any) {
     this.file = file;
+  }
+
+  public set $progressUpload(progressUpload: number) {
+    this.progressUpload = progressUpload;
+  }
+  public get $progressUpload() {
+    return this.progressUpload;
   }
 }
