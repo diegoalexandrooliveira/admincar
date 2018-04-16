@@ -18,6 +18,10 @@ tbody {
   background-color: white;
 }
 
+.row-title > img {
+  box-shadow: 3px 2px 20px black;
+}
+
 .td-container {
   display: grid;
   grid-gap: 0.5rem;

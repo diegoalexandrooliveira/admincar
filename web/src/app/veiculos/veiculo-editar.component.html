@@ -176,16 +176,20 @@
       <div class="card" *ngFor="let anexo of anexosVeiculo">
         <img class="card-img-top {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.id}}">
         <div class="card-body">
-          <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
-            (click)="marcarComoPrincipal(anexo.id, anexo.principal, anexo.excluir)">check_circle</i>
-          <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}}" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility</i>
-          <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}}" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility_off</i>
-          <i *ngIf="!anexo.excluir" class="material-icons acao-anexo delete-anexo" (click)="alterarStatusExclusao(anexo.id)">delete_forever</i>
-          <i *ngIf="anexo.excluir" class="material-icons acao-anexo" (click)="alterarStatusExclusao(anexo.id)">undo</i>
-          <div class="progress" *ngIf="anexo.file && !anexo.excluir && uploadEmAndamento">
-            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar"
-              [attr.aria-valuenow]="anexo.progressUpload" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="botoes-imagem rounded">
+            <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
+              (click)="marcarComoPrincipal(anexo.id, anexo.principal, anexo.excluir)">check_circle</i>
+            <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
+              (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility</i>
+            <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
+              (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility_off</i>
+            <i *ngIf="!anexo.excluir" class="material-icons acao-anexo delete-anexo" (click)="alterarStatusExclusao(anexo.id)">delete_forever</i>
+            <i *ngIf="anexo.excluir" class="material-icons acao-anexo anexo-outras-acoes" (click)="alterarStatusExclusao(anexo.id)">undo</i>
           </div>
+        </div>
+        <div class="progress" *ngIf="anexo.file && !anexo.excluir && uploadEmAndamento">
+          <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar"
+            [attr.aria-valuenow]="anexo.progressUpload" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
     </div>
