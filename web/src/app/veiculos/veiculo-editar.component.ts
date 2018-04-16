@@ -232,13 +232,16 @@ export class VeiculoEditarComponent implements OnInit {
 
     this.carregando = true;
     let idVeiculo = this.veiculo.$id;
-    let anexosAlterados: AnexoVeiculo[] = [];
-    let anexosIncluidos: AnexoVeiculo[] = [];
+    let anexosParaAlterar: AnexoVeiculo[] = [];
+    let anexosParaIncluir: AnexoVeiculo[] = [];
+    let anexosParaExcluir: AnexoVeiculo[] = [];
     this.anexosVeiculo.forEach(anexo => {
-      if (anexo.$file) {
-        anexosIncluidos.push(anexo);
-      } else {
-        anexosAlterados.push(anexo);
+      if (anexo.$excluir && !anexo.$file) {
+        anexosParaExcluir.push(anexo);
+      } else if (!anexo.$excluir && anexo.$file) {
+        anexosParaIncluir.push(anexo);
+      } else if (!anexo.$excluir) {
+        anexosParaAlterar.push(anexo);
       }
     });
 
@@ -253,20 +256,21 @@ export class VeiculoEditarComponent implements OnInit {
         idVeiculo = retorno;
 
         if (this.edicao) {
-          return this.service.atualizarAnexo(anexosAlterados);
+          return this.service.atualizarAnexo(anexosParaAlterar);
         } else {
-          anexosIncluidos = anexosIncluidos.map(anexo => {
+          anexosParaIncluir = anexosParaIncluir.map(anexo => {
             anexo.$veiculoId = idVeiculo;
             return anexo;
           });
         }
         return;
       })
-      .then(() => this.subirImagens(anexosIncluidos))
+      .then(() => this.service.excluirAnexo(anexosParaExcluir))
+      .then(() => this.subirImagens(anexosParaIncluir))
       .then(anexos => {
+        this.anexosVeiculo = this.anexosVeiculo.filter(anexo => !anexo.$file && !anexo.$excluir);
         if (anexos.length) {
           this.uploadEmAndamento = false;
-          this.anexosVeiculo = this.anexosVeiculo.filter(anexo => !anexo.$file);
           anexos.forEach(value => {
             this.anexosVeiculo.push(
               new AnexoVeiculo(
@@ -339,8 +343,8 @@ export class VeiculoEditarComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
-  public marcarComoPrincipal(id: number, principal: boolean) {
-    if (principal) {
+  public marcarComoPrincipal(id: number, principal: boolean, excluir: boolean) {
+    if (principal || excluir) {
       return;
     }
     for (let index = 0; index < this.anexosVeiculo.length; index++) {
@@ -349,13 +353,17 @@ export class VeiculoEditarComponent implements OnInit {
     }
   }
 
-  public alterarPrivacidade(id: number, tipoArquivo: number) {
-    console.log(id);
-    console.log(tipoArquivo);
-    console.log(this.anexosVeiculo);
-
+  public alterarPrivacidade(id: number, tipoArquivo: number, excluir: boolean) {
+    if(excluir){
+      return;
+    }
     tipoArquivo = tipoArquivo ? 0 : 1;
     let index = this.anexosVeiculo.findIndex(value => value.$id == id);
     this.anexosVeiculo[index].$tipoArquivo = tipoArquivo;
+  }
+
+  public alterarStatusExclusao(id: number) {
+    let index = this.anexosVeiculo.findIndex(value => value.$id == id);
+    this.anexosVeiculo[index].$excluir = !this.anexosVeiculo[index].$excluir;
   }
 }

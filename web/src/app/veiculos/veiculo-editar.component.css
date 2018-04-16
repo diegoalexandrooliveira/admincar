@@ -43,3 +43,28 @@
 .progress {
   width: 100%;
 }
+
+.anexo-deletado {
+  opacity: 0.4;
+}
+
+.sem-margem {
+  margin: 0;
+}
+
+@media (min-width: 992px) {
+  .grid-form {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 0.5rem;
+    display: grid;
+  }
+
+  .linha-inteira {
+    grid-column: 1/5;
+  }
+
+  .imagens-preview {
+    grid-column: 1/5;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}

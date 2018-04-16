@@ -26,6 +26,28 @@ class AnexoVeiculoDAO {
             });
         });
     }
+    static buscaAnexoPorId(id) {
+        let query = `select id, tipo_arquivo, 
+    url, principal from anexo_veiculo where id = $1`;
+        return new Promise((resolve, reject) => {
+            index_2.clientFactory
+                .query(query, [id])
+                .then((result) => {
+                let anexo = new index_1.AnexoVeiculo();
+                if (result.rowCount > 0) {
+                    anexo.$id = result.rows[0].id;
+                    anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
+                    anexo.$url = result.rows[0].url;
+                    anexo.$principal = result.rows[0].principal;
+                }
+                resolve(anexo);
+            })
+                .catch(error => {
+                utils_1.logger.error(`anexo-veiculo.dao.buscaAnexoPorId - ${error}`);
+                reject(`Erro ao tentar recuperar o anexo ${id}`);
+            });
+        });
+    }
     static buscarTodosAnexosPorVeiculo(veiculoId) {
         let query = `select id, tipo_arquivo, 
     url, principal from anexo_veiculo where veiculo_id = $1 order by principal desc, id`;

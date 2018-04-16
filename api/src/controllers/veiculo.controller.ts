@@ -8,6 +8,7 @@ import { Veiculo, AnexoVeiculo, Mensagem } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
 import { clientFactory } from "../database";
 import { Client } from "pg";
+import { AnexoVeiculoController } from ".";
 
 export class VeiculoController {
   public static getType(): string {
@@ -42,7 +43,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
 
   public static getMutationsResolvers(): Object {
     return {
-      excluirVeiculo: this.excluirVeiculo,
+      excluirVeiculo: this.excluirVeiculo.bind(this),
       inserirVeiculo: this.inserirVeiculo,
       atualizarVeiculo: this.atualizarVeiculo
     };
@@ -100,39 +101,72 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
     }
   }
 
+  // private static excluirVeiculo(root, args): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     clientFactory
+  //       .getClient()
+  //       .then((client: Client) => {
+  //         AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
+  //           .then((row: number) => {
+  //             VeiculoDAO.deletarVeiculo(client, args.id)
+  //               .then(rows => {
+  //                 clientFactory.commit(client);
+  //                 if (rows) {
+  //                   return resolve(true);
+  //                 } else {
+  //                   return reject(
+  //                     JSON.stringify(
+  //                       Array.of(
+  //                         new Mensagem("Nenhum veículo removido.", "warn")
+  //                       )
+  //                     )
+  //                   );
+  //                 }
+  //               })
+  //               .catch(erro => {
+  //                 clientFactory.rollback(client);
+  //                 reject(erro);
+  //               });
+  //           })
+  //           .catch(erro => {
+  //             clientFactory.rollback(client);
+  //             reject(erro);
+  //           });
+  //       })
+  //       .catch(erro => reject(erro));
+  //   });
+  // }
+
   private static excluirVeiculo(root, args): Promise<boolean> {
+    let client = null;
     return new Promise((resolve, reject) => {
-      clientFactory
-        .getClient()
-        .then((client: Client) => {
-          AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
-            .then((row: number) => {
-              VeiculoDAO.deletarVeiculo(client, args.id)
-                .then(rows => {
-                  clientFactory.commit(client);
-                  if (rows) {
-                    return resolve(true);
-                  } else {
-                    return reject(
-                      JSON.stringify(
-                        Array.of(
-                          new Mensagem("Nenhum veículo removido.", "warn")
-                        )
-                      )
-                    );
-                  }
-                })
-                .catch(erro => {
-                  clientFactory.rollback(client);
-                  reject(erro);
-                });
-            })
-            .catch(erro => {
-              clientFactory.rollback(client);
-              reject(erro);
-            });
+      this.excluirTodosAnexosDoVeiculo(args.id)
+        .then(() => clientFactory.getClient())
+        .then((result: Client) => {
+          client = result;
+          return AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id);
         })
-        .catch(erro => reject(erro));
+        .then((row: number) => {
+          return VeiculoDAO.deletarVeiculo(client, args.id);
+        })
+        .then(rows => {
+          clientFactory.commit(client);
+          if (rows) {
+            return resolve(true);
+          } else {
+            return reject(
+              JSON.stringify(
+                Array.of(new Mensagem("Nenhum veículo removido.", "warn"))
+              )
+            );
+          }
+        })
+        .catch(erro => {
+          if (client) {
+            clientFactory.rollback(client);
+          }
+          reject(erro);
+        });
     });
   }
 
@@ -181,5 +215,16 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
         }
       });
     });
+  }
+
+  private static excluirTodosAnexosDoVeiculo(id: number) {
+    return AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(id).then(
+      (anexos: AnexoVeiculo[]) =>
+        Promise.all(
+          anexos.map(anexo =>
+            AnexoVeiculoController.deletarImagemCloudinary(anexo.$id)
+          )
+        )
+    );
   }
 }

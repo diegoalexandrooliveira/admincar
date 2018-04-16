@@ -96,7 +96,7 @@ class UploadFileRoute {
           null,
           tipoArquivo,
           result["secure_url"],
-          principal.valueOf(),
+          principal,
           veiculoId
         );
         return clientFactory.getClient();

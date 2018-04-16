@@ -8,6 +8,7 @@ export class AnexoVeiculo {
   private veiculoId: number;
   private file: any;
   private progressUpload: number;
+  private excluir: boolean;
 
   constructor(
     id?: number,
@@ -26,6 +27,7 @@ export class AnexoVeiculo {
     this.tipoArquivo = tipoArquivo;
     this.veiculoId = veiculoId;
     this.file = file;
+    this.excluir = false;
   }
 
   public get $id() {
@@ -75,5 +77,12 @@ export class AnexoVeiculo {
   }
   public get $progressUpload() {
     return this.progressUpload;
+  }
+
+  public get $excluir() {
+    return this.excluir;
+  }
+  public set $excluir(excluir: boolean) {
+    this.excluir = excluir;
   }
 }

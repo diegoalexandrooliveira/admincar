@@ -32,6 +32,30 @@ export class AnexoVeiculoDAO {
     });
   }
 
+  public static buscaAnexoPorId(id: number): Promise<AnexoVeiculo> {
+    let query = `select id, tipo_arquivo, 
+    url, principal from anexo_veiculo where id = $1`;
+
+    return new Promise((resolve, reject) => {
+      clientFactory
+        .query(query, [id])
+        .then((result: QueryResult) => {
+          let anexo = new AnexoVeiculo();
+          if (result.rowCount > 0) {
+            anexo.$id = result.rows[0].id;
+            anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
+            anexo.$url = result.rows[0].url;
+            anexo.$principal = result.rows[0].principal;
+          }
+          resolve(anexo);
+        })
+        .catch(error => {
+          logger.error(`anexo-veiculo.dao.buscaAnexoPorId - ${error}`);
+          reject(`Erro ao tentar recuperar o anexo ${id}`);
+        });
+    });
+  }
+
   public static buscarTodosAnexosPorVeiculo(
     veiculoId: number
   ): Promise<AnexoVeiculo[]> {

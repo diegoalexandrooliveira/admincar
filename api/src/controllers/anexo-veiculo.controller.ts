@@ -5,9 +5,11 @@ import {
   AnexoVeiculoDAO
 } from "../dao/index";
 import { Veiculo, AnexoVeiculo } from "../model/index";
-import { cores, combustiveis } from "../cache/index";
 import { clientFactory } from "../database";
 import { Client } from "pg";
+import { configs } from "../config/configs";
+import * as cloudinary from "cloudinary";
+import { logger } from "../utils";
 
 export class AnexoVeiculoController {
   public static getType(): string {
@@ -22,7 +24,8 @@ export class AnexoVeiculoController {
   }
 
   public static getMutations(): string {
-    return `atualizarAnexo(anexo: AnexoVeiculoInput): Int`;
+    return `atualizarAnexo(anexo: AnexoVeiculoInput): Int,
+            excluirAnexo(id: Int): Int`;
   }
 
   public static getQueryResolvers(): Object {
@@ -51,7 +54,10 @@ export class AnexoVeiculoController {
   }
 
   public static getMutationsResolvers(): Object {
-    return { atualizarAnexo: this.atualizarAnexo };
+    return {
+      atualizarAnexo: this.atualizarAnexo,
+      excluirAnexo: this.deletarAnexo.bind(this)
+    };
   }
 
   public static atualizarAnexo(root, args): Promise<number> {
@@ -80,6 +86,46 @@ export class AnexoVeiculoController {
           reject(erro);
         });
     });
+  }
+
+  public static deletarAnexo(root, args) {
+    let client = null;
+    return new Promise((resolve, reject) => {
+      this.deletarImagemCloudinary(args.id)
+        .then(() => clientFactory.getClient())
+        .then((result: Client) => {
+          client = result;
+          return AnexoVeiculoDAO.excluirAnexoVeiculo(client, args.id);
+        })
+        .then((rows: number) => {
+          clientFactory.commit(client);
+          resolve(rows);
+        })
+        .catch(erro => {
+          if (client) {
+            clientFactory.rollback(client);
+          }
+          logger.error(`anexo-veiculo.controller.deletarAnexo - ${erro}`);
+          reject(erro);
+        });
+    });
+  }
+
+  public static deletarImagemCloudinary(idAnexo: number) {
+    return AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then(
+      (anexo: AnexoVeiculo) => {
+        let idCloudinary = anexo.$url.substring(
+          anexo.$url.lastIndexOf("/") + 1,
+          anexo.$url.lastIndexOf(".j")
+        );
+        cloudinary.config({
+          cloud_name: configs.Cloudinary.cloudName,
+          api_key: configs.Cloudinary.apiKey,
+          api_secret: configs.Cloudinary.apiSecret
+        });
+        return cloudinary.v2.uploader.destroy(idCloudinary);
+      }
+    );
   }
 
   public static getResolvers(): Object {

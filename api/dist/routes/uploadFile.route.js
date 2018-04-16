@@ -66,7 +66,7 @@ class UploadFileRoute {
                 ? req.body["principal"] == "true"
                 : false;
             let veiculoId = req.body["veiculoId"];
-            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, result["secure_url"], principal.valueOf(), veiculoId);
+            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, result["secure_url"], principal, veiculoId);
             return database_1.clientFactory.getClient();
         })
             .then((result) => {

@@ -16,10 +16,10 @@
       <span>Salvar</span>
     </button>
   </div>
+  <p class="aviso-obrigatorio">Campos obrigatórios
+    <span class="obrigatorio"> *</span>
+  </p>
   <form class="grid-form">
-    <p class="aviso-obrigatorio">Campos obrigatórios
-      <span class="obrigatorio"> *</span>
-    </p>
     <div class="form-group">
       <label for="tipoVeiculo">Tipo veículo
         <span class="obrigatorio"> *</span>
@@ -160,33 +160,34 @@
     <div class="imagens-preview">
       <div class="custom-file linha-inteira">
         <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
-        <label class="custom-file-label" for="customFile">Escolher arquivos</label>
+        <label class="custom-file-label" for="customFile">Incluir fotos</label>
       </div>
 
-      <p class="aviso aviso-obrigatorio linha-inteira">As alterações só terão efeito ao salvar o veículo!</p>
-      <p class="aviso-obrigatorio">
-        <i class="material-icons anexo-principal aviso-obrigatorio">check_circle</i> - Imagem de capa do veículo.</p>
-      <p class="aviso-obrigatorio">
-        <i class="material-icons aviso-obrigatorio">visibility</i> - Imagem visível no site.</p>
-      <p class="linha-inteira aviso-obrigatorio">
-        <i class="material-icons aviso-obrigatorio">visibility_off</i> - Imagem não aparece no site.</p>
+      <div class="linha-inteira">
+        <p class="aviso aviso-obrigatorio sem-margem">As alterações só terão efeito ao salvar o veículo!</p>
+        <p class="aviso-obrigatorio sem-margem">
+          <i class="material-icons anexo-principal aviso-obrigatorio">check_circle</i> - Imagem de capa do veículo.</p>
+        <p class="aviso-obrigatorio sem-margem">
+          <i class="material-icons aviso-obrigatorio">visibility</i> - Imagem visível no site.</p>
+        <p class="linha-inteira aviso-obrigatorio sem-margem">
+          <i class="material-icons aviso-obrigatorio">visibility_off</i> - Imagem não aparece no site.</p>
+      </div>
 
       <div class="card" *ngFor="let anexo of anexosVeiculo">
-        <img class="card-img-top" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.id}}">
+        <img class="card-img-top {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.id}}">
         <div class="card-body">
-          <i class="material-icons acao-anexo {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}" (click)="marcarComoPrincipal(anexo.id, anexo.principal)">check_circle</i>
-          <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo)">visibility</i>
-          <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo)">visibility_off</i>
-          <i class="material-icons acao-anexo delete-anexo">delete_forever</i>
-          <!-- <i class="material-icons acao-anexo delete-anexo">undo</i> -->
-          <div class="progress" *ngIf="anexo.file && uploadEmAndamento">
-            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar" [attr.aria-valuenow]="anexo.progressUpload"
-              aria-valuemin="0" aria-valuemax="100"></div>
+          <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
+            (click)="marcarComoPrincipal(anexo.id, anexo.principal, anexo.excluir)">check_circle</i>
+          <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}}" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility</i>
+          <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}}" (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility_off</i>
+          <i *ngIf="!anexo.excluir" class="material-icons acao-anexo delete-anexo" (click)="alterarStatusExclusao(anexo.id)">delete_forever</i>
+          <i *ngIf="anexo.excluir" class="material-icons acao-anexo" (click)="alterarStatusExclusao(anexo.id)">undo</i>
+          <div class="progress" *ngIf="anexo.file && !anexo.excluir && uploadEmAndamento">
+            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar"
+              [attr.aria-valuenow]="anexo.progressUpload" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- {{anexosVeiculo | json}} -->
   </form>
 </div>

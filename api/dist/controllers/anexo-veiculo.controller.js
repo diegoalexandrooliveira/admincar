@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../dao/index");
 const index_2 = require("../model/index");
 const database_1 = require("../database");
+const configs_1 = require("../config/configs");
+const cloudinary = require("cloudinary");
+const utils_1 = require("../utils");
 class AnexoVeiculoController {
     static getType() {
         return `type AnexoVeiculo { id: Int, tipoArquivo: Int, url: String, veiculoId: Int,
@@ -14,7 +17,8 @@ class AnexoVeiculoController {
             anexos(veiculoId: Int): [AnexoVeiculo]`;
     }
     static getMutations() {
-        return `atualizarAnexo(anexo: AnexoVeiculoInput): Int`;
+        return `atualizarAnexo(anexo: AnexoVeiculoInput): Int,
+            excluirAnexo(id: Int): Int`;
     }
     static getQueryResolvers() {
         return {
@@ -34,7 +38,10 @@ class AnexoVeiculoController {
         };
     }
     static getMutationsResolvers() {
-        return { atualizarAnexo: this.atualizarAnexo };
+        return {
+            atualizarAnexo: this.atualizarAnexo,
+            excluirAnexo: this.deletarAnexo.bind(this)
+        };
     }
     static atualizarAnexo(root, args) {
         return new Promise((resolve, reject) => {
@@ -56,6 +63,39 @@ class AnexoVeiculoController {
                 }
                 reject(erro);
             });
+        });
+    }
+    static deletarAnexo(root, args) {
+        let client = null;
+        return new Promise((resolve, reject) => {
+            this.deletarImagemCloudinary(args.id)
+                .then(() => database_1.clientFactory.getClient())
+                .then((result) => {
+                client = result;
+                return index_1.AnexoVeiculoDAO.excluirAnexoVeiculo(client, args.id);
+            })
+                .then((rows) => {
+                database_1.clientFactory.commit(client);
+                resolve(rows);
+            })
+                .catch(erro => {
+                if (client) {
+                    database_1.clientFactory.rollback(client);
+                }
+                utils_1.logger.error(`anexo-veiculo.controller.deletarAnexo - ${erro}`);
+                reject(erro);
+            });
+        });
+    }
+    static deletarImagemCloudinary(idAnexo) {
+        return index_1.AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then((anexo) => {
+            let idCloudinary = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.lastIndexOf(".j"));
+            cloudinary.config({
+                cloud_name: configs_1.configs.Cloudinary.cloudName,
+                api_key: configs_1.configs.Cloudinary.apiKey,
+                api_secret: configs_1.configs.Cloudinary.apiSecret
+            });
+            return cloudinary.v2.uploader.destroy(idCloudinary);
         });
     }
     static getResolvers() {

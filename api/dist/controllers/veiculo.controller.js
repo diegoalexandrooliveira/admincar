@@ -4,6 +4,7 @@ const index_1 = require("../dao/index");
 const index_2 = require("../model/index");
 const index_3 = require("../cache/index");
 const database_1 = require("../database");
+const _1 = require(".");
 class VeiculoController {
     static getType() {
         return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
@@ -33,7 +34,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
     }
     static getMutationsResolvers() {
         return {
-            excluirVeiculo: this.excluirVeiculo,
+            excluirVeiculo: this.excluirVeiculo.bind(this),
             inserirVeiculo: this.inserirVeiculo,
             atualizarVeiculo: this.atualizarVeiculo
         };
@@ -73,34 +74,68 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
             return false;
         }
     }
+    // private static excluirVeiculo(root, args): Promise<boolean> {
+    //   return new Promise((resolve, reject) => {
+    //     clientFactory
+    //       .getClient()
+    //       .then((client: Client) => {
+    //         AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
+    //           .then((row: number) => {
+    //             VeiculoDAO.deletarVeiculo(client, args.id)
+    //               .then(rows => {
+    //                 clientFactory.commit(client);
+    //                 if (rows) {
+    //                   return resolve(true);
+    //                 } else {
+    //                   return reject(
+    //                     JSON.stringify(
+    //                       Array.of(
+    //                         new Mensagem("Nenhum veículo removido.", "warn")
+    //                       )
+    //                     )
+    //                   );
+    //                 }
+    //               })
+    //               .catch(erro => {
+    //                 clientFactory.rollback(client);
+    //                 reject(erro);
+    //               });
+    //           })
+    //           .catch(erro => {
+    //             clientFactory.rollback(client);
+    //             reject(erro);
+    //           });
+    //       })
+    //       .catch(erro => reject(erro));
+    //   });
+    // }
     static excluirVeiculo(root, args) {
+        let client = null;
         return new Promise((resolve, reject) => {
-            database_1.clientFactory
-                .getClient()
-                .then((client) => {
-                index_1.AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
-                    .then((row) => {
-                    index_1.VeiculoDAO.deletarVeiculo(client, args.id)
-                        .then(rows => {
-                        database_1.clientFactory.commit(client);
-                        if (rows) {
-                            return resolve(true);
-                        }
-                        else {
-                            return reject(JSON.stringify(Array.of(new index_2.Mensagem("Nenhum veículo removido.", "warn"))));
-                        }
-                    })
-                        .catch(erro => {
-                        database_1.clientFactory.rollback(client);
-                        reject(erro);
-                    });
-                })
-                    .catch(erro => {
-                    database_1.clientFactory.rollback(client);
-                    reject(erro);
-                });
+            this.excluirTodosAnexosDoVeiculo(args.id)
+                .then(() => database_1.clientFactory.getClient())
+                .then((result) => {
+                client = result;
+                return index_1.AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id);
             })
-                .catch(erro => reject(erro));
+                .then((row) => {
+                return index_1.VeiculoDAO.deletarVeiculo(client, args.id);
+            })
+                .then(rows => {
+                database_1.clientFactory.commit(client);
+                if (rows) {
+                    return resolve(true);
+                }
+                else {
+                    return reject(JSON.stringify(Array.of(new index_2.Mensagem("Nenhum veículo removido.", "warn"))));
+                }
+            })
+                .catch(erro => {
+                if (client) {
+                    database_1.clientFactory.rollback(client);
+                }
+                reject(erro);
+            });
         });
     }
     static inserirVeiculo(root, args) {
@@ -145,6 +180,9 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
                 }
             });
         });
+    }
+    static excluirTodosAnexosDoVeiculo(id) {
+        return index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(id).then((anexos) => Promise.all(anexos.map(anexo => _1.AnexoVeiculoController.deletarImagemCloudinary(anexo.$id))));
     }
 }
 exports.VeiculoController = VeiculoController;

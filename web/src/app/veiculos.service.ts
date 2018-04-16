@@ -31,6 +31,7 @@ export class VeiculosService {
   private estados: string;
   private cidades: string;
   private atualizarAnexos: string;
+  private excluirAnexos: string;
   constructor(
     private graphql: GraphqlService,
     private httpService: HttpService
@@ -194,6 +195,7 @@ export class VeiculosService {
     }`;
     this.atualizarAnexos = `update$id: atualizarAnexo(anexo: {id: $id, tipoArquivo: $tipoArquivo, principal: $principal})
     `;
+    this.excluirAnexos = `delete$id: excluirAnexo(id: $id)`;
   }
 
   public recuperarTodosList(situacao: string = "todos"): Promise<Veiculo[]> {
@@ -571,6 +573,29 @@ export class VeiculosService {
             .replace("$id", anexo.$id.toString())
             .replace("$tipoArquivo", anexo.$tipoArquivo.toString())
             .replace("$principal", String(anexo.$principal));
+      });
+      payload = `mutation {${payload}}`;
+      return this.graphql
+        .request(payload)
+        .map((resposta: Resposta) => {
+          return null;
+        })
+        .toPromise();
+    } else {
+      return Promise.resolve(null);
+    }
+  }
+
+  public excluirAnexo(anexos: AnexoVeiculo[]): Promise<Mensagem[]> {
+    if (anexos.length) {
+      let payload = "";
+      anexos.forEach(anexo => {
+        payload +=
+          `
+        ` +
+          this.excluirAnexos
+            .replace("$id", anexo.$id.toString())
+            .replace("$id", anexo.$id.toString());
       });
       payload = `mutation {${payload}}`;
       return this.graphql
