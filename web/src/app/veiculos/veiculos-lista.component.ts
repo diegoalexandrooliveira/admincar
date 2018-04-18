@@ -25,6 +25,7 @@ export class VeiculosListaComponent implements OnInit {
   public carregando: boolean = false;
   private ngUnsub: Subscription = new Subscription();
   private onInit: Boolean = false;
+  public textoProcurar: string;
   constructor(
     private service: VeiculosService,
     private route: ActivatedRoute,

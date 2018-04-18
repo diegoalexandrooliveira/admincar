@@ -24,7 +24,7 @@
       <label for="tipoVeiculo">Tipo veículo
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="tipoVeiculo" [values]="tiposVeiculo" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo.marca.tipoVeiculo"
+      <app-dropdown-typeahead name="tipoVeiculo" [values]="tiposVeiculo" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo.$marca.$tipoVeiculo"
         (whenSelectItem)="selecionouTipoVeiculo()" fieldValue="id">
       </app-dropdown-typeahead>
 
@@ -33,7 +33,7 @@
       <label for="marca">Marca
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="marca" [values]="marcas" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo.marca"
+      <app-dropdown-typeahead name="marca" [values]="marcas" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo.$marca"
         (whenSelectItem)="selecionouMarca()" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
@@ -41,7 +41,7 @@
       <label for="modelo">Modelo
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="modelo" [values]="modelos" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.modelo"
+      <app-dropdown-typeahead name="modelo" [values]="modelos" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo"
         fieldValue="id">
       </app-dropdown-typeahead>
     </div>
@@ -51,10 +51,10 @@
       </label>
       <div name="anos" class="form-row">
         <div class="col">
-          <input class="form-control" type="number" name="anoFab" [(ngModel)]="veiculo.anoFabricacao">
+          <input class="form-control" type="number" name="anoFab" [(ngModel)]="veiculo.$anoFabricacao">
         </div>
         <div class="col">
-          <input class="form-control" type="number" name="anoModelo" [(ngModel)]="veiculo.anoModelo">
+          <input class="form-control" type="number" name="anoModelo" [(ngModel)]="veiculo.$anoModelo">
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
           <label for="cor">Cor
             <span class="obrigatorio"> *</span>
           </label>
-          <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.cor"
+          <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$cor"
             fieldValue="id">
           </app-dropdown-typeahead>
         </div>
@@ -74,26 +74,26 @@
           <label for="valorAnuncio">Valor anúncio
             <span class="obrigatorio"> *</span>
           </label>
-          <input currencyMask name="valorAnuncio" class="form-control" [(ngModel)]="veiculo.valorAnuncio" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          <input currencyMask name="valorAnuncio" class="form-control" [(ngModel)]="veiculo.$valorAnuncio" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
           />
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="combustivel">Combustível</label>
-      <app-dropdown-typeahead name="combustivel" [values]="combustiveis" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.combustivel"
+      <app-dropdown-typeahead name="combustivel" [values]="combustiveis" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$combustivel"
         fieldValue="id">
       </app-dropdown-typeahead>
     </div>
     <div class="form-group">
       <label for="estado">Estado</label>
-      <app-dropdown-typeahead name="estado" [values]="estados" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.cidade.estado"
+      <app-dropdown-typeahead name="estado" [values]="estados" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.$cidade.$estado"
         fieldValue="id" (whenSelectItem)="selecionouEstado()">
       </app-dropdown-typeahead>
     </div>
     <div class="form-group">
       <label for="cidade">Cidade</label>
-      <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.cidade"
+      <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.$cidade"
         fieldValue="id">
       </app-dropdown-typeahead>
     </div>
@@ -101,36 +101,36 @@
       <div class="col">
         <div class="form-group">
           <label for="placa">Placa</label>
-          <input type="text" name="placa" [(ngModel)]="veiculo.placa" class="form-control">
+          <input type="text" name="placa" [(ngModel)]="veiculo.$placa" class="form-control">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="renavam">Renavam</label>
-          <input type="text" name="renavam" [(ngModel)]="veiculo.renavam" class="form-control">
+          <input type="text" name="renavam" [(ngModel)]="veiculo.$renavam" class="form-control">
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="chassi">Chassi</label>
-      <input type="text" name="chassi" [(ngModel)]="veiculo.chassi" class="form-control">
+      <input type="text" name="chassi" [(ngModel)]="veiculo.$chassi" class="form-control">
     </div>
     <div class="form-group" *ngIf="edicao">
       <label for="dataInclusao">Data Inclusão</label>
-      <input class="form-control" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.dataInclusao" ngbDatepicker>
+      <input class="form-control" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.$dataInclusao" ngbDatepicker>
     </div>
     <div class="form-row">
       <div class="col">
         <div class="form-group">
           <label for="dataAquisicao">Data aquisição</label>
-          <input class="form-control" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()" [(ngModel)]="veiculo.dataAquisicao"
+          <input class="form-control" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()" [(ngModel)]="veiculo.$dataAquisicao"
             ngbDatepicker #dataAquisicao="ngbDatepicker" autoClose="true">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="valorAquisicao">Valor aquisição</label>
-          <input currencyMask name="valorAquisicao" class="form-control" [(ngModel)]="veiculo.valorCompra" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          <input currencyMask name="valorAquisicao" class="form-control" [(ngModel)]="veiculo.$valorCompra" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
           />
         </div>
       </div>
@@ -139,21 +139,21 @@
       <div class="col">
         <div class="form-group">
           <label for="dataVenda">Data venda</label>
-          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.dataVenda"
+          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.$dataVenda"
             ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="valorVenda">Valor venda</label>
-          <input currencyMask name="valorVenda" class="form-control" [(ngModel)]="veiculo.valorVenda" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
+          <input currencyMask name="valorVenda" class="form-control" [(ngModel)]="veiculo.$valorVenda" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
           />
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="observacoes">Observações</label>
-      <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.observacoes" class="form-control">
+      <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.$observacoes" class="form-control">
         </textarea>
     </div>
 
@@ -174,7 +174,7 @@
       </div>
 
       <div class="card" *ngFor="let anexo of anexosVeiculo">
-        <img class="card-img-top {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.id}}">
+        <img class="card-img-top {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.$id}}">
         <div class="card-body">
           <div class="botoes-imagem rounded">
             <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
@@ -194,4 +194,5 @@
       </div>
     </div>
   </form>
+
 </div>
