@@ -28,8 +28,8 @@ export class UsuariosEditarComponent
   implements AfterViewInit, OnInit, OnDestroy {
   public mensagens: Mensagem[];
   public titulo: string;
-  private usuario: Usuario = new Usuario();
-  private edicao: boolean = false;
+  public usuario: Usuario = new Usuario();
+  public edicao: boolean = false;
   @ViewChild("fieldUsuario") private fieldUsuario: ElementRef;
   @ViewChild("fieldSenha") private fieldSenha: ElementRef;
   public carregando: boolean = false;
