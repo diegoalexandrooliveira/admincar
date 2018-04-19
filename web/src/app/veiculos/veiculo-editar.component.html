@@ -37,6 +37,7 @@
         (whenSelectItem)="selecionouMarca()" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
+
     <div class="form-group">
       <label for="modelo">Modelo
         <span class="obrigatorio"> *</span>
@@ -51,10 +52,10 @@
       </label>
       <div name="anos" class="form-row">
         <div class="col">
-          <input class="form-control" type="number" name="anoFab" [(ngModel)]="veiculo.$anoFabricacao">
+          <input class="form-control ano" type="number" name="anoFab" [(ngModel)]="veiculo.$anoFabricacao">
         </div>
         <div class="col">
-          <input class="form-control" type="number" name="anoModelo" [(ngModel)]="veiculo.$anoModelo">
+          <input class="form-control ano" type="number" name="anoModelo" [(ngModel)]="veiculo.$anoModelo">
         </div>
       </div>
     </div>
@@ -101,30 +102,31 @@
       <div class="col">
         <div class="form-group">
           <label for="placa">Placa</label>
-          <input type="text" name="placa" [(ngModel)]="veiculo.$placa" class="form-control">
+          <input type="text" name="placa" [(ngModel)]="veiculo.$placa" class="form-control alinhamento-texto-centralizado">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="renavam">Renavam</label>
-          <input type="text" name="renavam" [(ngModel)]="veiculo.$renavam" class="form-control">
+          <input type="text" name="renavam" [(ngModel)]="veiculo.$renavam" class="form-control alinhamento-texto-centralizado">
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="chassi">Chassi</label>
-      <input type="text" name="chassi" [(ngModel)]="veiculo.$chassi" class="form-control">
+      <input type="text" name="chassi" [(ngModel)]="veiculo.$chassi" class="form-control alinhamento-texto-centralizado">
     </div>
     <div class="form-group" *ngIf="edicao">
       <label for="dataInclusao">Data Inclusão</label>
-      <input class="form-control" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.$dataInclusao" ngbDatepicker>
+      <input class="form-control alinhamento-texto-centralizado" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.$dataInclusao"
+        ngbDatepicker>
     </div>
     <div class="form-row">
       <div class="col">
         <div class="form-group">
           <label for="dataAquisicao">Data aquisição</label>
-          <input class="form-control" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()" [(ngModel)]="veiculo.$dataAquisicao"
-            ngbDatepicker #dataAquisicao="ngbDatepicker" autoClose="true">
+          <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()"
+            [(ngModel)]="veiculo.$dataAquisicao" ngbDatepicker #dataAquisicao="ngbDatepicker" autoClose="true">
         </div>
       </div>
       <div class="col">
@@ -139,8 +141,8 @@
       <div class="col">
         <div class="form-group">
           <label for="dataVenda">Data venda</label>
-          <input class="form-control" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.$dataVenda"
-            ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true">
+          <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()"
+            [(ngModel)]="veiculo.$dataVenda" ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true">
         </div>
       </div>
       <div class="col">
@@ -158,13 +160,13 @@
     </div>
 
     <div class="imagens-preview">
-      <div class="custom-file linha-inteira">
+      <div class="custom-file linha-inteira browse-files">
         <input type="file" class="custom-file-input" id="customFile" accept=".jpg, .jpeg" multiple #anexoInput>
         <label class="custom-file-label" for="customFile">Incluir fotos</label>
       </div>
 
       <div class="linha-inteira">
-        <p class="aviso aviso-obrigatorio sem-margem">As alterações só terão efeito ao salvar o veículo!</p>
+        <p class="aviso aviso-obrigatorio sem-margem">As alterações nas imagens só terão efeito ao salvar o veículo!</p>
         <p class="aviso-obrigatorio sem-margem">
           <i class="material-icons anexo-principal aviso-obrigatorio">check_circle</i> - Imagem de capa do veículo.</p>
         <p class="aviso-obrigatorio sem-margem">
@@ -174,7 +176,9 @@
       </div>
 
       <div class="card" *ngFor="let anexo of anexosVeiculo">
-        <img class="card-img-top {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.url)" alt="Anexo do veículo {{veiculo.$id}}">
+        <a [href]="sanitize(anexo.$url)" target="_blank">
+          <img class="card-img-top transicao-opacidade {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.$url)" alt="Anexo do veículo {{veiculo.$id}}">
+        </a>
         <div class="card-body">
           <div class="botoes-imagem rounded">
             <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
@@ -192,6 +196,15 @@
             [attr.aria-valuenow]="anexo.progressUpload" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
+    </div>
+    <div class="imagens-carousel rounded" *ngIf="anexosVeiculo && anexosVeiculo.length">
+
+      <ngb-carousel class="sombra rounded">
+        <ng-template ngbSlide *ngFor="let anexo of anexosVeiculo">
+          <img class="img-fluid rounded" [src]="sanitize(anexo.$url)" alt="Imagens">
+        </ng-template>
+      </ngb-carousel>
+
     </div>
   </form>
 
