@@ -69,7 +69,10 @@ export class CustomExpress {
 
   private publicRoutes(): void {
     this._express.use("/api/v1/public/autenticar", routes.autenticacao);
-    this._express.use("/public/images", express.static("./dist/public"));
+    this._express.use(
+      "/public/images",
+      express.static(configs.local.path + "public")
+    );
   }
 
   public getExpress(): express.Express {

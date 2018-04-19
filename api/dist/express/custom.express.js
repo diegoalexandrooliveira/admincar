@@ -12,6 +12,7 @@ const helmet = require("helmet");
 const graphql_1 = require("../graphql");
 const apollo_server_express_1 = require("apollo-server-express");
 const expressFileUpload = require("express-fileupload");
+const configs_1 = require("../config/configs");
 class CustomExpress {
     constructor() {
         this._express = express();
@@ -46,7 +47,7 @@ class CustomExpress {
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);
-        this._express.use("/public/images", express.static("./dist/public"));
+        this._express.use("/public/images", express.static(configs_1.configs.local.path + "public"));
     }
     getExpress() {
         return this._express;
