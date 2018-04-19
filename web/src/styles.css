@@ -1,10 +1,25 @@
 html,
 body {
-  height: 100%;
-  background: url("./assets/background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(
+      #1d1d1d 25%,
+      #1a1a1a 25%,
+      #1a1a1a 50%,
+      transparent 50%,
+      transparent 75%,
+      #242424 75%,
+      #242424
+    );
+  background-color: #131313;
+  background-size: 20px 20px;
+}
+
+.fundo {
+  background-color: transparent;
 }
 
 :root {
@@ -32,8 +47,8 @@ footer {
   padding-bottom: 1rem;
   width: 95%;
   border-radius: 1rem;
-  -webkit-box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.5);
-  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 4px 4px 20px 2px;
+  box-shadow: 4px 4px 20px 2px;
   border: 10px black;
   padding-right: 15px;
   padding-left: 15px;
