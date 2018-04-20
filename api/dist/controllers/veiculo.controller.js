@@ -182,7 +182,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
         });
     }
     static excluirTodosAnexosDoVeiculo(id) {
-        return index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(id).then((anexos) => Promise.all(anexos.map(anexo => _1.AnexoVeiculoController.deletarImagemCloudinary(anexo.$id))));
+        return index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(id).then((anexos) => Promise.all(anexos.map(anexo => _1.AnexoVeiculoController.deleteImageFromStorage(anexo.$id))));
     }
 }
 exports.VeiculoController = VeiculoController;

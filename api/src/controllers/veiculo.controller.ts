@@ -222,7 +222,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
       (anexos: AnexoVeiculo[]) =>
         Promise.all(
           anexos.map(anexo =>
-            AnexoVeiculoController.deletarImagemCloudinary(anexo.$id)
+            AnexoVeiculoController.deleteImageFromStorage(anexo.$id)
           )
         )
     );

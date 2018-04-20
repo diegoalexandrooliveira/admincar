@@ -91,7 +91,7 @@ export class AnexoVeiculoController {
   public static deletarAnexo(root, args) {
     let client = null;
     return new Promise((resolve, reject) => {
-      this.deletarImagemCloudinary(args.id)
+      this.deleteImageFromStorage(args.id)
         .then(() => clientFactory.getClient())
         .then((result: Client) => {
           client = result;
@@ -111,7 +111,7 @@ export class AnexoVeiculoController {
     });
   }
 
-  public static deletarImagemCloudinary(idAnexo: number) {
+  public static deleteImageFromStorage(idAnexo: number) {
     return AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then(
       (anexo: AnexoVeiculo) => {
         let objectKey = anexo.$url.substring(

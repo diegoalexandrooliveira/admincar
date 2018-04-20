@@ -68,7 +68,7 @@ class AnexoVeiculoController {
     static deletarAnexo(root, args) {
         let client = null;
         return new Promise((resolve, reject) => {
-            this.deletarImagemCloudinary(args.id)
+            this.deleteImageFromStorage(args.id)
                 .then(() => database_1.clientFactory.getClient())
                 .then((result) => {
                 client = result;
@@ -87,7 +87,7 @@ class AnexoVeiculoController {
             });
         });
     }
-    static deletarImagemCloudinary(idAnexo) {
+    static deleteImageFromStorage(idAnexo) {
         return index_1.AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then((anexo) => {
             let objectKey = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.length);
             let s3 = new awsS3.S3();
