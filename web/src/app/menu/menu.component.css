@@ -47,6 +47,14 @@ nav {
   font-size: 24px;
 }
 
+nav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 800;
+}
+
 @media (max-width: 991px) {
   #sair {
     padding: 0;
