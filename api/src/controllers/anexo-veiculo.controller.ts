@@ -8,7 +8,6 @@ import { Veiculo, AnexoVeiculo } from "../model/index";
 import { clientFactory } from "../database";
 import { Client } from "pg";
 import { configs } from "../config/configs";
-import * as cloudinary from "cloudinary";
 import { logger } from "../utils";
 import * as awsS3 from "aws-sdk";
 
@@ -115,10 +114,6 @@ export class AnexoVeiculoController {
   public static deletarImagemCloudinary(idAnexo: number) {
     return AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then(
       (anexo: AnexoVeiculo) => {
-        // let idCloudinary = anexo.$url.substring(
-        //   anexo.$url.lastIndexOf("/") + 1,
-        //   anexo.$url.lastIndexOf(".j")
-        // );
         let objectKey = anexo.$url.substring(
           anexo.$url.lastIndexOf("/") + 1,
           anexo.$url.length
@@ -130,12 +125,6 @@ export class AnexoVeiculoController {
             Key: objectKey
           })
           .promise();
-        // cloudinary.config({
-        //   cloud_name: configs.Cloudinary.cloudName,
-        //   api_key: configs.Cloudinary.apiKey,
-        //   api_secret: configs.Cloudinary.apiSecret
-        // });
-        // return cloudinary.v2.uploader.destroy(idCloudinary);
       }
     );
   }

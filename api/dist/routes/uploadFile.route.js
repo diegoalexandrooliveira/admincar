@@ -11,11 +11,6 @@ class UploadFileRoute {
     constructor() {
         this.router = express_1.Router();
         this.init();
-        // cloudinary.config({
-        //   cloud_name: configs.Cloudinary.cloudName,
-        //   api_key: configs.Cloudinary.apiKey,
-        //   api_secret: configs.Cloudinary.apiSecret
-        // });
         awsS3.config.update({
             accessKeyId: configs_1.configs.S3Bucket.accessKeyId,
             secretAccessKey: configs_1.configs.S3Bucket.secretAccessKey
@@ -68,14 +63,7 @@ class UploadFileRoute {
             .fromBuffer(imagem.data)
             .resize({ method: "scale", width: 800 })
             .toBuffer())
-            .then(resizedImage => 
-        // cloudinary.v2.uploader
-        //@ts-ignore
-        // .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
-        //   width: 800,
-        //   crop: "scale"
-        // })
-        s3Bucket
+            .then(resizedImage => s3Bucket
             .putObject({
             Bucket: configs_1.configs.S3Bucket.bucketName,
             Key: imageKey,
@@ -91,22 +79,11 @@ class UploadFileRoute {
                 ? req.body["principal"] == "true"
                 : false;
             let veiculoId = req.body["veiculoId"];
-            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, imageUrl, 
-            // result["secure_url"],
-            principal, veiculoId);
+            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, imageUrl, principal, veiculoId);
             return database_1.clientFactory.getClient();
         })
             .then((result) => {
             client = result;
-            // s3Bucket.putObject(
-            //   {
-            //     Bucket: configs.S3Bucket.bucketName,
-            //     Key: (Math.random() * 1000).toString() + ".JPG",
-            //     //@ts-ignore
-            //     Body: imagem.data,
-            //     ACL: "public-read"
-            //   }
-            // );
             return index_1.AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
         })
             .then((id) => {

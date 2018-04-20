@@ -3,7 +3,6 @@ import { VeiculoDAO, AnexoVeiculoDAO } from "../dao/index";
 import { logger } from "../utils";
 import { Usuario, Mensagem, Resposta, Veiculo, AnexoVeiculo } from "../model";
 import { configs } from "../config/configs";
-import * as cloudinary from "cloudinary";
 import { clientFactory } from "../database";
 import { Client } from "pg";
 import * as awsS3 from "aws-sdk";
@@ -15,11 +14,6 @@ class UploadFileRoute {
   constructor() {
     this.router = Router();
     this.init();
-    // cloudinary.config({
-    //   cloud_name: configs.Cloudinary.cloudName,
-    //   api_key: configs.Cloudinary.apiKey,
-    //   api_secret: configs.Cloudinary.apiSecret
-    // });
     awsS3.config.update({
       accessKeyId: configs.S3Bucket.accessKeyId,
       secretAccessKey: configs.S3Bucket.secretAccessKey
@@ -98,12 +92,6 @@ class UploadFileRoute {
           .toBuffer()
       )
       .then(resizedImage =>
-        // cloudinary.v2.uploader
-        //@ts-ignore
-        // .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
-        //   width: 800,
-        //   crop: "scale"
-        // })
         s3Bucket
           .putObject({
             Bucket: configs.S3Bucket.bucketName,
@@ -126,7 +114,6 @@ class UploadFileRoute {
           null,
           tipoArquivo,
           imageUrl,
-          // result["secure_url"],
           principal,
           veiculoId
         );
@@ -134,15 +121,6 @@ class UploadFileRoute {
       })
       .then((result: Client) => {
         client = result;
-        // s3Bucket.putObject(
-        //   {
-        //     Bucket: configs.S3Bucket.bucketName,
-        //     Key: (Math.random() * 1000).toString() + ".JPG",
-        //     //@ts-ignore
-        //     Body: imagem.data,
-        //     ACL: "public-read"
-        //   }
-        // );
         return AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
       })
       .then((id: number) => {

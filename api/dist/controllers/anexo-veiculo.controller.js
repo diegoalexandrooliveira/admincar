@@ -89,10 +89,6 @@ class AnexoVeiculoController {
     }
     static deletarImagemCloudinary(idAnexo) {
         return index_1.AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then((anexo) => {
-            // let idCloudinary = anexo.$url.substring(
-            //   anexo.$url.lastIndexOf("/") + 1,
-            //   anexo.$url.lastIndexOf(".j")
-            // );
             let objectKey = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.length);
             let s3 = new awsS3.S3();
             return s3
@@ -101,12 +97,6 @@ class AnexoVeiculoController {
                 Key: objectKey
             })
                 .promise();
-            // cloudinary.config({
-            //   cloud_name: configs.Cloudinary.cloudName,
-            //   api_key: configs.Cloudinary.apiKey,
-            //   api_secret: configs.Cloudinary.apiSecret
-            // });
-            // return cloudinary.v2.uploader.destroy(idCloudinary);
         });
     }
     static getResolvers() {
