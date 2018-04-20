@@ -6,6 +6,8 @@ import { configs } from "../config/configs";
 import * as cloudinary from "cloudinary";
 import { clientFactory } from "../database";
 import { Client } from "pg";
+import * as awsS3 from "aws-sdk";
+import * as tinify from "tinify";
 
 class UploadFileRoute {
   private router: Router;
@@ -13,11 +15,16 @@ class UploadFileRoute {
   constructor() {
     this.router = Router();
     this.init();
-    cloudinary.config({
-      cloud_name: configs.Cloudinary.cloudName,
-      api_key: configs.Cloudinary.apiKey,
-      api_secret: configs.Cloudinary.apiSecret
+    // cloudinary.config({
+    //   cloud_name: configs.Cloudinary.cloudName,
+    //   api_key: configs.Cloudinary.apiKey,
+    //   api_secret: configs.Cloudinary.apiSecret
+    // });
+    awsS3.config.update({
+      accessKeyId: configs.S3Bucket.accessKeyId,
+      secretAccessKey: configs.S3Bucket.secretAccessKey
     });
+    tinify.key = configs.TinyPNG.apiKey;
   }
 
   public getRouter(): Router {
@@ -70,6 +77,12 @@ class UploadFileRoute {
     }
     let anexoVeiculo: AnexoVeiculo = null;
     let client = null;
+    let s3Bucket = new awsS3.S3();
+    let imageKey: string =
+      (Math.random() * 100000000000000000).toString() + ".JPG";
+    let imageUrl: string = `https://s3-sa-east-1.amazonaws.com/${
+      configs.S3Bucket.bucketName
+    }/${imageKey}`;
     VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
       .then((veiculo: Veiculo) => {
         if (!veiculo) {
@@ -78,14 +91,31 @@ class UploadFileRoute {
         return;
       })
       .then(() =>
-        cloudinary.v2.uploader
+        tinify
           //@ts-ignore
-          .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
-            width: 800,
-            crop: "scale"
-          })
+          .fromBuffer(imagem.data)
+          .resize({ method: "scale", width: 800 })
+          .toBuffer()
       )
-      .then(result => {
+      .then(resizedImage =>
+        // cloudinary.v2.uploader
+        //@ts-ignore
+        // .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
+        //   width: 800,
+        //   crop: "scale"
+        // })
+        s3Bucket
+          .putObject({
+            Bucket: configs.S3Bucket.bucketName,
+            Key: imageKey,
+            //@ts-ignore
+            Body: resizedImage,
+            ACL: "public-read",
+            ContentType: "image/jpeg"
+          })
+          .promise()
+      )
+      .then(() => {
         let tipoArquivo =
           req.body["tipoArquivo"] >= 0 ? req.body["tipoArquivo"] : 0;
         let principal = req.body["principal"]
@@ -95,7 +125,8 @@ class UploadFileRoute {
         anexoVeiculo = new AnexoVeiculo(
           null,
           tipoArquivo,
-          result["secure_url"],
+          imageUrl,
+          // result["secure_url"],
           principal,
           veiculoId
         );
@@ -103,6 +134,15 @@ class UploadFileRoute {
       })
       .then((result: Client) => {
         client = result;
+        // s3Bucket.putObject(
+        //   {
+        //     Bucket: configs.S3Bucket.bucketName,
+        //     Key: (Math.random() * 1000).toString() + ".JPG",
+        //     //@ts-ignore
+        //     Body: imagem.data,
+        //     ACL: "public-read"
+        //   }
+        // );
         return AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
       })
       .then((id: number) => {

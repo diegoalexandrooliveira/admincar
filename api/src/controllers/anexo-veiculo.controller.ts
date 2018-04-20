@@ -10,6 +10,7 @@ import { Client } from "pg";
 import { configs } from "../config/configs";
 import * as cloudinary from "cloudinary";
 import { logger } from "../utils";
+import * as awsS3 from "aws-sdk";
 
 export class AnexoVeiculoController {
   public static getType(): string {
@@ -114,16 +115,27 @@ export class AnexoVeiculoController {
   public static deletarImagemCloudinary(idAnexo: number) {
     return AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then(
       (anexo: AnexoVeiculo) => {
-        let idCloudinary = anexo.$url.substring(
+        // let idCloudinary = anexo.$url.substring(
+        //   anexo.$url.lastIndexOf("/") + 1,
+        //   anexo.$url.lastIndexOf(".j")
+        // );
+        let objectKey = anexo.$url.substring(
           anexo.$url.lastIndexOf("/") + 1,
-          anexo.$url.lastIndexOf(".j")
+          anexo.$url.length
         );
-        cloudinary.config({
-          cloud_name: configs.Cloudinary.cloudName,
-          api_key: configs.Cloudinary.apiKey,
-          api_secret: configs.Cloudinary.apiSecret
-        });
-        return cloudinary.v2.uploader.destroy(idCloudinary);
+        let s3 = new awsS3.S3();
+        return s3
+          .deleteObject({
+            Bucket: configs.S3Bucket.bucketName,
+            Key: objectKey
+          })
+          .promise();
+        // cloudinary.config({
+        //   cloud_name: configs.Cloudinary.cloudName,
+        //   api_key: configs.Cloudinary.apiKey,
+        //   api_secret: configs.Cloudinary.apiSecret
+        // });
+        // return cloudinary.v2.uploader.destroy(idCloudinary);
       }
     );
   }

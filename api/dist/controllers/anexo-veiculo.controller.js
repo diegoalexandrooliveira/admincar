@@ -4,8 +4,8 @@ const index_1 = require("../dao/index");
 const index_2 = require("../model/index");
 const database_1 = require("../database");
 const configs_1 = require("../config/configs");
-const cloudinary = require("cloudinary");
 const utils_1 = require("../utils");
+const awsS3 = require("aws-sdk");
 class AnexoVeiculoController {
     static getType() {
         return `type AnexoVeiculo { id: Int, tipoArquivo: Int, url: String, veiculoId: Int,
@@ -89,13 +89,24 @@ class AnexoVeiculoController {
     }
     static deletarImagemCloudinary(idAnexo) {
         return index_1.AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then((anexo) => {
-            let idCloudinary = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.lastIndexOf(".j"));
-            cloudinary.config({
-                cloud_name: configs_1.configs.Cloudinary.cloudName,
-                api_key: configs_1.configs.Cloudinary.apiKey,
-                api_secret: configs_1.configs.Cloudinary.apiSecret
-            });
-            return cloudinary.v2.uploader.destroy(idCloudinary);
+            // let idCloudinary = anexo.$url.substring(
+            //   anexo.$url.lastIndexOf("/") + 1,
+            //   anexo.$url.lastIndexOf(".j")
+            // );
+            let objectKey = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.length);
+            let s3 = new awsS3.S3();
+            return s3
+                .deleteObject({
+                Bucket: configs_1.configs.S3Bucket.bucketName,
+                Key: objectKey
+            })
+                .promise();
+            // cloudinary.config({
+            //   cloud_name: configs.Cloudinary.cloudName,
+            //   api_key: configs.Cloudinary.apiKey,
+            //   api_secret: configs.Cloudinary.apiSecret
+            // });
+            // return cloudinary.v2.uploader.destroy(idCloudinary);
         });
     }
     static getResolvers() {

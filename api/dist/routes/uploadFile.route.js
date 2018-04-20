@@ -4,17 +4,23 @@ const express_1 = require("express");
 const index_1 = require("../dao/index");
 const model_1 = require("../model");
 const configs_1 = require("../config/configs");
-const cloudinary = require("cloudinary");
 const database_1 = require("../database");
+const awsS3 = require("aws-sdk");
+const tinify = require("tinify");
 class UploadFileRoute {
     constructor() {
         this.router = express_1.Router();
         this.init();
-        cloudinary.config({
-            cloud_name: configs_1.configs.Cloudinary.cloudName,
-            api_key: configs_1.configs.Cloudinary.apiKey,
-            api_secret: configs_1.configs.Cloudinary.apiSecret
+        // cloudinary.config({
+        //   cloud_name: configs.Cloudinary.cloudName,
+        //   api_key: configs.Cloudinary.apiKey,
+        //   api_secret: configs.Cloudinary.apiSecret
+        // });
+        awsS3.config.update({
+            accessKeyId: configs_1.configs.S3Bucket.accessKeyId,
+            secretAccessKey: configs_1.configs.S3Bucket.secretAccessKey
         });
+        tinify.key = configs_1.configs.TinyPNG.apiKey;
     }
     getRouter() {
         return this.router;
@@ -48,6 +54,9 @@ class UploadFileRoute {
         }
         let anexoVeiculo = null;
         let client = null;
+        let s3Bucket = new awsS3.S3();
+        let imageKey = (Math.random() * 100000000000000000).toString() + ".JPG";
+        let imageUrl = `https://s3-sa-east-1.amazonaws.com/${configs_1.configs.S3Bucket.bucketName}/${imageKey}`;
         index_1.VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
             .then((veiculo) => {
             if (!veiculo) {
@@ -55,22 +64,49 @@ class UploadFileRoute {
             }
             return;
         })
-            .then(() => cloudinary.v2.uploader
-            .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
-            width: 800,
-            crop: "scale"
-        }))
-            .then(result => {
+            .then(() => tinify
+            .fromBuffer(imagem.data)
+            .resize({ method: "scale", width: 800 })
+            .toBuffer())
+            .then(resizedImage => 
+        // cloudinary.v2.uploader
+        //@ts-ignore
+        // .upload(`data:image/jpeg;base64,${imagem.data.toString("base64")}`, {
+        //   width: 800,
+        //   crop: "scale"
+        // })
+        s3Bucket
+            .putObject({
+            Bucket: configs_1.configs.S3Bucket.bucketName,
+            Key: imageKey,
+            //@ts-ignore
+            Body: resizedImage,
+            ACL: "public-read",
+            ContentType: "image/jpeg"
+        })
+            .promise())
+            .then(() => {
             let tipoArquivo = req.body["tipoArquivo"] >= 0 ? req.body["tipoArquivo"] : 0;
             let principal = req.body["principal"]
                 ? req.body["principal"] == "true"
                 : false;
             let veiculoId = req.body["veiculoId"];
-            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, result["secure_url"], principal, veiculoId);
+            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, imageUrl, 
+            // result["secure_url"],
+            principal, veiculoId);
             return database_1.clientFactory.getClient();
         })
             .then((result) => {
             client = result;
+            // s3Bucket.putObject(
+            //   {
+            //     Bucket: configs.S3Bucket.bucketName,
+            //     Key: (Math.random() * 1000).toString() + ".JPG",
+            //     //@ts-ignore
+            //     Body: imagem.data,
+            //     ACL: "public-read"
+            //   }
+            // );
             return index_1.AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
         })
             .then((id) => {
