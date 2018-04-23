@@ -60,7 +60,7 @@ const appRoutes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    loadChildren: () => SiteModule
+    loadChildren: "./site/site.module#SiteModule"
   },
   { path: "**", redirectTo: "/" }
 ];
