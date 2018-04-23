@@ -36,10 +36,12 @@ tbody {
 
 .title {
   color: var(--cor-primaria);
+  margin-top: 0.7rem;
+  display: inline-block;
 }
 
 .row-title > img {
-  width: 100px;
+  width: 120px;
 }
 
 .row-detail {
@@ -89,8 +91,8 @@ tbody {
     font-size: 0.7rem;
   }
 
-  .row-title > div {
-    display: inline-block;
+  .title {
+    display: inline;
     vertical-align: middle;
     margin-left: 1rem;
   }
