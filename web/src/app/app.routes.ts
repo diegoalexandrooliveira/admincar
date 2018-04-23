@@ -8,6 +8,7 @@ import { UsuariosListaComponent } from "./usuarios/usuarios-lista.component";
 import { UsuariosEditarComponent } from "./usuarios/usuarios-editar.component";
 import { VeiculosListaComponent } from "./veiculos/veiculos-lista.component";
 import { VeiculoEditarComponent } from "./veiculos/veiculo-editar.component";
+import { SiteModule } from "./site/site.module";
 
 const appRoutes: Routes = [
   {
@@ -42,20 +43,26 @@ const appRoutes: Routes = [
       {
         path: "veiculos/editar/:id",
         component: VeiculoEditarComponent
-      }
+      },
+      { path: "**", component: DashboardComponent }
     ]
   },
   {
-    path: "app",
+    path: "login",
     component: LoginLayoutComponent,
     children: [
       {
-        path: "login",
+        path: "",
         component: LoginComponent
       }
     ]
   },
-  { path: "**", redirectTo: "app/dashboard" }
+  {
+    path: "",
+    pathMatch: "full",
+    loadChildren: () => SiteModule
+  },
+  { path: "**", redirectTo: "/" }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);
