@@ -1,0 +1,29 @@
+{
+  "short_name": "AdminCar",
+  "name": "Gerenciador de veículos",
+  "icons": [
+    {
+      "src": "icon-48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icon-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "icon-152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#002c52"
+}
