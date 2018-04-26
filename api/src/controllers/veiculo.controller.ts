@@ -2,9 +2,10 @@ import {
   VeiculoDAO,
   ModeloDAO,
   CidadeDAO,
-  AnexoVeiculoDAO
+  AnexoVeiculoDAO,
+  OpcionalDAO
 } from "../dao/index";
-import { Veiculo, AnexoVeiculo, Mensagem } from "../model/index";
+import { Veiculo, AnexoVeiculo, Mensagem, Opcional } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
 import { clientFactory } from "../database";
 import { Client } from "pg";
@@ -15,7 +16,8 @@ export class VeiculoController {
     return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo, anexos: [AnexoVeiculo] }
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo, anexos: [AnexoVeiculo],
+opcionais: [Opcional] }
 
 input VeiculoInput { id: Int, modelo: Int, anoFabricacao: Int, anoModelo: Int,
   placa: String, renavam: String, chassi: String, cor: Int, cidade: Int, 
@@ -66,6 +68,10 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
         anexos: (veiculo: Veiculo) =>
           AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(veiculo.$id).then(
             (anexos: AnexoVeiculo[]) => anexos
+          ),
+        opcionais: (veiculo: Veiculo) =>
+          OpcionalDAO.buscarTodosOpcionaisPorVeiculo(veiculo.$id).then(
+            (opcionais: Opcional[]) => opcionais
           )
       }
     };
@@ -100,42 +106,6 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
       return false;
     }
   }
-
-  // private static excluirVeiculo(root, args): Promise<boolean> {
-  //   return new Promise((resolve, reject) => {
-  //     clientFactory
-  //       .getClient()
-  //       .then((client: Client) => {
-  //         AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
-  //           .then((row: number) => {
-  //             VeiculoDAO.deletarVeiculo(client, args.id)
-  //               .then(rows => {
-  //                 clientFactory.commit(client);
-  //                 if (rows) {
-  //                   return resolve(true);
-  //                 } else {
-  //                   return reject(
-  //                     JSON.stringify(
-  //                       Array.of(
-  //                         new Mensagem("Nenhum veículo removido.", "warn")
-  //                       )
-  //                     )
-  //                   );
-  //                 }
-  //               })
-  //               .catch(erro => {
-  //                 clientFactory.rollback(client);
-  //                 reject(erro);
-  //               });
-  //           })
-  //           .catch(erro => {
-  //             clientFactory.rollback(client);
-  //             reject(erro);
-  //           });
-  //       })
-  //       .catch(erro => reject(erro));
-  //   });
-  // }
 
   private static excluirVeiculo(root, args): Promise<boolean> {
     let client = null;

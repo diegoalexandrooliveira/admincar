@@ -16,4 +16,5 @@ __export(require("./cor.model"));
 __export(require("./combustivel.model"));
 __export(require("./chart.comparativo.model"));
 __export(require("./anexo-veiculo.model"));
+__export(require("./opcional.model"));
 //# sourceMappingURL=index.js.map

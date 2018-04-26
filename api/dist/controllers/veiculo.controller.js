@@ -10,7 +10,8 @@ class VeiculoController {
         return `type Veiculo { id: Int, modelo: Modelo, anoFabricacao: Int, anoModelo: Int,
     placa: String, renavam: String, chassi: String, cor: Cor, cidade: Cidade, 
   dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo, anexos: [AnexoVeiculo] }
+valorAnuncio: Float, observacoes: String, combustivel: Combustivel, anexoPrincipal: AnexoVeiculo, anexos: [AnexoVeiculo],
+opcionais: [Opcional] }
 
 input VeiculoInput { id: Int, modelo: Int, anoFabricacao: Int, anoModelo: Int,
   placa: String, renavam: String, chassi: String, cor: Int, cidade: Int, 
@@ -47,7 +48,8 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
                 combustivel: (veiculo) => index_3.combustiveis()[veiculo.$combustivel_id - 1],
                 cidade: (veiculo) => index_1.CidadeDAO.buscaCidadePorId(veiculo.$cidade_id),
                 anexoPrincipal: (veiculo) => index_1.AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(veiculo.$id).then((anexo) => anexo),
-                anexos: (veiculo) => index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(veiculo.$id).then((anexos) => anexos)
+                anexos: (veiculo) => index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(veiculo.$id).then((anexos) => anexos),
+                opcionais: (veiculo) => index_1.OpcionalDAO.buscarTodosOpcionaisPorVeiculo(veiculo.$id).then((opcionais) => opcionais)
             }
         };
     }
@@ -74,41 +76,6 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
             return false;
         }
     }
-    // private static excluirVeiculo(root, args): Promise<boolean> {
-    //   return new Promise((resolve, reject) => {
-    //     clientFactory
-    //       .getClient()
-    //       .then((client: Client) => {
-    //         AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id)
-    //           .then((row: number) => {
-    //             VeiculoDAO.deletarVeiculo(client, args.id)
-    //               .then(rows => {
-    //                 clientFactory.commit(client);
-    //                 if (rows) {
-    //                   return resolve(true);
-    //                 } else {
-    //                   return reject(
-    //                     JSON.stringify(
-    //                       Array.of(
-    //                         new Mensagem("Nenhum veículo removido.", "warn")
-    //                       )
-    //                     )
-    //                   );
-    //                 }
-    //               })
-    //               .catch(erro => {
-    //                 clientFactory.rollback(client);
-    //                 reject(erro);
-    //               });
-    //           })
-    //           .catch(erro => {
-    //             clientFactory.rollback(client);
-    //             reject(erro);
-    //           });
-    //       })
-    //       .catch(erro => reject(erro));
-    //   });
-    // }
     static excluirVeiculo(root, args) {
         let client = null;
         return new Promise((resolve, reject) => {

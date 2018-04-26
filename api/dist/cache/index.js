@@ -7,4 +7,5 @@ __export(require("./estado.cache"));
 __export(require("./tipo.veiculo.cache"));
 __export(require("./cor.cache"));
 __export(require("./combustivel.cache"));
+__export(require("./opcional.cache"));
 //# sourceMappingURL=index.js.map
