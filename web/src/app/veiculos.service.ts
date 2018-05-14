@@ -15,6 +15,7 @@ import { Estado } from "./models/estado.model";
 import { Cidade } from "./models/cidade.model";
 import { HttpService } from "./http.service";
 import { Progress } from "angular-progress-http";
+import { Opcional } from "./models/opcional.model";
 
 @Injectable()
 export class VeiculosService {
@@ -30,6 +31,7 @@ export class VeiculosService {
   private combustiveis: string;
   private estados: string;
   private cidades: string;
+  private opcionais: string;
   private atualizarAnexos: string;
   private excluirAnexos: string;
   constructor(
@@ -130,11 +132,17 @@ export class VeiculosService {
         }
       }`;
     this.cores = `{
-        cores{
-          id
-          descricao
-        }
-      }`;
+          cores{
+            id
+            descricao
+          }
+        }`;
+    this.opcionais = `{
+            opcionais{
+              id
+              descricao
+            }
+          }`;
     this.combustiveis = `{
         combustiveis{
           id
@@ -343,6 +351,17 @@ export class VeiculosService {
       .request(this.cores)
       .map((resposta: Resposta) =>
         resposta.dados["cores"].map(cor => new Cor(cor.id, cor.descricao))
+      )
+      .toPromise();
+  }
+
+  public buscarOpcionais(): Promise<Opcional[]> {
+    return this.graphql
+      .request(this.opcionais)
+      .map((resposta: Resposta) =>
+        resposta.dados["opcionais"].map(
+          opcional => new Opcional(opcional.id, opcional.descricao)
+        )
       )
       .toPromise();
   }

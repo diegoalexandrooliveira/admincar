@@ -34,6 +34,7 @@ import { DatePickeri18n } from "../utils/DatePickeri18n";
 import { DateAdapter, DateFormatter } from "../utils/DateAdapter";
 import { AnexoVeiculo } from "../models/anexo-veiculo.model";
 import { DomSanitizer } from "@angular/platform-browser";
+import { Opcional } from "../models/opcional.model";
 
 @Component({
   selector: "app-veiculo-editar",
@@ -59,6 +60,8 @@ export class VeiculoEditarComponent implements OnInit {
   public combustiveis: Combustivel[] = [];
   public estados: Estado[] = [];
   public cidades: Cidade[] = [];
+  public opcionais: Opcional[] = [];
+  public opcional: Opcional[] = [];
   @ViewChild("anexoInput") anexosInput: ElementRef;
   public anexosVeiculo: AnexoVeiculo[];
   public uploadEmAndamento: boolean = false;
@@ -91,6 +94,7 @@ export class VeiculoEditarComponent implements OnInit {
       promises.push(this.service.buscarCores());
       promises.push(this.service.buscarCombustiveis());
       promises.push(this.service.buscarEstados());
+      promises.push(this.service.buscarOpcionais());
       if (idVeiculo) {
         this.edicao = true;
         promises.push(this.service.recuperarVeiculoPorId(idVeiculo));
@@ -105,8 +109,9 @@ export class VeiculoEditarComponent implements OnInit {
           this.cores = value[1];
           this.combustiveis = value[2];
           this.estados = value[3];
+          this.opcionais = value[4];
           if (this.edicao) {
-            let veiculoRecuperado = value[4];
+            let veiculoRecuperado = value[5];
             promises = [];
             promises.push(
               this.service.buscarMarcasPorTipoVeiculo(
@@ -268,7 +273,9 @@ export class VeiculoEditarComponent implements OnInit {
       .then(() => this.service.excluirAnexo(anexosParaExcluir))
       .then(() => this.subirImagens(anexosParaIncluir))
       .then(anexos => {
-        this.anexosVeiculo = this.anexosVeiculo.filter(anexo => !anexo.$file && !anexo.$excluir);
+        this.anexosVeiculo = this.anexosVeiculo.filter(
+          anexo => !anexo.$file && !anexo.$excluir
+        );
         if (anexos.length) {
           this.uploadEmAndamento = false;
           anexos.forEach(value => {
@@ -354,7 +361,7 @@ export class VeiculoEditarComponent implements OnInit {
   }
 
   public alterarPrivacidade(id: number, tipoArquivo: number, excluir: boolean) {
-    if(excluir){
+    if (excluir) {
       return;
     }
     tipoArquivo = tipoArquivo ? 0 : 1;

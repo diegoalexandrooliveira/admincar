@@ -42,6 +42,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DropdownTypeaheadComponent } from "./dropdown-typeahead/dropdown-typeahead.component";
 import { HttpService } from "./http.service";
 import { ProgressHttpModule } from "angular-progress-http";
+import { TagInputModule } from "ngx-chips";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { ProgressHttpModule } from "angular-progress-http";
     ChartsModule,
     CurrencyMaskModule,
     NgbModule.forRoot(),
-    ProgressHttpModule
+    ProgressHttpModule,
+    TagInputModule,
+    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent],
   providers: [
