@@ -104,6 +104,10 @@ export class VeiculosService {
           url
           principal
         }
+        opcionais{
+          id
+          descricao
+        }
       }
     }`;
     this.excluir = `mutation { 
@@ -261,6 +265,10 @@ export class VeiculosService {
             )
           );
         });
+        let opcionais: Opcional[] = veiculo.opcionais.map(
+          opcional => new Opcional(opcional.id, opcional.descricao)
+        );
+
         return new Veiculo(
           veiculo.id,
           new Modelo(
@@ -292,7 +300,8 @@ export class VeiculosService {
           veiculo.observacoes,
           combustivel ? new Combustivel(veiculo.combustivel.id) : null,
           anexos,
-          null
+          null,
+          opcionais
         );
       })
       .toPromise();

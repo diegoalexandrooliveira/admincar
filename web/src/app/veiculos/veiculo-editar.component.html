@@ -154,19 +154,17 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="observacoes">Observações</label>
-      <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.$observacoes" class="form-control">
-        </textarea>
-    </div>
-    <div class="form-group">
       <label for="opcionais">Opcionais</label>
-      <tag-input class="form-control" [(ngModel)]="opcional" name="opcinais" [onlyFromAutocomplete]="true">
+      <tag-input placeholder="+ Opcional" secondaryPlaceholder="Adicionar opcionais" class="form-control" [identifyBy]="'id'" [displayBy]="'descricao'" [(ngModel)]="veiculo.$opcionais" name="opcionais"
+        [onlyFromAutocomplete]="true">
         <tag-input-dropdown [identifyBy]="'id'" [displayBy]="'descricao'" [showDropdownIfEmpty]="true" [autocompleteItems]="opcionais">
         </tag-input-dropdown>
       </tag-input>
-      {{opcional | json}} {{opcionais | json}}
-      <!-- <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.$observacoes" class="form-control">
-        </textarea> -->
+    </div>
+    <div class="form-group">
+      <label for="observacoes">Observações</label>
+      <textarea type="textarea" rows="3" name="observacoes" [(ngModel)]="veiculo.$observacoes" class="form-control">
+        </textarea>
     </div>
 
     <div class="imagens-preview">

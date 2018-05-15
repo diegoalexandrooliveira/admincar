@@ -47,7 +47,7 @@
       <tr *ngFor="let veiculo of veiculos | veiculosFilter: textoProcurar ">
         <td class="td-container" scope="row">
           <div class="row-title">
-            <img class="rounded border border-dark" src="{{veiculo.anexoPrincipal.url}}" alt="Imagem do veículo">
+            <img class="rounded border border-dark" src="{{veiculo.$anexoPrincipal.url}}" alt="Imagem do veículo">
             <a class="title" [routerLink]="['editar/', veiculo.id]">{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}
               <span *ngIf="veiculo.dataVenda" class="badge badge-danger badge-pill">Vendido</span>
             </a>

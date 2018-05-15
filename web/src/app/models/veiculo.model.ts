@@ -3,6 +3,7 @@ import { Cor } from "./cor.model";
 import { AnexoVeiculo } from "./anexo-veiculo.model";
 import { Combustivel } from "./combustivel.model";
 import { Cidade } from "./cidade.model";
+import { Opcional } from "./opcional.model";
 
 export class Veiculo {
   constructor(
@@ -24,7 +25,8 @@ export class Veiculo {
     observacoes?: string,
     combustivel?: Combustivel,
     anexos?: AnexoVeiculo[],
-    anexoPrincipal?: AnexoVeiculo
+    anexoPrincipal?: AnexoVeiculo,
+    opcionais?: Opcional[]
   ) {
     this.id = id;
     this.modelo = modelo;
@@ -45,6 +47,7 @@ export class Veiculo {
     this.combustivel = combustivel;
     this.anexos = anexos;
     this.anexoPrincipal = anexoPrincipal;
+    this.opcionais = opcionais;
   }
   private id: number;
   private modelo: Modelo;
@@ -65,6 +68,7 @@ export class Veiculo {
   private combustivel: Combustivel;
   private anexos: AnexoVeiculo[];
   private anexoPrincipal: AnexoVeiculo;
+  private opcionais: Opcional[];
 
   public get $id(): number {
     return this.id;
@@ -209,10 +213,17 @@ export class Veiculo {
     this.anexos = anexos;
   }
 
-  public get $anexPrincipal() {
+  public get $anexoPrincipal() {
     return this.anexoPrincipal;
   }
   public set $anexoPrincipal(anexoPrincipal: AnexoVeiculo) {
     this.anexoPrincipal = anexoPrincipal;
+  }
+
+  public get $opcionais() {
+    return this.opcionais;
+  }
+  public set $opcionais(opcionais: Opcional[]) {
+    this.opcionais = opcionais;
   }
 }
