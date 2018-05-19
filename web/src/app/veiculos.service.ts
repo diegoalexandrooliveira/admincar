@@ -183,6 +183,7 @@ export class VeiculosService {
         valorVenda: $valorVenda
         observacoes: $observacoes
         combustivel: $combustivel
+        opcionais: [$opcionais]
       })
     }`;
     this.alterar = `mutation{
@@ -203,6 +204,7 @@ export class VeiculosService {
         observacoes: $observacoes
         combustivel: $combustivel
         id: $id
+        opcionais: [$opcionais]
       })
     }`;
     this.atualizarAnexos = `update$id: atualizarAnexo(anexo: {id: $id, tipoArquivo: $tipoArquivo, principal: $principal})
@@ -416,6 +418,15 @@ export class VeiculosService {
   public incluirVeiculo(
     veiculo: Veiculo
   ): Promise<{ id: number; erros: Mensagem[] }> {
+    veiculo.$opcionais = !veiculo.$opcionais ? [] : veiculo.$opcionais;
+    let opcionais = veiculo.$opcionais
+      .map(opcional => opcional.$id.toString())
+      .reduce((prev: string, curr: string) => {
+        if (prev) {
+          prev += ",";
+        }
+        return prev + `{id: ${curr}}`;
+      }, "");
     return this.graphql
       .request(
         this.inserir
@@ -477,6 +488,7 @@ export class VeiculosService {
               ? veiculo.$combustivel.$id.toString()
               : "null"
           )
+          .replace("$opcionais", opcionais)
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {
@@ -493,8 +505,9 @@ export class VeiculosService {
   public atualizarVeiculo(
     veiculo: Veiculo
   ): Promise<{ rows: number; erros: Mensagem[] }> {
+    veiculo.$opcionais = !veiculo.$opcionais ? [] : veiculo.$opcionais;
     let opcionais = veiculo.$opcionais
-      .map((opcional: Opcional) => opcional.$id.toString())
+      .map(opcional => opcional.$id.toString())
       .reduce((prev: string, curr: string) => {
         if (prev) {
           prev += ",";
@@ -563,6 +576,7 @@ export class VeiculosService {
               : "null"
           )
           .replace("$id", veiculo.$id ? veiculo.$id.toString() : "null")
+          .replace("$opcionais", opcionais)
       )
       .map((resposta: Resposta) => {
         if (resposta.erro) {

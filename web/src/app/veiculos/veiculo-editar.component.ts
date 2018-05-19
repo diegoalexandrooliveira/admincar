@@ -61,7 +61,6 @@ export class VeiculoEditarComponent implements OnInit {
   public estados: Estado[] = [];
   public cidades: Cidade[] = [];
   public opcionais: Opcional[] = [];
-  public opcional: Opcional[] = [];
   @ViewChild("anexoInput") anexosInput: ElementRef;
   public anexosVeiculo: AnexoVeiculo[];
   public uploadEmAndamento: boolean = false;
@@ -249,6 +248,10 @@ export class VeiculoEditarComponent implements OnInit {
         anexosParaAlterar.push(anexo);
       }
     });
+
+    this.veiculo.$opcionais = this.veiculo.$opcionais.map(
+      opcional => new Opcional(opcional["id"], opcional["descricao"])
+    );
 
     acao(this.veiculo)
       .then(retorno => {

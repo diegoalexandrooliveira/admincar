@@ -85,9 +85,8 @@ valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [Opcional
                 client = result;
                 return index_1.AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id);
             })
-                .then((row) => {
-                return index_1.VeiculoDAO.deletarVeiculo(client, args.id);
-            })
+                .then(() => index_1.OpcionalDAO.excluirTodosOpcionaisVeiculo(client, args.id))
+                .then(() => index_1.VeiculoDAO.deletarVeiculo(client, args.id))
                 .then(rows => {
                 database_1.clientFactory.commit(client);
                 if (rows) {
@@ -109,7 +108,9 @@ valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [Opcional
         return new Promise((resolve, reject) => {
             let veiculo = new index_2.Veiculo();
             veiculo.toModel(args.veiculo);
-            let opcionais = args.veiculo["opcionais"];
+            let opcionais = !args.veiculo["opcionais"]
+                ? []
+                : args.veiculo["opcionais"];
             veiculo.validarVeiculo(true).then((erros) => {
                 if (erros.length > 0) {
                     reject(JSON.stringify(erros));
