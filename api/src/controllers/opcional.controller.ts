@@ -1,7 +1,8 @@
 import { opcionais } from "../cache/index";
 export class OpcionalController {
   public static getType(): string {
-    return `type Opcional { id: Int, descricao: String }`;
+    return `type Opcional { id: Int, descricao: String }
+            input OpcionalInput {id: Int}`;
   }
 
   public static getQueries(): string {

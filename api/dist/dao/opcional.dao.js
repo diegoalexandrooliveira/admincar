@@ -48,7 +48,7 @@ class OpcionalDAO {
                      from opcional op inner join veiculo_opcional vop
                      on op.id = vop.opcional_id
                      where vop.veiculo_id = $1
-                     order by id`;
+                     order by op.id`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query, [idVeiculo])
@@ -62,6 +62,42 @@ class OpcionalDAO {
                 .catch(error => {
                 utils_1.logger.error(`opcional.dao.buscarTodosOpcionaisPorVeiculo - ${error}`);
                 reject(`Erro ao tentar recuperar os opcionais do veículo ${idVeiculo}.`);
+            });
+        });
+    }
+    static excluirTodosOpcionaisVeiculo(client, idVeiculo) {
+        let sqlDelete = `delete from veiculo_opcional where veiculo_id = $1`;
+        return new Promise((resolve, reject) => {
+            client
+                .query("BEGIN")
+                .then((begin) => {
+                return;
+            })
+                .then(() => client.query(sqlDelete, [idVeiculo]))
+                .then((result) => {
+                resolve(result.rowCount);
+            })
+                .catch(error => {
+                utils_1.logger.error(`opcional.dao.excluirTodosOpcionaisVeiculo - ${error}`);
+                reject(`Erro ao excluir os opcionais do veículo ${idVeiculo}`);
+            });
+        });
+    }
+    static inserirOpcionalPorVeiculo(client, idOpcional, idVeiculo) {
+        let insert = `insert into veiculo_opcional (veiculo_id, opcional_id) values ($1, $2)`;
+        return new Promise((resolve, reject) => {
+            client
+                .query("BEGIN")
+                .then((begin) => {
+                return;
+            })
+                .then(() => client.query(insert, [idVeiculo, idOpcional]))
+                .then((result) => {
+                resolve(result.rowCount);
+            })
+                .catch(error => {
+                utils_1.logger.error(`opcional.dao.inserirOpcionalPorVeiculo - ${error}`);
+                reject(`Erro ao inserir o opcional ${idOpcional} no veículo ${idVeiculo}`);
             });
         });
     }

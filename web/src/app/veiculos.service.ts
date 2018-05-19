@@ -265,9 +265,11 @@ export class VeiculosService {
             )
           );
         });
-        let opcionais: Opcional[] = veiculo.opcionais.map(
-          opcional => new Opcional(opcional.id, opcional.descricao)
-        );
+        let opcionais: Opcional[] = veiculo.opcionais
+          ? veiculo.opcionais.map(
+              opcional => new Opcional(opcional.id, opcional.descricao)
+            )
+          : [];
 
         return new Veiculo(
           veiculo.id,
@@ -491,6 +493,14 @@ export class VeiculosService {
   public atualizarVeiculo(
     veiculo: Veiculo
   ): Promise<{ rows: number; erros: Mensagem[] }> {
+    let opcionais = veiculo.$opcionais
+      .map((opcional: Opcional) => opcional.$id.toString())
+      .reduce((prev: string, curr: string) => {
+        if (prev) {
+          prev += ",";
+        }
+        return prev + `{id: ${curr}}`;
+      }, "");
     return this.graphql
       .request(
         this.alterar

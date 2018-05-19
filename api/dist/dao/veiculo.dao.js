@@ -75,7 +75,7 @@ class VeiculoDAO {
                 veiculo.$cor_id,
                 veiculo.$combustivel_id
             ]))
-                .then((result) => resolve({ id: result.rows[0].id, client: client }))
+                .then((result) => resolve(result.rows[0].id))
                 .catch(error => {
                 utils_1.logger.error(`veiculo.dao.inserirVeiculo - ${error}`);
                 reject(new index_2.Mensagem(`Erro ao inserir o veículo.`, "erro"));
@@ -114,7 +114,7 @@ class VeiculoDAO {
                 veiculo.$id
             ]))
                 .then((result) => {
-                resolve({ rows: result.rowCount, client: client });
+                resolve(result.rowCount);
             })
                 .catch(error => {
                 utils_1.logger.error(`veiculo.dao.atualizarVeiculo - ${error}`);

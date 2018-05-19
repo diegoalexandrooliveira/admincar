@@ -22,7 +22,7 @@ opcionais: [Opcional] }
 input VeiculoInput { id: Int, modelo: Int, anoFabricacao: Int, anoModelo: Int,
   placa: String, renavam: String, chassi: String, cor: Int, cidade: Int, 
 dataInclusao: Date, dataAquisicao: Date, dataVenda: Date, valorCompra: Float, valorVenda: Float,
-valorAnuncio: Float, observacoes: String, combustivel: Int }`;
+valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [OpcionalInput] }`;
   }
 
   public static getQueries(): string {
@@ -144,21 +144,43 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
     return new Promise((resolve, reject) => {
       let veiculo = new Veiculo();
       veiculo.toModel(args.veiculo);
+      let opcionais = args.veiculo["opcionais"];
       veiculo.validarVeiculo(true).then((erros: Mensagem[]) => {
         if (erros.length > 0) {
           reject(JSON.stringify(erros));
         } else {
           veiculo.$dataInclusao = new Date();
+          let client = null;
+          let idVeiculo = 0;
           clientFactory
             .getClient()
-            .then((client: Client) =>
-              VeiculoDAO.inserirVeiculo(client, veiculo)
-            )
-            .then(retorno => {
-              clientFactory.commit(retorno.client);
-              resolve(retorno.id);
+
+            .then((cliente: Client) => {
+              client = cliente;
+              return VeiculoDAO.inserirVeiculo(client, veiculo);
             })
-            .catch(erro => reject(erro));
+            .then(id => {
+              idVeiculo = id;
+              return Promise.all(
+                opcionais.map(opcional =>
+                  OpcionalDAO.inserirOpcionalPorVeiculo(
+                    client,
+                    opcional.id,
+                    idVeiculo
+                  )
+                )
+              );
+            })
+            .then(() => {
+              clientFactory.commit(client);
+              resolve(idVeiculo);
+            })
+            .catch(erro => {
+              if (client) {
+                clientFactory.rollback(client);
+              }
+              reject(erro);
+            });
         }
       });
     });
@@ -168,20 +190,43 @@ valorAnuncio: Float, observacoes: String, combustivel: Int }`;
     return new Promise((resolve, reject) => {
       let veiculo = new Veiculo();
       veiculo.toModel(args.veiculo);
+      let opcionais = args.veiculo["opcionais"];
+      if (!opcionais) {
+        opcionais = [];
+      }
       veiculo.validarVeiculo(false).then((erros: Mensagem[]) => {
         if (erros.length > 0) {
           reject(JSON.stringify(erros));
         } else {
+          let client = null;
           clientFactory
             .getClient()
-            .then((client: Client) =>
-              VeiculoDAO.atualizarVeiculo(client, veiculo)
+            .then((cliente: Client) => (client = cliente))
+            .then(() =>
+              OpcionalDAO.excluirTodosOpcionaisVeiculo(client, veiculo.$id)
             )
-            .then(retorno => {
-              clientFactory.commit(retorno.client);
-              resolve(retorno.rows);
+            .then(() =>
+              Promise.all(
+                opcionais.map(opcional =>
+                  OpcionalDAO.inserirOpcionalPorVeiculo(
+                    client,
+                    opcional.id,
+                    veiculo.$id
+                  )
+                )
+              )
+            )
+            .then(() => VeiculoDAO.atualizarVeiculo(client, veiculo))
+            .then(rows => {
+              clientFactory.commit(client);
+              resolve(rows);
             })
-            .catch(erro => reject(erro));
+            .catch(erro => {
+              if (client) {
+                clientFactory.rollback(client);
+              }
+              reject(erro);
+            });
         }
       });
     });

@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../cache/index");
 class OpcionalController {
     static getType() {
-        return `type Opcional { id: Int, descricao: String }`;
+        return `type Opcional { id: Int, descricao: String }
+            input OpcionalInput {id: Int}`;
     }
     static getQueries() {
         return `opcionais: [Opcional]

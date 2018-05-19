@@ -72,7 +72,7 @@ export class VeiculoDAO {
   public static inserirVeiculo(
     client: Client,
     veiculo: Veiculo
-  ): Promise<{ id: number; client: Client }> {
+  ): Promise<number> {
     let insert = `INSERT INTO veiculo(
       modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, 
       cidade_id, data_inclusao, valor_compra, valor_anunciado, valor_venda, 
@@ -107,9 +107,7 @@ export class VeiculoDAO {
             veiculo.$combustivel_id
           ])
         )
-        .then((result: QueryResult) =>
-          resolve({ id: result.rows[0].id, client: client })
-        )
+        .then((result: QueryResult) => resolve(result.rows[0].id))
         .catch(error => {
           logger.error(`veiculo.dao.inserirVeiculo - ${error}`);
           reject(new Mensagem(`Erro ao inserir o veículo.`, "erro"));
@@ -120,7 +118,7 @@ export class VeiculoDAO {
   public static atualizarVeiculo(
     client: Client,
     veiculo: Veiculo
-  ): Promise<{ rows: number; client: Client }> {
+  ): Promise<number> {
     let update = `UPDATE veiculo
     SET modelo_id=$1, ano_fabricacao=$2, ano_modelo=$3, placa=$4, renavam=$5, 
         chassi=$6, cidade_id=$7, valor_compra=$8, valor_anunciado=$9, 
@@ -155,7 +153,7 @@ export class VeiculoDAO {
           ])
         )
         .then((result: QueryResult) => {
-          resolve({ rows: result.rowCount, client: client });
+          resolve(result.rowCount);
         })
         .catch(error => {
           logger.error(`veiculo.dao.atualizarVeiculo - ${error}`);
