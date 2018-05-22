@@ -249,9 +249,11 @@ export class VeiculoEditarComponent implements OnInit {
       }
     });
 
-    this.veiculo.$opcionais = this.veiculo.$opcionais.map(
-      opcional => new Opcional(opcional["id"], opcional["descricao"])
-    );
+    this.veiculo.$opcionais = this.veiculo.$opcionais
+      ? this.veiculo.$opcionais.map(
+          opcional => new Opcional(opcional["id"], opcional["descricao"])
+        )
+      : [];
 
     acao(this.veiculo)
       .then(retorno => {

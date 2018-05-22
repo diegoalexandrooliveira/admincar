@@ -3,7 +3,7 @@ import { Http, Response, Headers } from "@angular/http";
 import { Usuario } from "./models/usuario.model";
 import { Observable } from "rxjs/Observable";
 import { Mensagem } from "./models/mensagem.model";
-import { configs } from "./config/configs";
+import { configs } from "../config/configs";
 
 @Injectable()
 export class LoginService {

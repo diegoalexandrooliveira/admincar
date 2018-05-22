@@ -1,4 +1,4 @@
-import { configs } from "../config/configs";
+import { configs } from "../../config/configs";
 
 export class AnexoVeiculo {
   private id: number;

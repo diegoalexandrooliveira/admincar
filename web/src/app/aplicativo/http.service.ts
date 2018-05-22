@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Headers, Response, Http } from "@angular/http";
 import { LoginService } from "./login.service";
-import { configs } from "./config/configs";
+import { configs } from "../config/configs";
 import { Observable } from "rxjs/Observable";
 import { Resposta } from "./models/resposta.model";
 import { ProgressHttp } from "angular-progress-http";
