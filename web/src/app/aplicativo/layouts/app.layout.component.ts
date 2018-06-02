@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-layout",
@@ -7,7 +8,9 @@ import { Component, OnInit, Input, ViewEncapsulation } from "@angular/core";
   encapsulation: ViewEncapsulation.None
 })
 export class AppLayoutComponent implements OnInit {
-  constructor() {}
+  constructor(private titleService: Title) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.titleService.setTitle("AdminCar - Gerenciador de veículos");
+  }
 }

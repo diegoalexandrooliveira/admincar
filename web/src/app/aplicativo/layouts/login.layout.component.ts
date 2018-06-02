@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-login-layout",
@@ -6,7 +7,9 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./login.layout.component.css"]
 })
 export class LoginLayoutComponent implements OnInit {
-  constructor() {}
+  constructor(private titleService: Title) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.titleService.setTitle("AdminCar - Gerenciador de veículos");
+  }
 }

@@ -70,6 +70,37 @@
   display: block;
 }
 
+.navbar {
+  background-color: rgba(255, 255, 255, 0.72);
+  font-weight: bold;
+  justify-content: flex-end;
+  box-shadow: 1px 1px 3px;
+}
+
+.navbar-nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.nav-link {
+  color: black !important;
+}
+
+.nav-item {
+  padding: 5px;
+  text-align: center;
+}
+
+.nav-link:hover,
+.nav-item:hover,
+.nav-item:hover > .nav-link,
+.active,
+.active > .nav-link {
+  background-color: #e0af43 !important;
+  color: white !important;
+}
+
 @media (min-width: 992px) {
   .nome {
     font-size: 2rem;
@@ -101,5 +132,17 @@
   .address > p,
   .phones > a {
     padding-top: 0px;
+  }
+
+  .navbar-nav {
+    width: 70%;
+  }
+
+  .navbar {
+    padding: 0;
+  }
+
+  .nav-item {
+    text-align: -webkit-match-parent;
   }
 }
