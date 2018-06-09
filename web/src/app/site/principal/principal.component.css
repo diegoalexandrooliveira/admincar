@@ -2,65 +2,95 @@
   background-color: #8a3331;
   width: 100%;
   padding-top: 2rem;
+  padding-bottom: 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .circulo {
-  height: 300px;
-  width: 350px;
+  height: 210px;
+  width: 260px;
   background-color: rgba(138, 51, 49, 0.77);
   border-radius: 50%;
   position: absolute;
   z-index: 1;
-  left: 60%;
-  top: 180px;
+  /* left: calc(50% - 130px + 250px);
+  top: 20px; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.texto > p {
-  font-size: 1.4rem;
-  font-family: "Bowlby One SC", cursive;
-  margin: 0;
+.veiculos-carousel {
+  display: none !important;
+}
+.veiculos-mob {
+  display: block !important;
 }
 
 img {
-  width: 800px;
+  width: 150px;
 }
 
-.texto {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  text-align: center;
-  width: 80%;
-  height: 60%;
-  color: white;
-  text-shadow: 1px 0px 0px black, 0px 1px 0px black, -1px 0px 0px black,
-    0px -1px 0px black;
-}
+@media (min-width: 992px) {
+  .veiculos-mob {
+    display: none !important;
+  }
+  .veiculos-carousel {
+    display: block !important;
+  }
 
-.descricao-veiculo {
-  grid-row: 1/4;
-}
-.ano {
-  grid-row: 4/5;
-  font-size: 1.2rem !important;
-}
-.preco {
-  grid-row: 5/6;
-  font-size: 1.8rem !important;
-  color: #efb943 !important;
-}
+  .circulo {
+    height: 210px;
+    width: 260px;
+    left: calc(50% - 130px + 250px);
+    top: 20px;
+  }
 
-.circulo::after {
-  position: absolute;
-  content: "";
-  display: block;
-  top: -18px;
-  left: -18px;
-  right: -18px;
-  bottom: -18px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  z-index: -1;
+  .texto > p {
+    font-family: "Bowlby One SC", cursive;
+    margin: 0;
+  }
+
+  img {
+    width: 800px;
+  }
+
+  .texto {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    text-align: center;
+    width: 80%;
+    height: 60%;
+    color: white;
+    text-shadow: 1px 0px 0px black, 0px 1px 0px black, -1px 0px 0px black,
+      0px -1px 0px black;
+  }
+
+  .descricao-veiculo {
+    grid-row: 1/4;
+    font-size: 1rem !important;
+  }
+  .ano {
+    grid-row: 4/5;
+    font-size: 0.9rem !important;
+  }
+  .preco {
+    grid-row: 5/6;
+    font-size: 1.2rem !important;
+    color: #efb943 !important;
+  }
+
+  .circulo::after {
+    position: absolute;
+    content: "";
+    display: block;
+    top: -18px;
+    left: -18px;
+    right: -18px;
+    bottom: -18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    z-index: -1;
+  }
 }

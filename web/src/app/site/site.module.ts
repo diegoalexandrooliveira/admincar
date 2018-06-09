@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { PrincipalComponent } from "./principal/principal.component";
 import { VeiculosComponent } from "./veiculos/veiculos.component";
 import { ContatoComponent } from "./contato/contato.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 const rotas: Routes = [
   {
@@ -27,7 +28,7 @@ const rotas: Routes = [
   }
 ];
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(rotas)],
+  imports: [CommonModule, RouterModule.forChild(rotas), NgbModule.forRoot()],
   declarations: [
     SiteComponent,
     PrincipalComponent,

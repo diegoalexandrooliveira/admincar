@@ -145,4 +145,8 @@
   .nav-item {
     text-align: -webkit-match-parent;
   }
+
+  .input-procurar {
+    width: calc(80% - 38px) !important;
+  }
 }

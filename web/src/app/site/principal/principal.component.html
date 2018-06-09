@@ -1,12 +1,24 @@
 <div class="corpo">
 
-  <img class="rounded mx-auto d-block" src="http://perimetralveiculos.com.br/tmp/public/723.JPG?pfdrid_c=true" alt="">
+  <ngb-carousel class="rounded veiculos-carousel" interval="7000">
+    <ng-template ngbSlide *ngFor="let img of imagens">
+      <a href="/veiculos/{{img.descricao}}">
+        <img class="rounded" [src]="img.url" alt="Imagens">
+        <div class="circulo">
+          <div class="texto">
+            <p class="descricao-veiculo">{{img.descricao}}</p>
+            <p class="ano">{{img.ano}}</p>
+            <p class="preco">{{img.preco}}</p>
+          </div>
+        </div>
+      </a>
+    </ng-template>
+  </ngb-carousel>
 
-  <div class="circulo">
-    <div class="texto">
-      <p class="descricao-veiculo">GM - Chevrolet/Celta Spirit 1.0 MPFI VHC 8V 5p</p>
-      <p class="ano">2009/2009</p>
-      <p class="preco">R$199.999,99</p>
+  <div class="veiculos-mob">
+    <div *ngFor="let item of imagens">
+      <img class="rounded" [src]="item.url" alt="Imagens">
     </div>
+
   </div>
 </div>
