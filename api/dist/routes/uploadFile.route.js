@@ -60,6 +60,7 @@ class UploadFileRoute {
             return;
         })
             .then(() => tinify
+            //@ts-ignore
             .fromBuffer(imagem.data)
             .resize({ method: "scale", width: 800 })
             .toBuffer())
