@@ -14,8 +14,6 @@
   border-radius: 50%;
   position: absolute;
   z-index: 1;
-  /* left: calc(50% - 130px + 250px);
-  top: 20px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,11 +23,44 @@
   display: none !important;
 }
 .veiculos-mob {
-  display: block !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  width: 90%;
+  margin-bottom: 1rem;
+}
+
+.card-body > p {
+  font-family: "Bowlby One SC", cursive;
+  color: white;
+  text-shadow: 1px 0px 0px black, 0px 1px 0px black, -1px 0px 0px black,
+    0px -1px 0px black;
+  margin: 0;
+}
+
+.card-body {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  padding: 5px;
+}
+
+.preco {
+  font-size: 12px;
+  background-color: blue;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.descricao-veiculo {
+  font-size: 14px;
 }
 
 img {
-  width: 150px;
+  width: 100%;
 }
 
 @media (min-width: 992px) {
@@ -54,6 +85,7 @@ img {
 
   img {
     width: 800px;
+    margin-bottom: 0;
   }
 
   .texto {

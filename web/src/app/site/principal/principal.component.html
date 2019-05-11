@@ -16,9 +16,16 @@
   </ngb-carousel>
 
   <div class="veiculos-mob">
-    <div *ngFor="let item of imagens">
-      <img class="rounded" [src]="item.url" alt="Imagens">
+    <div class="card" *ngFor="let item of imagens">
+      <img class="card-img-top" [src]="item.url" alt="Card image cap">
+      <div class="card-body">
+        <p class="descricao-veiculo">{{item.descricao}}</p>
+        <!-- <p class="ano">{{item.ano}}</p> -->
+        <p class="preco">{{item.preco}}</p>
+      </div>
     </div>
 
   </div>
+
+
 </div>
