@@ -48,9 +48,10 @@ class AnexoVeiculoDAO {
             });
         });
     }
-    static buscarTodosAnexosPorVeiculo(veiculoId) {
+    static buscarTodosAnexosPorVeiculo(veiculoId, publicos) {
+        let where = publicos ? " and tipo_arquivo = 1 " : "";
         let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where veiculo_id = $1 order by principal desc, id`;
+    url, principal from anexo_veiculo where veiculo_id = $1 ${where} order by principal desc, id`;
         return new Promise((resolve, reject) => {
             index_2.clientFactory
                 .query(query, [veiculoId])

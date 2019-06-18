@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /home/diego/Workspace/admincar/api
+cd /home/diego/workspace/admincar/api
 npm start

@@ -49,14 +49,16 @@
 
 .preco {
   font-size: 12px;
-  background-color: blue;
-  display: flex;
+  /*background-color: blue;*/
+  display: block;
   align-items: center;
   justify-items: center;
+  background-color: #8a3331;
 }
 
 .descricao-veiculo {
   font-size: 14px;
+  background-color: #8a3331;
 }
 
 img {

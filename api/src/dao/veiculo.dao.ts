@@ -4,9 +4,9 @@ import { Veiculo, Mensagem } from "../model/index";
 import { logger } from "../utils";
 
 export class VeiculoDAO {
-  public static buscarVeiculoPorId(idVeiculo: number): Promise<Veiculo> {
+  public static buscarVeiculoPorId(idVeiculo: number, disponiveis?: Boolean): Promise<Veiculo> {
     return new Promise((resolve, reject) => {
-      VeiculoDAO.buscarVeiculos(idVeiculo)
+      VeiculoDAO.buscarVeiculos(idVeiculo, disponiveis)
         .then((veiculos: Veiculo[]) => resolve(veiculos[0]))
         .catch((erro: Mensagem) => reject(erro));
     });
@@ -15,20 +15,29 @@ export class VeiculoDAO {
   public static buscarTodosVeiculos(): Promise<Veiculo[]> {
     return VeiculoDAO.buscarVeiculos();
   }
+  public static buscarTodosVeiculosDisponiveis(): Promise<Veiculo[]> {
+    return VeiculoDAO.buscarVeiculos(undefined, true);
+  }
 
-  private static buscarVeiculos(idVeiculo?: number): Promise<Veiculo[]> {
+  private static buscarVeiculos(idVeiculo?: number, disponiveis?: Boolean): Promise<Veiculo[]> {
     let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
     cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
     combustivel_id                    
     from veiculo `;
 
     let parameters = [];
+    let where: String = '';
     if (idVeiculo) {
       parameters.push(idVeiculo);
-      query = query + " where id = $1 ";
+      where = ` where id = $1 `;
     }
 
-    query = query + " order by id ";
+    if(disponiveis){
+      where = where? `${where} and ` : ` where `;
+      where = `${where} data_venda is null `;
+    }
+
+    query = `${query} ${where} order by id `;
 
     return new Promise((resolve, reject) => {
       clientFactory

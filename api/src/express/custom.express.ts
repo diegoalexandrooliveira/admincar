@@ -8,7 +8,7 @@ import { PassportStrategy } from "../auth/index";
 import * as compression from "compression";
 import * as cors from "cors";
 import * as helmet from "helmet";
-import { GraphQlSchemaFactory } from "../graphql";
+import { GraphQlSchemaFactory, GraphQlPublicSchemaFactory } from "../graphql";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import * as expressFileUpload from "express-fileupload";
 import { configs } from "../config/configs";
@@ -49,12 +49,6 @@ export class CustomExpress {
       graphqlExpress({ schema: GraphQlSchemaFactory.createSchema() })
     );
 
-    // this._express.use(
-    //   "/api/graphiql",
-    //   this._passportMiddleware,
-    //   graphiqlExpress({ endpointURL: "/api/graphql" })
-    // );
-
     this._express.get(
       "/api/autenticacao",
       this._passportMiddleware,
@@ -72,6 +66,10 @@ export class CustomExpress {
     this._express.use(
       "/public/images",
       express.static(configs.local.path + "public")
+    );
+    this._express.use(
+      "/api/v1/public/graphql",
+      graphqlExpress({ schema: GraphQlPublicSchemaFactory.createSchema() })
     );
   }
 

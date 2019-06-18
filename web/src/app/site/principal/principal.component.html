@@ -1,14 +1,14 @@
 <div class="corpo">
 
   <ngb-carousel class="rounded veiculos-carousel" interval="7000">
-    <ng-template ngbSlide *ngFor="let img of imagens">
-      <a href="/veiculos/{{img.descricao}}">
-        <img class="rounded" [src]="img.url" alt="Imagens">
+    <ng-template ngbSlide *ngFor="let veiculo of veiculos">
+      <a href="/veiculos/{{veiculo.id}}">
+        <img class="rounded" [src]="veiculo.anexoPrincipal.url" alt="Foto veículo">
         <div class="circulo">
           <div class="texto">
-            <p class="descricao-veiculo">{{img.descricao}}</p>
-            <p class="ano">{{img.ano}}</p>
-            <p class="preco">{{img.preco}}</p>
+            <p class="descricao-veiculo">{{veiculo.modelo.marca.descricao}}/{{veiculo.modelo.descricao}}</p>
+            <p class="ano">{{veiculo.anoFabricacao}}/{{veiculo.anoModelo}}</p>
+            <p class="preco">{{veiculo.valorAnuncio}}</p>
           </div>
         </div>
       </a>
@@ -16,12 +16,12 @@
   </ngb-carousel>
 
   <div class="veiculos-mob">
-    <div class="card" *ngFor="let item of imagens">
-      <img class="card-img-top" [src]="item.url" alt="Card image cap">
+    <div class="card" *ngFor="let veiculo of veiculos">
+      <img class="card-img-top" [src]="veiculo.anexoPrincipal.url" alt="Foto veículo">
       <div class="card-body">
-        <p class="descricao-veiculo">{{item.descricao}}</p>
+        <p class="descricao-veiculo">{{veiculo.modelo.marca.descricao}}/{{veiculo.modelo.descricao}}</p>
         <!-- <p class="ano">{{item.ano}}</p> -->
-        <p class="preco">{{item.preco}}</p>
+        <p class="preco">{{veiculo.valorAnuncio}}</p>
       </div>
     </div>
 

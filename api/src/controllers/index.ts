@@ -11,3 +11,4 @@ export * from "./chart.comparativo.controller";
 export * from "./usuario.controller";
 export * from "./anexo-veiculo.controller";
 export * from "./opcional.controller";
+export * from "./veiculo.public.controller";

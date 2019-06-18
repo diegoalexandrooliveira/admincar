@@ -23,19 +23,28 @@ class AnexoVeiculoController {
     static getQueryResolvers() {
         return {
             anexoPrincipal: (root, args) => {
-                return index_1.AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(args.veiculoId).then((anexo) => {
-                    if (!anexo || !anexo.$url) {
-                        return new index_2.AnexoVeiculo(-1, 0, "/public/images/veiculoSemImagem.jpg", true, args.veiculoId);
-                    }
-                    else {
-                        return anexo;
-                    }
-                });
+                return this.getAnexoPrincipal(args.veiculoId);
             },
             anexos: (root, args) => {
                 return index_1.AnexoVeiculoDAO.buscarTodosAnexosPorVeiculo(args.veiculoId);
             }
         };
+    }
+    static getAnexoPrincipal(idVeiculo) {
+        return index_1.AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(idVeiculo).then((anexo) => {
+            // if (!anexo || !anexo.$url) {
+            //   return new AnexoVeiculo(
+            //     -1,
+            //     0,
+            //     "/public/images/veiculoSemImagem.jpg",
+            //     true,
+            //     idVeiculo
+            //   );
+            // } else {
+            //   return anexo;
+            // }
+            return anexo;
+        });
     }
     static getMutationsResolvers() {
         return {

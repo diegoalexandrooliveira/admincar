@@ -6,6 +6,10 @@ import { PrincipalComponent } from "./principal/principal.component";
 import { VeiculosComponent } from "./veiculos/veiculos.component";
 import { ContatoComponent } from "./contato/contato.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {GraphqlService} from "./graphql.service";
+import {VeiculosService} from "./veiculos.service";
+import { HttpModule } from "@angular/http";
+import "rxjs/add/operator/map";
 
 const rotas: Routes = [
   {
@@ -28,13 +32,19 @@ const rotas: Routes = [
   }
 ];
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(rotas), NgbModule.forRoot()],
+  imports: [CommonModule, HttpModule, RouterModule.forChild(rotas), NgbModule.forRoot()],
   declarations: [
     SiteComponent,
     PrincipalComponent,
     VeiculosComponent,
     ContatoComponent
   ],
-  bootstrap: [SiteComponent]
+  bootstrap: [SiteComponent],
+  providers: [
+   
+    GraphqlService,
+   
+    VeiculosService
+  ]
 })
 export class SiteModule {}

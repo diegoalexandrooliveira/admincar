@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /home/diego/Workspace/admincar/web
+cd /home/diego/workspace/admincar/web
 npm start

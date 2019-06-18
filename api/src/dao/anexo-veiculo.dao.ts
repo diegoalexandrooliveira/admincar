@@ -57,10 +57,11 @@ export class AnexoVeiculoDAO {
   }
 
   public static buscarTodosAnexosPorVeiculo(
-    veiculoId: number
+    veiculoId: number, publicos?:Boolean
   ): Promise<AnexoVeiculo[]> {
+    let where = publicos? " and tipo_arquivo = 1 " : "";
     let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where veiculo_id = $1 order by principal desc, id`;
+    url, principal from anexo_veiculo where veiculo_id = $1 ${where} order by principal desc, id`;
 
     return new Promise((resolve, reject) => {
       clientFactory

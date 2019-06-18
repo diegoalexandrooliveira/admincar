@@ -4,9 +4,9 @@ const index_1 = require("../database/index");
 const index_2 = require("../model/index");
 const utils_1 = require("../utils");
 class VeiculoDAO {
-    static buscarVeiculoPorId(idVeiculo) {
+    static buscarVeiculoPorId(idVeiculo, disponiveis) {
         return new Promise((resolve, reject) => {
-            VeiculoDAO.buscarVeiculos(idVeiculo)
+            VeiculoDAO.buscarVeiculos(idVeiculo, disponiveis)
                 .then((veiculos) => resolve(veiculos[0]))
                 .catch((erro) => reject(erro));
         });
@@ -14,17 +14,25 @@ class VeiculoDAO {
     static buscarTodosVeiculos() {
         return VeiculoDAO.buscarVeiculos();
     }
-    static buscarVeiculos(idVeiculo) {
+    static buscarTodosVeiculosDisponiveis() {
+        return VeiculoDAO.buscarVeiculos(undefined, true);
+    }
+    static buscarVeiculos(idVeiculo, disponiveis) {
         let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
     cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
     combustivel_id                    
     from veiculo `;
         let parameters = [];
+        let where = '';
         if (idVeiculo) {
             parameters.push(idVeiculo);
-            query = query + " where id = $1 ";
+            where = ` where id = $1 `;
         }
-        query = query + " order by id ";
+        if (disponiveis) {
+            where = where ? `${where} and ` : ` where `;
+            where = `${where} data_venda is null `;
+        }
+        query = `${query} ${where} order by id `;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
                 .query(query, parameters)
