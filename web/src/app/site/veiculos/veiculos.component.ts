@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Veiculo} from "../models/veiculo.model";
+import {VeiculosService} from "../veiculos.service";
 
 @Component({
   selector: 'app-veiculos',
@@ -7,7 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VeiculosComponent implements OnInit {
 
-  constructor() { }
+  veiculos: Veiculo[] = [];
+  constructor(
+    private service: VeiculosService
+  ) {
+    service.recuperarTodosVeiculos().then(veiculos=> this.veiculos = veiculos);
+  }
 
   ngOnInit() {
   }

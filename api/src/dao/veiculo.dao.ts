@@ -15,11 +15,95 @@ export class VeiculoDAO {
   public static buscarTodosVeiculos(): Promise<Veiculo[]> {
     return VeiculoDAO.buscarVeiculos();
   }
-  public static buscarTodosVeiculosDisponiveis(): Promise<Veiculo[]> {
-    return VeiculoDAO.buscarVeiculos(undefined, true);
+  public static buscarTodosVeiculosDisponiveisAleatoriamenteLimitados(): Promise<Veiculo[]> {
+    let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
+    cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
+    combustivel_id                    
+    from veiculo where data_venda is null order by random() limit 5`;
+    return new Promise((resolve, reject) => {
+      clientFactory
+        .query(query)
+        .then((result: QueryResult) => {
+          let retorno: Veiculo[] = [];
+          if (result.rows.length > 0) {
+            result.rows.map(row => {
+              retorno.push(
+                new Veiculo(
+                  row.id,
+                  row.modelo_id,
+                  row.ano_fabricacao,
+                  row.ano_modelo,
+                  row.placa,
+                  row.renavam,
+                  row.chassi,
+                  row.cor_id,
+                  row.cidade_id,
+                  row.data_inclusao,
+                  row.data_aquisicao,
+                  row.data_venda,
+                  row.valor_compra,
+                  row.valor_venda,
+                  row.valor_anunciado,
+                  row.observacoes,
+                  row.combustivel_id
+                )
+              );
+            });
+          }
+          resolve(retorno);
+        })
+        .catch(error => {
+          logger.error(`veiculo.dao.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados - ${error}`);
+          reject("Erro ao tentar recuperar os veículos.");
+        });
+    });
   }
 
-  private static buscarVeiculos(idVeiculo?: number, disponiveis?: Boolean): Promise<Veiculo[]> {
+  public static buscarTodosVeiculosDisponiveis(): Promise<Veiculo[]> {
+    let query = `select v.id, v.modelo_id, v.ano_fabricacao, v.ano_modelo, v.cor_id,
+    v.valor_anunciado,  v.combustivel_id                    
+    from veiculo v inner join (modelo m inner join marca ma on m.marca_id = ma.id) on v.modelo_id = m.id
+    where v.data_venda is null order by ma.descricao, m.descricao asc`;
+    return new Promise((resolve, reject) => {
+      clientFactory
+        .query(query)
+        .then((result: QueryResult) => {
+          let retorno: Veiculo[] = [];
+          if (result.rows.length > 0) {
+            result.rows.map(row => {
+              retorno.push(
+                new Veiculo(
+                  row.id,
+                  row.modelo_id,
+                  row.ano_fabricacao,
+                  row.ano_modelo,
+                  null,
+                  null,
+                  null,
+                  row.cor_id,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  row.valor_anunciado,
+                  null,
+                  row.combustivel_id
+                )
+              );
+            });
+          }
+          resolve(retorno);
+        })
+        .catch(error => {
+          logger.error(`veiculo.dao.buscarTodosVeiculosDisponiveis - ${error}`);
+          reject("Erro ao tentar recuperar os veículos.");
+        });
+    });
+  }
+
+  private static buscarVeiculos(idVeiculo?: number, disponiveis?:Boolean): Promise<Veiculo[]> {
     let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
     cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
     combustivel_id                    
@@ -33,9 +117,10 @@ export class VeiculoDAO {
     }
 
     if(disponiveis){
-      where = where? `${where} and ` : ` where `;
+      where = where? ` ${where} and ` : ` where `;
       where = `${where} data_venda is null `;
     }
+
 
     query = `${query} ${where} order by id `;
 

@@ -10,14 +10,25 @@ class VeiculoPublicController {
     opcionais: [Opcional] }`;
     }
     static getQueries() {
-        return `veiculos(limite: Int = 0): [Veiculo]
-            veiculo(id: Int): Veiculo`;
+        return `veiculo(id: Int = 0, aleatorios: Boolean = FALSE): [Veiculo]`;
     }
     static getQueryResolvers() {
         return {
-            veiculos: this.buscarVeiculosDisponiveis,
-            veiculo: (root, args) => index_1.VeiculoDAO.buscarVeiculoPorId(args.id, true)
+            veiculo: (root, args) => this.veiculos(args.id, args.aleatorios)
         };
+    }
+    static veiculos(id, aleatorio) {
+        if (id) {
+            return index_1.VeiculoDAO.buscarVeiculoPorId(id, true).then((veiculo) => Array.of(veiculo));
+        }
+        else {
+            if (aleatorio) {
+                return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados();
+            }
+            else {
+                return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveis();
+            }
+        }
     }
     static getResolvers() {
         return {
@@ -30,13 +41,6 @@ class VeiculoPublicController {
                 opcionais: (veiculo) => index_1.OpcionalDAO.buscarTodosOpcionaisPorVeiculo(veiculo.$id).then((opcionais) => opcionais)
             }
         };
-    }
-    static buscarVeiculosDisponiveis(root, args) {
-        return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveis().then((veiculos) => {
-            return args.limite
-                ? veiculos.slice(0, args.limite)
-                : veiculos;
-        });
     }
 }
 exports.VeiculoPublicController = VeiculoPublicController;

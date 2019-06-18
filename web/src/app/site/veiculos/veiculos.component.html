@@ -1,3 +1,14 @@
-<p>
-  veiculos works!
-</p>
+<div class="corpo">
+
+  <div class="card" *ngFor="let veiculo of veiculos">
+    <a routerLink="/veiculos/{{veiculo.id}}">
+      <img class="card-img-top" [src]="veiculo.anexoPrincipal.url" alt="Foto veículo">
+      <div class="card-body">
+        <p class="descricao-veiculo">{{veiculo.modelo.marca.descricao}}/{{veiculo.modelo.descricao}}</p>
+        <p class="ano">{{veiculo.anoFabricacao}}/{{veiculo.anoModelo}}</p>
+        <p class="preco">{{veiculo.valorAnuncio | currency:'BRL'}}</p>
+      </div>
+    </a>
+  </div>
+
+</div>

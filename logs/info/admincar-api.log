@@ -1,0 +1,2 @@
+{"level":"info","message":"API admincar rodando na porta 8080","timestamp":"2019-06-18T15:58:16.397Z"}
+{"level":"error","message":"veiculo.dao.buscarTodosVeiculos - error: syntax error at or near \"and\"","timestamp":"2019-06-18T15:59:22.793Z"}

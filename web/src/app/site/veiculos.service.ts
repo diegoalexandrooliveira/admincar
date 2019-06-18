@@ -13,38 +13,33 @@ import { Opcional } from "./models/opcional.model";
 
 @Injectable()
 export class VeiculosService {
-  
-  private todosList: string;
+
+  private todosVeiculos: string;
   private veiculoPorId: string;
-  private todosPrincipal: string;
-  
+  private todosAleatoriosLimitado: string;
+
   constructor(
     private graphql: GraphqlService
   ) {
-    this.todosList = `{
-      veiculos(situacao:"$1"){
-        id
-        modelo{
-          descricao
-          marca{
-            descricao
-          }
-        }
-        anoFabricacao
-        anoModelo
-        placa
-        cor{
+    this.todosVeiculos = `{
+      veiculo{
+      id
+      anoFabricacao
+      anoModelo
+      modelo{
+        descricao
+        marca{
           descricao
         }
-        valorAnuncio
-        anexoPrincipal{
-          url
-        }
-        dataVenda
       }
-    }`;
-    this.todosPrincipal = `{
-      veiculos{
+      valorAnuncio
+      anexoPrincipal{
+        url
+      }
+    }
+  }`;
+    this.todosAleatoriosLimitado = `{
+      veiculo(aleatorios: true){
         id
         anoFabricacao
         anoModelo
@@ -61,64 +56,41 @@ export class VeiculosService {
       }
     }`;
     this.veiculoPorId = `{
-      veiculo(id:$id){
+      veiculo(id: $id) {
         id
-        modelo{
-          id
-          descricao
-          marca{
-            id
-            descricao
-            tipoVeiculo{
-              id
-            }
-          }
-        }
         anoFabricacao
         anoModelo
-        placa
-        renavam
-        chassi
-        cor{
-          id
-        }
-        cidade{
-          id
-          estado{
-            id
+        modelo {
+          descricao
+          marca {
+            descricao
           }
         }
-        dataInclusao
-        dataAquisicao
-        dataVenda
-        valorCompra
-        valorVenda
-        valorAnuncio
-        observacoes
-        combustivel{
-          id
-        }
-        anexos{
-          id
-          tipoArquivo
-          url
-          principal
-        }
-        opcionais{
-          id
+        cor {
           descricao
         }
+        combustivel {
+          descricao
+        }
+        opcionais {
+          descricao
+        }
+        valorAnuncio
+        anexos {
+          url
+        }
       }
-    }`;
-    
+    }
+    `;
+
 
   }
 
-  public recuperarTodosPrincipal(): Promise<Veiculo[]> {
+  public recuperarAleatoriosLimitado(): Promise<Veiculo[]> {
     return this.graphql
-      .request(this.todosPrincipal)
+      .request(this.todosAleatoriosLimitado)
       .map((resposta: Resposta) =>
-        resposta.dados["veiculos"].map(
+        resposta.dados["veiculo"].map(
           veiculo =>
             new Veiculo(
               veiculo.id,
@@ -127,12 +99,59 @@ export class VeiculosService {
                 veiculo.modelo.descricao,
                 new Marca(null, veiculo.modelo.marca.descricao)
               ),
-              veiculo.anoFabricacao,veiculo.anoModelo,null,veiculo.valorAnuncio,null,
+              veiculo.anoFabricacao, veiculo.anoModelo, null, veiculo.valorAnuncio, null,
               null,
               new AnexoVeiculo(null, veiculo.anexoPrincipal.url)
             )
         )
       )
+      .toPromise();
+  }
+
+  public recuperarTodosVeiculos(): Promise<Veiculo[]> {
+    return this.graphql
+      .request(this.todosVeiculos)
+      .map((resposta: Resposta) =>
+        resposta.dados["veiculo"].map(
+          veiculo =>
+            new Veiculo(
+              veiculo.id,
+              new Modelo(
+                null,
+                veiculo.modelo.descricao,
+                new Marca(null, veiculo.modelo.marca.descricao)
+              ),
+              veiculo.anoFabricacao, veiculo.anoModelo, null, veiculo.valorAnuncio, null,
+              null,
+              new AnexoVeiculo(null, veiculo.anexoPrincipal.url)
+            )
+        )
+      )
+      .toPromise();
+  }
+
+  public recuperarVeiculo(id: number): Promise<Veiculo> {
+    return this.graphql
+      .request(this.veiculoPorId.replace("$id", id.toString()))
+      .map((resposta: Resposta) => {
+        let dado = resposta.dados["veiculo"] ? resposta.dados["veiculo"][0] : null;
+        if (dado) {
+          return new Veiculo(
+            dado.id,
+            new Modelo(
+              null,
+              dado.modelo.descricao,
+              new Marca(null, dado.modelo.marca.descricao)
+            ),
+            dado.anoFabricacao, dado.anoModelo, new Cor(null, dado.cor.descricao),
+            dado.valorAnuncio, new Combustivel(null, dado.combustivel? dado.combustivel.descricao : ""),
+            dado.anexos? dado.anexos.map(anexo => new AnexoVeiculo(null, anexo.url)): null, null,
+            dado.opcionais? dado.opcionais.map(opcional => new Opcional(null, opcional.descricao)):null
+          );
+        } else {
+          return new Veiculo();
+        }
+      })
       .toPromise();
   }
 
@@ -199,5 +218,5 @@ export class VeiculosService {
   //     .toPromise();
   // }
 
- 
+
 }

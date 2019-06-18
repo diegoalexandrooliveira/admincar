@@ -11,7 +11,8 @@
             "program": "${workspaceFolder}/api/src/admincar-api.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "runtimeExecutable": "/home/diego/.nvm/versions/node/v6.17.1/bin/node"
         }
     ]
 }

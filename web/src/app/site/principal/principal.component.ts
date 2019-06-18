@@ -12,7 +12,7 @@ export class PrincipalComponent implements OnInit {
   constructor(
     private service: VeiculosService
   ) {
-    service.recuperarTodosPrincipal().then(veiculos=> this.veiculos = veiculos);
+    service.recuperarAleatoriosLimitado().then(veiculos=> this.veiculos = veiculos);
   }
   // constructor() {
   //   this.imagens.push({

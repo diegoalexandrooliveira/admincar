@@ -14,8 +14,51 @@ class VeiculoDAO {
     static buscarTodosVeiculos() {
         return VeiculoDAO.buscarVeiculos();
     }
+    static buscarTodosVeiculosDisponiveisAleatoriamenteLimitados() {
+        let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
+    cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
+    combustivel_id                    
+    from veiculo where data_venda is null order by random() limit 5`;
+        return new Promise((resolve, reject) => {
+            index_1.clientFactory
+                .query(query)
+                .then((result) => {
+                let retorno = [];
+                if (result.rows.length > 0) {
+                    result.rows.map(row => {
+                        retorno.push(new index_2.Veiculo(row.id, row.modelo_id, row.ano_fabricacao, row.ano_modelo, row.placa, row.renavam, row.chassi, row.cor_id, row.cidade_id, row.data_inclusao, row.data_aquisicao, row.data_venda, row.valor_compra, row.valor_venda, row.valor_anunciado, row.observacoes, row.combustivel_id));
+                    });
+                }
+                resolve(retorno);
+            })
+                .catch(error => {
+                utils_1.logger.error(`veiculo.dao.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados - ${error}`);
+                reject("Erro ao tentar recuperar os veículos.");
+            });
+        });
+    }
     static buscarTodosVeiculosDisponiveis() {
-        return VeiculoDAO.buscarVeiculos(undefined, true);
+        let query = `select v.id, v.modelo_id, v.ano_fabricacao, v.ano_modelo, v.cor_id,
+    v.valor_anunciado,  v.combustivel_id                    
+    from veiculo v inner join (modelo m inner join marca ma on m.marca_id = ma.id) on v.modelo_id = m.id
+    where v.data_venda is null order by ma.descricao, m.descricao asc`;
+        return new Promise((resolve, reject) => {
+            index_1.clientFactory
+                .query(query)
+                .then((result) => {
+                let retorno = [];
+                if (result.rows.length > 0) {
+                    result.rows.map(row => {
+                        retorno.push(new index_2.Veiculo(row.id, row.modelo_id, row.ano_fabricacao, row.ano_modelo, null, null, null, row.cor_id, null, null, null, null, null, null, row.valor_anunciado, null, row.combustivel_id));
+                    });
+                }
+                resolve(retorno);
+            })
+                .catch(error => {
+                utils_1.logger.error(`veiculo.dao.buscarTodosVeiculosDisponiveis - ${error}`);
+                reject("Erro ao tentar recuperar os veículos.");
+            });
+        });
     }
     static buscarVeiculos(idVeiculo, disponiveis) {
         let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
@@ -29,7 +72,7 @@ class VeiculoDAO {
             where = ` where id = $1 `;
         }
         if (disponiveis) {
-            where = where ? `${where} and ` : ` where `;
+            where = where ? ` ${where} and ` : ` where `;
             where = `${where} data_venda is null `;
         }
         query = `${query} ${where} order by id `;
