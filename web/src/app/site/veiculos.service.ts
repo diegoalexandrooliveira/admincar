@@ -145,7 +145,7 @@ export class VeiculosService {
             ),
             dado.anoFabricacao, dado.anoModelo, new Cor(null, dado.cor.descricao),
             dado.valorAnuncio, new Combustivel(null, dado.combustivel? dado.combustivel.descricao : ""),
-            dado.anexos? dado.anexos.map(anexo => new AnexoVeiculo(null, anexo.url)): null, null,
+            dado.anexos.length? dado.anexos.map(anexo => new AnexoVeiculo(null, anexo.url)): Array.of(new AnexoVeiculo(null,null)), null,
             dado.opcionais? dado.opcionais.map(opcional => new Opcional(null, opcional.descricao)):null
           );
         } else {

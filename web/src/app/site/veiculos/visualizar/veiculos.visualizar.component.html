@@ -1,4 +1,19 @@
-<div class="corpo">
-    {{veiculo | json}}
+<div class="corpo" *ngIf="veiculo">
+    <ngb-carousel class="rounded imagens" interval="7000">
+        <ng-template ngbSlide *ngFor="let anexo of veiculo.$anexos">
+            <img class="rounded" [src]="anexo.url" alt="Foto veículo">
+        </ng-template>
+    </ngb-carousel>
+
+    <div class="detalhes">
+        <p>{{veiculo.modelo.marca.descricao}}/{{veiculo.modelo.descricao}}</p>
+        <p>{{veiculo.anoFabricacao}}/{{veiculo.anoModelo}}</p>
+        <p *ngIf="veiculo.combustivel.descricao">{{veiculo.combustivel.descricao}}</p>
+        <p>{{veiculo.cor.descricao}}</p>
+        <div  class="opcional">
+            <span *ngFor="let opcional of veiculo.opcionais" class="badge bagde-opcional badge-pill">{{opcional.descricao}}</span>
+        </div>
+        <p class="preco">{{veiculo.valorAnuncio | currency:'BRL'}}</p>
+    </div>
 
 </div>

@@ -6,6 +6,10 @@
   justify-content: space-around;
 }
 
+.navbar-toggler{
+  font-size: 10px;
+}
+
 .logo:hover {
   text-decoration: none;
 }
@@ -85,6 +89,7 @@
 
 .nav-link {
   color: black !important;
+  padding: 0px !important;
 }
 
 .nav-item {
@@ -144,6 +149,9 @@
 
   .nav-item {
     text-align: -webkit-match-parent;
+  }
+  .nav-link {
+    padding: 8px !important;
   }
 
   .input-procurar {

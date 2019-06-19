@@ -4,63 +4,72 @@
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     align-items: center;
     justify-items: center;
+    /*height: 100%;*/
   }
   
   .alinhar-icone > *,
   .alinhar-icone > * > * {
     vertical-align: middle !important;
   }
-  
- 
-  .card {
+
+   img{
+    width: 100%;
+  } 
+  .imagens{
     width: 90%;
-    margin-bottom: 1rem;
+    box-shadow: 0 0 5px 1px black;
+    margin-bottom: 10px;
+    margin: 0 0 10px 0;
   }
-  
-  .card-body > p {
+
+  .detalhes {
+    display: grid;
+    justify-items: center;
+    background-color: #8a3331;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    margin: 0;
+  }
+  .detalhes > p {
     font-family: "Bowlby One SC", cursive;
     color: white;
     text-shadow: 1px 0px 0px black, 0px 1px 0px black, -1px 0px 0px black,
       0px -1px 0px black;
     margin: 0;
-    padding: 3px;
-    text-align: center;
-    justify-content: center;
-    display: flex;
-  }
-  
-  .card-body {
-    display: grid;
-    grid-template-rows: 70% 30%;
     padding: 2px;
-    background-color: #8a3331;
-    border-radius: 6%;
-    margin: 1px;
-  }
-  
-  .preco {
-    font-size: 0.8rem;
-    color: #efb943 !important;
-    grid-column: 1/2;
-  
-  }
-  
-  .descricao-veiculo {
-    font-size: 0.7rem;
-    grid-column: 0/1;
-  }
-  
-  img {
-    width: 100%;
+    text-align: center;
   }
 
-  .ano{
-    display: none !important;
+  .bagde-opcional {
+    color: #efb943;
+    background-color: #8a3331;
+    font-family: "Bowlby One SC", cursive;
+    text-shadow: 1px 0px 0px black, 0px 1px 0px black, -1px 0px 0px black,
+    0px -1px 0px black;
+    margin: 5px;
+    box-shadow: 1px 2px 3px 0px black;
   }
+
+  .opcional{
+    background-color: rgba(255, 255, 255, 0.78);
+    justify-items: center;
+    padding: 5px;
+    box-shadow: 0px 0px 8px 2px black;
+    margin: 8px !important;
+    border-radius: 20px;
+  }
+
+  .preco{
+    font-size: 1.8rem;
+    color: #efb943 !important;
+    margin-top: 5px !important;
+  }
+  
+ 
+ 
   
   
   
