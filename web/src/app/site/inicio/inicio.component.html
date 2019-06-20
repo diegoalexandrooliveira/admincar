@@ -1,5 +1,4 @@
 <div class="corpo">
-
   <ngb-carousel class="rounded veiculos-carousel" interval="7000">
     <ng-template ngbSlide *ngFor="let veiculo of veiculos">
       <a routerLink="/veiculos/{{veiculo.id}}">
@@ -21,18 +20,13 @@
         <img class="card-img-top" [src]="veiculo.anexoPrincipal.url" alt="Foto veículo">
         <div class="card-body">
           <p class="descricao-veiculo">{{veiculo.modelo.marca.descricao}}/{{veiculo.modelo.descricao}}</p>
-          <!-- <p class="ano">{{item.ano}}</p> -->
           <p class="preco">{{veiculo.valorAnuncio | currency:'BRL'}}</p>
         </div>
       </a>
     </div>
-
   </div>
-
   <a routerLink="/veiculos" class="btn btn-primary ver-todos alinhar-icone">
     <i class="material-icons">apps</i>
     <span>Ver todos</span>
   </a>
-
-
 </div>

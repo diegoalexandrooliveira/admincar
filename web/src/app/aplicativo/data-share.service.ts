@@ -13,7 +13,7 @@ export class DataShareService {
     DataShared
   > = this.dataBeahvior.asObservable();
 
-  constructor() {}
+  constructor() { }
 
   shareData(data: DataShared) {
     this.dataBeahvior.next(data);

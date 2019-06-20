@@ -1,6 +1,4 @@
 import { RouterModule, Routes } from "@angular/router";
-import { SiteModule } from "./site/site.module";
-import { AplicativoModule } from "./aplicativo/aplicativo.module";
 
 const appRoutes: Routes = [
   {

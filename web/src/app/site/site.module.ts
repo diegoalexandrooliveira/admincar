@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SiteComponent } from "./site.component";
 import { Routes, RouterModule } from "@angular/router";
-import { PrincipalComponent } from "./principal/principal.component";
+import { InicioComponent } from "./inicio/inicio.component";
 import { VeiculosComponent } from "./veiculos/veiculos.component";
 import {VeiculosVisualizarComponent} from "./veiculos/visualizar/veiculos.visualizar.component";
 import { ContatoComponent } from "./contato/contato.component";
@@ -11,6 +11,7 @@ import {GraphqlService} from "./graphql.service";
 import {VeiculosService} from "./veiculos.service";
 import { HttpModule } from "@angular/http";
 import "rxjs/add/operator/map";
+import { HeaderComponent } from "./header/header.component";
 
 const rotas: Routes = [
   {
@@ -31,7 +32,7 @@ const rotas: Routes = [
       },
       {
         path: "**",
-        component: PrincipalComponent
+        component: InicioComponent
       }
     ]
   }
@@ -43,10 +44,11 @@ const rotas: Routes = [
     NgbModule.forRoot()],
   declarations: [
     SiteComponent,
-    PrincipalComponent,
+    InicioComponent,
     VeiculosComponent,
     ContatoComponent,
-    VeiculosVisualizarComponent
+    VeiculosVisualizarComponent,
+    HeaderComponent
   ],
   bootstrap: [SiteComponent],
   providers: [   

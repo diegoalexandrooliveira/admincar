@@ -1,0 +1,185 @@
+
+.header {
+    height: 90px;
+    width: 100%;
+    background-color: #8a3331;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .navbar-toggler{
+    font-size: 10px;
+  }
+  
+  #inicio-mob, #veiculos-mob, #contato-mob {
+    display: block;
+  }
+  
+  #inicio-desk, #veiculos-desk, #contato-desk {
+    display: none;
+  }
+  
+  .logo:hover {
+    text-decoration: none;
+  }
+  
+  .logo {
+    font-family: "Bowlby One SC", cursive;
+  
+    text-shadow: black 1px 1px 2px;
+    color: white;
+  }
+  
+  .nome {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: baseline;
+  }
+  
+  .primeira-letra {
+    color: #e0af43;
+    font-size: 3rem;
+    font-style: italic;
+  }
+  
+  .subtitulo {
+    font-size: 1rem;
+    margin-top: -1.3rem;
+  }
+  
+  .logo * p {
+    margin: 0;
+  }
+  
+  .location {
+    display: none;
+  }
+  
+  .contact {
+    display: flex;
+    align-items: center;
+  }
+  
+  .location > i,
+  .contact > i {
+    color: #e0af43;
+    font-size: 2.5rem;
+    text-shadow: black 1px 1px 2px;
+  }
+  
+  .address,
+  .phones {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .address > p,
+  .phones > a {
+    padding-top: 3px;
+    margin: 0;
+    color: white;
+    display: block;
+  }
+  
+  .navbar {
+    background-color: rgba(255, 255, 255);
+    font-weight: bold;
+    justify-content: flex-end;
+    box-shadow: 1px 1px 3px;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .nav-link {
+    color: black !important;
+    padding: 0px !important;
+  }
+  
+  .nav-item {
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .nav-link:hover,
+  .nav-item:hover,
+  .nav-item:hover > .nav-link,
+  .active,
+  .active > .nav-link {
+    background-color: #e0af43 !important;
+    color: white !important;
+  }
+  
+  .form-inline{
+    display: grid;
+    grid-template-columns: 70% 30%;
+  }
+  
+  @media (min-width: 992px) {
+    .nome {
+      font-size: 2rem;
+    }
+  
+    .form-inline{
+      display: block;
+    }
+  
+    #inicio-mob, #veiculos-mob, #contato-mob {
+      display: none;
+    }
+    
+    #inicio-desk, #veiculos-desk, #contato-desk {
+      display: block;
+    }
+  
+    .primeira-letra {
+      font-size: 3.2rem;
+    }
+  
+    .subtitulo {
+      font-size: 1.2rem;
+      margin-top: -1.3rem;
+    }
+  
+    .location {
+      display: flex;
+      align-items: center;
+    }
+  
+    .location > i,
+    .contact > i {
+      font-size: 3.1rem;
+    }
+  
+    .address,
+    .phones {
+      font-size: 0.8rem;
+    }
+    .address > p,
+    .phones > a {
+      padding-top: 0px;
+    }
+  
+    .navbar-nav {
+      width: 70%;
+    }
+  
+    .navbar {
+      padding: 0;
+    }
+  
+    .nav-item {
+      text-align: -webkit-match-parent;
+    }
+    .nav-link {
+      padding: 8px !important;
+    }
+  
+    .input-procurar {
+      width: calc(80% - 38px) !important;
+    }
+  }
