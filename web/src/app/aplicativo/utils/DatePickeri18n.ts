@@ -4,6 +4,9 @@ import { I18N_VALUES, I18n } from "./i18n";
 
 @Injectable()
 export class DatePickeri18n extends NgbDatepickerI18n {
+  getDayAriaLabel(date: import("@ng-bootstrap/ng-bootstrap").NgbDateStruct): string {
+    return "";
+  }
   constructor(private _i18n: I18n) {
     super();
   }

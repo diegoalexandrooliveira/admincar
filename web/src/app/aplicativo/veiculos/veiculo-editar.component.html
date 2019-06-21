@@ -24,7 +24,8 @@
       <label for="tipoVeiculo">Tipo veículo
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="tipoVeiculo" [values]="tiposVeiculo" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo.$marca.$tipoVeiculo"
+      <app-dropdown-typeahead name="tipoVeiculo" [values]="tiposVeiculo" fieldFilter="descricao"
+        fieldDisplay="descricao" [(model)]="veiculo.$modelo.$marca.$tipoVeiculo"
         (whenSelectItem)="selecionouTipoVeiculo()" fieldValue="id">
       </app-dropdown-typeahead>
 
@@ -33,8 +34,8 @@
       <label for="marca">Marca
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="marca" [values]="marcas" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo.$marca"
-        (whenSelectItem)="selecionouMarca()" fieldValue="id">
+      <app-dropdown-typeahead name="marca" [values]="marcas" fieldFilter="descricao" fieldDisplay="descricao"
+        [(model)]="veiculo.$modelo.$marca" (whenSelectItem)="selecionouMarca()" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
 
@@ -42,8 +43,8 @@
       <label for="modelo">Modelo
         <span class="obrigatorio"> *</span>
       </label>
-      <app-dropdown-typeahead name="modelo" [values]="modelos" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$modelo"
-        fieldValue="id">
+      <app-dropdown-typeahead name="modelo" [values]="modelos" fieldFilter="descricao" fieldDisplay="descricao"
+        [(model)]="veiculo.$modelo" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
     <div class="form-group">
@@ -65,8 +66,8 @@
           <label for="cor">Cor
             <span class="obrigatorio"> *</span>
           </label>
-          <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$cor"
-            fieldValue="id">
+          <app-dropdown-typeahead name="cor" [values]="cores" fieldFilter="descricao" fieldDisplay="descricao"
+            [(model)]="veiculo.$cor" fieldValue="id">
           </app-dropdown-typeahead>
         </div>
       </div>
@@ -75,65 +76,73 @@
           <label for="valorAnuncio">Valor anúncio
             <span class="obrigatorio"> *</span>
           </label>
-          <input currencyMask name="valorAnuncio" class="form-control" [(ngModel)]="veiculo.$valorAnuncio" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
-          />
+          <input currencyMask name="valorAnuncio" class="form-control" [(ngModel)]="veiculo.$valorAnuncio"
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }" />
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="combustivel">Combustível</label>
-      <app-dropdown-typeahead name="combustivel" [values]="combustiveis" fieldFilter="descricao" fieldDisplay="descricao" [(model)]="veiculo.$combustivel"
-        fieldValue="id">
+      <app-dropdown-typeahead name="combustivel" [values]="combustiveis" fieldFilter="descricao"
+        fieldDisplay="descricao" [(model)]="veiculo.$combustivel" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
     <div class="form-group">
       <label for="estado">Estado</label>
-      <app-dropdown-typeahead name="estado" [values]="estados" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.$cidade.$estado"
-        fieldValue="id" (whenSelectItem)="selecionouEstado()">
+      <app-dropdown-typeahead name="estado" [values]="estados" fieldFilter="nome" fieldDisplay="nome"
+        [(model)]="veiculo.$cidade.$estado" fieldValue="id" (whenSelectItem)="selecionouEstado()">
       </app-dropdown-typeahead>
     </div>
     <div class="form-group">
       <label for="cidade">Cidade</label>
-      <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome" [(model)]="veiculo.$cidade"
-        fieldValue="id">
+      <app-dropdown-typeahead name="cidade" [values]="cidades" fieldFilter="nome" fieldDisplay="nome"
+        [(model)]="veiculo.$cidade" fieldValue="id">
       </app-dropdown-typeahead>
     </div>
     <div class="form-row">
       <div class="col">
         <div class="form-group">
           <label for="placa">Placa</label>
-          <input type="text" name="placa" [(ngModel)]="veiculo.$placa" class="form-control alinhamento-texto-centralizado">
+          <input type="text" name="placa" [(ngModel)]="veiculo.$placa"
+            class="form-control alinhamento-texto-centralizado">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="renavam">Renavam</label>
-          <input type="text" name="renavam" [(ngModel)]="veiculo.$renavam" class="form-control alinhamento-texto-centralizado">
+          <input type="text" name="renavam" [(ngModel)]="veiculo.$renavam"
+            class="form-control alinhamento-texto-centralizado">
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="chassi">Chassi</label>
-      <input type="text" name="chassi" [(ngModel)]="veiculo.$chassi" class="form-control alinhamento-texto-centralizado">
+      <input type="text" name="chassi" [(ngModel)]="veiculo.$chassi"
+        class="form-control alinhamento-texto-centralizado">
     </div>
     <div class="form-group" *ngIf="edicao">
       <label for="dataInclusao">Data Inclusão</label>
-      <input class="form-control alinhamento-texto-centralizado" disabled placeholder="dd/MM/yyyy" name="dataInclusao" [ngModel]="veiculo.$dataInclusao"
-        ngbDatepicker>
+      <input class="form-control alinhamento-texto-centralizado" disabled placeholder="dd/MM/yyyy" name="dataInclusao"
+        [ngModel]="veiculo.$dataInclusao" ngbDatepicker>
     </div>
     <div class="form-row">
       <div class="col">
         <div class="form-group">
           <label for="dataAquisicao">Data aquisição</label>
-          <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataAquisicao" (focus)="dataAquisicao.toggle()"
-            [(ngModel)]="veiculo.$dataAquisicao" ngbDatepicker #dataAquisicao="ngbDatepicker" autoClose="true">
+          <!-- <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataAquisicao"
+            (focus)="dataAquisicao.toggle()" [(ngModel)]="veiculo.$dataAquisicao" ngbDatepicker
+            #dataAquisicao="ngbDatepicker" autoClose="true"> -->
+
+            <input class="form-control alinhamento-texto-centralizado" (focus)="dataAquisicao.toggle()"
+            placeholder="dd/MM/yyyy" #dataAquisicao="ngbDatepicker" name="dataAquisicao" [(ngModel)]="veiculo.$dataAquisicao"
+            ngbDatepicker>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="valorAquisicao">Valor aquisição</label>
-          <input currencyMask name="valorAquisicao" class="form-control" [(ngModel)]="veiculo.$valorCompra" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
-          />
+          <input currencyMask name="valorAquisicao" class="form-control" [(ngModel)]="veiculo.$valorCompra"
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }" />
         </div>
       </div>
     </div>
@@ -141,23 +150,29 @@
       <div class="col">
         <div class="form-group">
           <label for="dataVenda">Data venda</label>
-          <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataVenda" (focus)="dataVenda.toggle()"
-            [(ngModel)]="veiculo.$dataVenda" ngbDatepicker #dataVenda="ngbDatepicker" autoClose="true">
+          <!-- <input class="form-control alinhamento-texto-centralizado" placeholder="dd/MM/yyyy" name="dataVenda"
+            (focus)="dataVenda.toggle()" [(ngModel)]="veiculo.$dataVenda" ngbDatepicker #dataVenda="ngbDatepicker"
+            autoClose="true"> -->
+          <input class="form-control alinhamento-texto-centralizado" (focus)="dataVenda.toggle()"
+            placeholder="dd/MM/yyyy" #dataVenda="ngbDatepicker" name="dataVenda" [(ngModel)]="veiculo.$dataVenda"
+            ngbDatepicker>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label for="valorVenda">Valor venda</label>
-          <input currencyMask name="valorVenda" class="form-control" [(ngModel)]="veiculo.$valorVenda" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
-          />
+          <input currencyMask name="valorVenda" class="form-control" [(ngModel)]="veiculo.$valorVenda"
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }" />
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="opcionais">Opcionais</label>
-      <tag-input placeholder="+ Opcional" secondaryPlaceholder="Adicionar opcionais" class="form-control" [identifyBy]="'id'" [displayBy]="'descricao'"
-        [(ngModel)]="veiculo.$opcionais" name="opcionais" [onlyFromAutocomplete]="true">
-        <tag-input-dropdown [identifyBy]="'id'" [displayBy]="'descricao'" [showDropdownIfEmpty]="true" [autocompleteItems]="opcionais">
+      <tag-input placeholder="+ Opcional" secondaryPlaceholder="Adicionar opcionais" class="form-control"
+        [identifyBy]="'id'" [displayBy]="'descricao'" [(ngModel)]="veiculo.$opcionais" name="opcionais"
+        [onlyFromAutocomplete]="true">
+        <tag-input-dropdown [identifyBy]="'id'" [displayBy]="'descricao'" [showDropdownIfEmpty]="true"
+          [autocompleteItems]="opcionais">
         </tag-input-dropdown>
       </tag-input>
     </div>
@@ -185,23 +200,29 @@
 
       <div class="card" *ngFor="let anexo of anexosVeiculo">
         <a [href]="sanitize(anexo.$url)" target="_blank">
-          <img class="card-img-top transicao-opacidade {{anexo.excluir? 'anexo-deletado' : ''}}" [src]="sanitize(anexo.$url)" alt="Anexo do veículo {{veiculo.$id}}">
+          <img class="card-img-top transicao-opacidade {{anexo.excluir? 'anexo-deletado' : ''}}"
+            [src]="sanitize(anexo.$url)" alt="Anexo do veículo {{veiculo.$id}}">
         </a>
         <div class="card-body">
           <div class="botoes-imagem rounded">
             <i class="material-icons acao-anexo {{anexo.excluir? 'anexo-deletado' : ''}} {{anexo.principal? 'anexo-principal': 'anexo-secundario'}}"
               (click)="marcarComoPrincipal(anexo.id, anexo.principal, anexo.excluir)">check_circle</i>
-            <i *ngIf="anexo.tipoArquivo" class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
+            <i *ngIf="anexo.tipoArquivo"
+              class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
               (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility</i>
-            <i *ngIf="!anexo.tipoArquivo" class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
+            <i *ngIf="!anexo.tipoArquivo"
+              class="material-icons acao-anexo anexo-outras-acoes {{anexo.excluir? 'anexo-deletado' : ''}}"
               (click)="alterarPrivacidade(anexo.id, anexo.tipoArquivo, anexo.excluir)">visibility_off</i>
-            <i *ngIf="!anexo.excluir" class="material-icons acao-anexo delete-anexo" (click)="alterarStatusExclusao(anexo.id)">delete_forever</i>
-            <i *ngIf="anexo.excluir" class="material-icons acao-anexo anexo-outras-acoes" (click)="alterarStatusExclusao(anexo.id)">undo</i>
+            <i *ngIf="!anexo.excluir" class="material-icons acao-anexo delete-anexo"
+              (click)="alterarStatusExclusao(anexo.id)">delete_forever</i>
+            <i *ngIf="anexo.excluir" class="material-icons acao-anexo anexo-outras-acoes"
+              (click)="alterarStatusExclusao(anexo.id)">undo</i>
           </div>
         </div>
         <div class="progress" *ngIf="anexo.file && !anexo.excluir && uploadEmAndamento">
-          <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" [style.width]="anexo.progressUpload + '%'" role="progressbar"
-            [attr.aria-valuenow]="anexo.progressUpload" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar bg-info progress-bar-striped progress-bar-animated"
+            [style.width]="anexo.progressUpload + '%'" role="progressbar" [attr.aria-valuenow]="anexo.progressUpload"
+            aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import {
   NgbDateStruct,
   NgbDateParserFormatter
 } from "@ng-bootstrap/ng-bootstrap";
-import { toInteger } from "@ng-bootstrap/ng-bootstrap/util/util";
+//import { toInteger } from "@ng-bootstrap/ng-bootstrap/util/util";
 
 @Injectable()
 export class DateAdapter extends NgbDateAdapter<Date> {
@@ -29,9 +29,13 @@ export class DateFormatter extends NgbDateParserFormatter {
     if (value) {
       const partesData = value.split("/");
       return {
-        year: toInteger(partesData[2]),
-        month: toInteger(partesData[1]),
-        day: toInteger(partesData[0])
+        // year: toInteger(partesData[2]),
+        // month: toInteger(partesData[1]),
+        // day: toInteger(partesData[0])
+
+        year: Number(partesData[2]),
+        month: Number(partesData[1]),
+        day: Number(partesData[0])
       };
     }
     return null;
