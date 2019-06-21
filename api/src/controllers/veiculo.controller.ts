@@ -8,7 +8,7 @@ import {
 import { Veiculo, AnexoVeiculo, Mensagem, Opcional } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
 import { clientFactory } from "../database";
-import { Client } from "pg";
+import { Client, PoolClient } from "pg";
 import { AnexoVeiculoController } from ".";
 
 export class VeiculoController {
@@ -112,7 +112,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [Opcional
     return new Promise((resolve, reject) => {
       this.excluirTodosAnexosDoVeiculo(args.id)
         .then(() => clientFactory.getClient())
-        .then((result: Client) => {
+        .then((result: PoolClient) => {
           client = result;
           return AnexoVeiculoDAO.excluirTodosAnexoPorVeiculo(client, args.id);
         })
@@ -156,7 +156,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [Opcional
           clientFactory
             .getClient()
 
-            .then((cliente: Client) => {
+            .then((cliente: PoolClient) => {
               client = cliente;
               return VeiculoDAO.inserirVeiculo(client, veiculo);
             })
@@ -202,7 +202,7 @@ valorAnuncio: Float, observacoes: String, combustivel: Int, opcionais: [Opcional
           let client = null;
           clientFactory
             .getClient()
-            .then((cliente: Client) => (client = cliente))
+            .then((cliente: PoolClient) => (client = cliente))
             .then(() =>
               OpcionalDAO.excluirTodosOpcionaisVeiculo(client, veiculo.$id)
             )

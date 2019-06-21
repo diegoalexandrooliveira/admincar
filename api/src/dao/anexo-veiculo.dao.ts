@@ -1,6 +1,6 @@
 import { Mensagem, AnexoVeiculo } from "../model/index";
 import { clientFactory } from "../database/index";
-import { QueryResult, Client, Query } from "pg";
+import { QueryResult, Client, Query, PoolClient } from "pg";
 import { logger } from "../utils";
 
 export class AnexoVeiculoDAO {
@@ -98,7 +98,7 @@ export class AnexoVeiculoDAO {
   }
 
   public static inserirAnexo(
-    client: Client,
+    client: PoolClient,
     anexo: AnexoVeiculo
   ): Promise<number> {
     let insert = `insert into anexo_veiculo (tipo_arquivo, url, principal, veiculo_id) 

@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { VeiculoDAO, AnexoVeiculoDAO } from "../dao/index";
-import { logger } from "../utils";
-import { Usuario, Mensagem, Resposta, Veiculo, AnexoVeiculo } from "../model";
+import { Mensagem, Veiculo, AnexoVeiculo } from "../model";
 import { configs } from "../config/configs";
 import { clientFactory } from "../database";
-import { Client } from "pg";
+import { PoolClient } from "pg";
 import * as awsS3 from "aws-sdk";
-import * as tinify from "tinify";
+//import * as tinify from "tinify";
 
 class UploadFileRoute {
   private router: Router;
+  private tinify;
 
   constructor() {
     this.router = Router();
@@ -18,7 +18,8 @@ class UploadFileRoute {
       accessKeyId: configs.S3Bucket.accessKeyId,
       secretAccessKey: configs.S3Bucket.secretAccessKey
     });
-    tinify.key = configs.TinyPNG.apiKey;
+    this.tinify = require("tinify");
+    this.tinify.key = configs.TinyPNG.apiKey;
   }
 
   public getRouter(): Router {
@@ -85,7 +86,7 @@ class UploadFileRoute {
         return;
       })
       .then(() =>
-        tinify
+      this.tinify
           //@ts-ignore
           .fromBuffer(imagem.data)
           .resize({ method: "scale", width: 800 })
@@ -119,7 +120,7 @@ class UploadFileRoute {
         );
         return clientFactory.getClient();
       })
-      .then((result: Client) => {
+      .then((result: PoolClient) => {
         client = result;
         return AnexoVeiculoDAO.inserirAnexo(client, anexoVeiculo);
       })

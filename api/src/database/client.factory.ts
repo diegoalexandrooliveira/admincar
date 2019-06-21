@@ -1,4 +1,4 @@
-import { Pool, Client, QueryResult, QueryConfig } from "pg";
+import { Pool, Client, QueryResult, QueryConfig, PoolClient } from "pg";
 import { logger } from "../utils";
 import { configs } from "../config/configs";
 import { Mensagem } from "../model";
@@ -6,11 +6,11 @@ import { Mensagem } from "../model";
 class ClientFactory {
   private _pool: Pool = new Pool(configs.database);
 
-  public getClient(): Promise<Client> {
+  public getClient(): Promise<PoolClient> {
     return new Promise((resolve, reject) => {
       this._pool
         .connect()
-        .then((client: Client) => resolve(client))
+        .then((client: PoolClient) => resolve(client))
         .catch(error => {
           logger.error(`connection.factory.getClient - ${error}`);
           reject("Não foi possível conectar ao banco de dados");
@@ -18,7 +18,7 @@ class ClientFactory {
     });
   }
 
-  public commit(client: Client): Promise<void> {
+  public commit(client: PoolClient): Promise<void> {
     return new Promise((resolve, reject) => {
       client
         .query("COMMIT")
@@ -31,7 +31,7 @@ class ClientFactory {
     });
   }
 
-  public rollback(client: Client): Promise<Client> {
+  public rollback(client: PoolClient): Promise<PoolClient> {
     return new Promise((resolve, reject) => {
       client
         .query("ROLLBACK")

@@ -27,7 +27,7 @@ class Logger {
             maxFiles: 20
         };
         this.checkFolders();
-        this._logger = new winston.Logger({
+        this._logger = winston.createLogger({
             transports: [
                 new winston.transports.File(this._debug),
                 new winston.transports.File(this._info),

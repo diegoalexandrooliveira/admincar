@@ -6,7 +6,7 @@ import {
 } from "../dao/index";
 import { AnexoVeiculo } from "../model/index";
 import { clientFactory } from "../database";
-import { Client } from "pg";
+import { Client, PoolClient } from "pg";
 import { configs } from "../config/configs";
 import { logger } from "../utils";
 import * as awsS3 from "aws-sdk";
@@ -75,7 +75,7 @@ export class AnexoVeiculoController {
       );
       clientFactory
         .getClient()
-        .then((result: Client) => {
+        .then((result: PoolClient) => {
           client = result;
           return AnexoVeiculoDAO.atualizarAnexo(client, anexo);
         })
@@ -97,7 +97,7 @@ export class AnexoVeiculoController {
     return new Promise((resolve, reject) => {
       this.deleteImageFromStorage(args.id)
         .then(() => clientFactory.getClient())
-        .then((result: Client) => {
+        .then((result: PoolClient) => {
           client = result;
           return AnexoVeiculoDAO.excluirAnexoVeiculo(client, args.id);
         })

@@ -1,6 +1,6 @@
 import { Usuario, Mensagem } from "../model/index";
 import { clientFactory } from "../database/index";
-import { QueryResult, Client, Query } from "pg";
+import { QueryResult, Client, Query, PoolClient } from "pg";
 import { logger } from "../utils";
 
 export class UsuarioDAO {
@@ -48,7 +48,7 @@ export class UsuarioDAO {
   }
 
   public static inserirUsuario(
-    client: Client,
+    client: PoolClient,
     usuario: Usuario
   ): Promise<number> {
     let insert = `insert into usuario (usuario, senha) values ($1, $2)`;
@@ -71,7 +71,7 @@ export class UsuarioDAO {
   }
 
   public static alterarUsuario(
-    client: Client,
+    client: PoolClient,
     usuario: Usuario
   ): Promise<number> {
     let update = `update usuario set senha = $1 where usuario = $2`;
@@ -94,7 +94,7 @@ export class UsuarioDAO {
   }
 
   public static excluirUsuario(
-    client: Client,
+    client: PoolClient,
     usuario: string
   ): Promise<number> {
     let sqlDelete = `delete from usuario where usuario = $1`;

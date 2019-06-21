@@ -6,7 +6,7 @@ const model_1 = require("../model");
 const configs_1 = require("../config/configs");
 const database_1 = require("../database");
 const awsS3 = require("aws-sdk");
-const tinify = require("tinify");
+//import * as tinify from "tinify";
 class UploadFileRoute {
     constructor() {
         this.router = express_1.Router();
@@ -15,7 +15,8 @@ class UploadFileRoute {
             accessKeyId: configs_1.configs.S3Bucket.accessKeyId,
             secretAccessKey: configs_1.configs.S3Bucket.secretAccessKey
         });
-        tinify.key = configs_1.configs.TinyPNG.apiKey;
+        this.tinify = require("tinify");
+        this.tinify.key = configs_1.configs.TinyPNG.apiKey;
     }
     getRouter() {
         return this.router;
@@ -59,7 +60,7 @@ class UploadFileRoute {
             }
             return;
         })
-            .then(() => tinify
+            .then(() => this.tinify
             //@ts-ignore
             .fromBuffer(imagem.data)
             .resize({ method: "scale", width: 800 })

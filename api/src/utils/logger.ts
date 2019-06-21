@@ -2,7 +2,7 @@ import * as winston from "winston";
 import * as fs from "fs";
 
 class Logger {
-    private _logger: winston.LoggerInstance;
+    private _logger: winston.Logger;
 
     private _folderLog: string = "logs";
 
@@ -32,7 +32,7 @@ class Logger {
 
     constructor() {
         this.checkFolders();
-        this._logger = new winston.Logger({
+        this._logger = winston.createLogger({
             transports: [
                 new winston.transports.File(this._debug),
                 new winston.transports.File(this._info),

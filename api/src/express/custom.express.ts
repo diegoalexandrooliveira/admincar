@@ -1,5 +1,4 @@
 import * as express from "express";
-import { logger } from "../utils/index";
 import * as bodyParser from "body-parser";
 import * as bodyParserGraphQl from "body-parser-graphql";
 import * as routes from "../routes/index";
@@ -9,7 +8,7 @@ import * as compression from "compression";
 import * as cors from "cors";
 import * as helmet from "helmet";
 import { GraphQlSchemaFactory, GraphQlPublicSchemaFactory } from "../graphql";
-import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import * as expressFileUpload from "express-fileupload";
 import { configs } from "../config/configs";
 
@@ -43,11 +42,11 @@ export class CustomExpress {
   }
 
   private privateRoutes(): void {
-    this._express.use(
-      "/api/graphql",
-      this._passportMiddleware,
-      graphqlExpress({ schema: GraphQlSchemaFactory.createSchema() })
-    );
+    const graphql = new ApolloServer({ schema: GraphQlSchemaFactory.createSchema() });
+    this._express.use("/api/graphql", this._passportMiddleware);
+    graphql.applyMiddleware({
+      path: "/api/graphql", app: this._express
+    });
 
     this._express.get(
       "/api/autenticacao",
@@ -67,10 +66,10 @@ export class CustomExpress {
       "/public/images",
       express.static(configs.local.path + "public")
     );
-    this._express.use(
-      "/api/v1/public/graphql",
-      graphqlExpress({ schema: GraphQlPublicSchemaFactory.createSchema() })
-    );
+    const graphql = new ApolloServer({ schema: GraphQlPublicSchemaFactory.createSchema() });
+    graphql.applyMiddleware({
+      path: "/api/v1/public/graphql", app: this._express
+    });
   }
 
   public getExpress(): express.Express {

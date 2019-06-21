@@ -36,14 +36,21 @@ class CustomExpress {
         this._express.use(expressFileUpload());
     }
     privateRoutes() {
-        this._express.use("/api/graphql", this._passportMiddleware, apollo_server_express_1.graphqlExpress({ schema: graphql_1.GraphQlSchemaFactory.createSchema() }));
+        const graphql = new apollo_server_express_1.ApolloServer({ schema: graphql_1.GraphQlSchemaFactory.createSchema() });
+        this._express.use("/api/graphql", this._passportMiddleware);
+        graphql.applyMiddleware({
+            path: "/api/graphql", app: this._express
+        });
         this._express.get("/api/autenticacao", this._passportMiddleware, (req, res) => res.status(200).send("ok"));
         this._express.use("/api/uploadFile", this._passportMiddleware, routes.uploadFile);
     }
     publicRoutes() {
         this._express.use("/api/v1/public/autenticar", routes.autenticacao);
         this._express.use("/public/images", express.static(configs_1.configs.local.path + "public"));
-        this._express.use("/api/v1/public/graphql", apollo_server_express_1.graphqlExpress({ schema: graphql_1.GraphQlPublicSchemaFactory.createSchema() }));
+        const graphql = new apollo_server_express_1.ApolloServer({ schema: graphql_1.GraphQlPublicSchemaFactory.createSchema() });
+        graphql.applyMiddleware({
+            path: "/api/v1/public/graphql", app: this._express
+        });
     }
     getExpress() {
         return this._express;

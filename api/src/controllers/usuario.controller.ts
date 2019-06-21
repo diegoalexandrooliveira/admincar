@@ -1,7 +1,7 @@
 import { UsuarioDAO } from "../dao/index";
 import { Usuario, Mensagem } from "../model/index";
 import { clientFactory } from "../database";
-import { Client } from "pg";
+import { Client, PoolClient } from "pg";
 export class UsuarioController {
   public static getType(): string {
     return `type Usuario { usuario: String, senha: String }
@@ -53,7 +53,7 @@ export class UsuarioController {
         if (erros.length > 0) {
           reject(JSON.stringify(erros));
         } else {
-          clientFactory.getClient().then((client: Client) => {
+          clientFactory.getClient().then((client: PoolClient) => {
             usuario.codificaSenha();
             UsuarioDAO.inserirUsuario(client, usuario)
               .then(valor => clientFactory.commit(client))
@@ -83,7 +83,7 @@ export class UsuarioController {
         if (erros.length > 0) {
           reject(JSON.stringify(erros));
         } else {
-          clientFactory.getClient().then((client: Client) => {
+          clientFactory.getClient().then((client: PoolClient) => {
             usuario.codificaSenha();
             UsuarioDAO.alterarUsuario(client, usuario)
               .then(rows => {
@@ -123,7 +123,7 @@ export class UsuarioController {
       }
       clientFactory
         .getClient()
-        .then((client: Client) => {
+        .then((client: PoolClient) => {
           UsuarioDAO.excluirUsuario(client, args.usuario)
             .then(rows => {
               clientFactory.commit(client);
