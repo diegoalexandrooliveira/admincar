@@ -11,7 +11,7 @@ import { ActivatedRoute, Params } from '@angular/router';
   providers: [HeaderComponent]
 })
 export class VeiculosComponent implements OnInit {
-
+  textoProcurar: string = "";
   veiculos: Veiculo[] = [];
   constructor(
     private service: VeiculosService, private menu: HeaderComponent, private route: ActivatedRoute
@@ -21,7 +21,14 @@ export class VeiculosComponent implements OnInit {
   ngOnInit() {
     this.menu.mudouTela();
     this.route.queryParams.subscribe((params: Params) => {
-      this.service.recuperarTodosVeiculos(params["procurar"]).then(veiculos => this.veiculos = veiculos);
+      this.service.recuperarTodosVeiculos(params["procurar"]).then(veiculos => {
+        this.veiculos = veiculos;
+        if(this.veiculos.length && params["procurar"]){
+          this.textoProcurar = params["procurar"];
+        } else {
+          this.textoProcurar = "";
+        }
+      });
     });
   }
 

@@ -13,6 +13,7 @@ import { HttpModule } from "@angular/http";
 import "rxjs/add/operator/map";
 import { HeaderComponent } from "./header/header.component";
 import { FormsModule } from "@angular/forms";
+import { AgmCoreModule } from '@agm/core';
 
 const rotas: Routes = [
   {
@@ -42,7 +43,10 @@ const rotas: Routes = [
   imports: [CommonModule,
     HttpModule,
     RouterModule.forChild(rotas),
-    NgbModule.forRoot(), FormsModule],
+    NgbModule.forRoot(), FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDIkb1YDEpA9iAWHN0wfrFtyjAny0whyyA'
+    })],
   declarations: [
     SiteComponent,
     InicioComponent,

@@ -8,7 +8,8 @@ import { HeaderComponent } from '../header/header.component';
   providers: [HeaderComponent]
 })
 export class ContatoComponent implements OnInit {
-
+  lat: number = -22.669874;
+  lng: number = -50.412332;
   constructor(private menu: HeaderComponent) { }
 
   ngOnInit() {

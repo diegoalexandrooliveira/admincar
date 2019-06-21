@@ -1,5 +1,14 @@
+<div *ngIf="!veiculos.length" class="mensagem-filtro-nao-encontrado">
+  <ngb-alert [dismissible]="false">
+    Nenhum veículo encontrado.
+  </ngb-alert>
+</div>
+<div *ngIf="textoProcurar" class="mensagem-filtro">
+    <ngb-alert type="info" [dismissible]="false">
+      Veículos filtrados por: {{textoProcurar}}
+    </ngb-alert>
+  </div>
 <div class="corpo">
-
   <div class="card" *ngFor="let veiculo of veiculos">
     <a routerLink="/veiculos/{{veiculo.id}}">
       <img class="card-img-top" [src]="veiculo.anexoPrincipal.url" alt="Foto veículo">
