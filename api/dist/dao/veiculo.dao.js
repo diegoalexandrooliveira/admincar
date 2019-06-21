@@ -37,14 +37,35 @@ class VeiculoDAO {
             });
         });
     }
-    static buscarTodosVeiculosDisponiveis() {
+    static buscarTodosVeiculosDisponiveis(procurar) {
+        let whereProcurar = "";
+        let parametros = [];
+        if (procurar) {
+            whereProcurar = ` and (
+        UPPER(ma.descricao) like '%' || UPPER($1) || '%' OR
+        UPPER(m.descricao) like '%' || UPPER($2) || '%' OR
+        UPPER(m.descricao) like '%' || UPPER($3) || '%' OR
+        UPPER(c.descricao) like '%' || UPPER($4) || '%' OR
+        UPPER(co.descricao) like '%' || UPPER($5) || '%' OR
+        UPPER(TO_CHAR(v.ano_fabricacao, '9999')) like '%' || UPPER($6) || '%' OR
+        UPPER(TO_CHAR(v.ano_modelo, '9999')) like '%' || UPPER($7) || '%'
+      ) `;
+            parametros.push(procurar);
+            parametros.push(procurar);
+            parametros.push(procurar);
+            parametros.push(procurar);
+            parametros.push(procurar);
+            parametros.push(procurar);
+            parametros.push(procurar);
+        }
         let query = `select v.id, v.modelo_id, v.ano_fabricacao, v.ano_modelo, v.cor_id,
     v.valor_anunciado,  v.combustivel_id                    
     from veiculo v inner join (modelo m inner join marca ma on m.marca_id = ma.id) on v.modelo_id = m.id
-    where v.data_venda is null order by ma.descricao, m.descricao asc`;
+    inner join cor c on v.cor_id = c.id left outer join combustivel co on v.combustivel_id = co.id
+    where v.data_venda is null ${whereProcurar} order by ma.descricao, m.descricao asc`;
         return new Promise((resolve, reject) => {
             index_1.clientFactory
-                .query(query)
+                .query(query, parametros)
                 .then((result) => {
                 let retorno = [];
                 if (result.rows.length > 0) {

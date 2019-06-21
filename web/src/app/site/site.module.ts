@@ -4,14 +4,15 @@ import { SiteComponent } from "./site.component";
 import { Routes, RouterModule } from "@angular/router";
 import { InicioComponent } from "./inicio/inicio.component";
 import { VeiculosComponent } from "./veiculos/veiculos.component";
-import {VeiculosVisualizarComponent} from "./veiculos/visualizar/veiculos.visualizar.component";
+import { VeiculosVisualizarComponent } from "./veiculos/visualizar/veiculos.visualizar.component";
 import { ContatoComponent } from "./contato/contato.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import {GraphqlService} from "./graphql.service";
-import {VeiculosService} from "./veiculos.service";
+import { GraphqlService } from "./graphql.service";
+import { VeiculosService } from "./veiculos.service";
 import { HttpModule } from "@angular/http";
 import "rxjs/add/operator/map";
 import { HeaderComponent } from "./header/header.component";
+import { FormsModule } from "@angular/forms";
 
 const rotas: Routes = [
   {
@@ -38,10 +39,10 @@ const rotas: Routes = [
   }
 ];
 @NgModule({
-  imports: [CommonModule, 
-    HttpModule, 
-    RouterModule.forChild(rotas), 
-    NgbModule.forRoot()],
+  imports: [CommonModule,
+    HttpModule,
+    RouterModule.forChild(rotas),
+    NgbModule.forRoot(), FormsModule],
   declarations: [
     SiteComponent,
     InicioComponent,
@@ -51,9 +52,9 @@ const rotas: Routes = [
     HeaderComponent
   ],
   bootstrap: [SiteComponent],
-  providers: [   
-    GraphqlService,   
+  providers: [
+    GraphqlService,
     VeiculosService
   ]
 })
-export class SiteModule {}
+export class SiteModule { }

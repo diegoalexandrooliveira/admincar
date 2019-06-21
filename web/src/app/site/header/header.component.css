@@ -11,12 +11,12 @@
     font-size: 10px;
   }
   
-  #inicio-mob, #veiculos-mob, #contato-mob {
+  .mobile {
     display: block;
   }
   
-  #inicio-desk, #veiculos-desk, #contato-desk {
-    display: none;
+  .desktop {
+    display: none !important;
   }
   
   .logo:hover {
@@ -128,12 +128,12 @@
       display: block;
     }
   
-    #inicio-mob, #veiculos-mob, #contato-mob {
-      display: none;
+    .mobile {
+      display: none !important;
     }
     
-    #inicio-desk, #veiculos-desk, #contato-desk {
-      display: block;
+    .desktop {
+      display: block !important;
     }
   
     .primeira-letra {

@@ -1,5 +1,6 @@
 <div class="corpo" *ngIf="veiculo">
-    <ngb-carousel class="rounded imagens" interval="7000">
+    <ngb-carousel class="rounded imagens" interval="4000" #carousel (swiperight)="carousel.prev()"
+        (swipeleft)="carousel.next()">
         <ng-template ngbSlide *ngFor="let anexo of veiculo.$anexos">
             <img class="rounded" [src]="anexo.url" alt="Foto veículo">
         </ng-template>
@@ -10,8 +11,9 @@
         <p>{{veiculo.anoFabricacao}}/{{veiculo.anoModelo}}</p>
         <p *ngIf="veiculo.combustivel.descricao">{{veiculo.combustivel.descricao}}</p>
         <p>{{veiculo.cor.descricao}}</p>
-        <div  class="opcional">
-            <span *ngFor="let opcional of veiculo.opcionais" class="badge bagde-opcional badge-pill">{{opcional.descricao}}</span>
+        <div class="opcional">
+            <span *ngFor="let opcional of veiculo.opcionais"
+                class="badge bagde-opcional badge-pill">{{opcional.descricao}}</span>
         </div>
         <p class="preco">{{veiculo.valorAnuncio | currency:'BRL'}}</p>
     </div>

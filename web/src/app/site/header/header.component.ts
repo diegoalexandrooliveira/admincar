@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
+  textoProcurar: string;
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -33,5 +34,15 @@ export class HeaderComponent implements OnInit {
       navItens.item(0).classList.add("active");
       navItens.item(1).classList.add("active");
     }
+    this.limparProcurar();
+  }
+
+  public procurar(){
+    this.router.navigate(["/veiculos"], {queryParams: {procurar: this.textoProcurar}}).then(()=>
+    this.limparProcurar());
+  }
+
+  private limparProcurar(){
+    this.textoProcurar = "";
   }
 }

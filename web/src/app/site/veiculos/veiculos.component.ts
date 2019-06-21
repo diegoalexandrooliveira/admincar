@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Veiculo} from "../models/veiculo.model";
-import {VeiculosService} from "../veiculos.service";
+import { Veiculo } from "../models/veiculo.model";
+import { VeiculosService } from "../veiculos.service";
 import { HeaderComponent } from '../header/header.component';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-veiculos',
@@ -13,13 +14,15 @@ export class VeiculosComponent implements OnInit {
 
   veiculos: Veiculo[] = [];
   constructor(
-    private service: VeiculosService, private menu: HeaderComponent
+    private service: VeiculosService, private menu: HeaderComponent, private route: ActivatedRoute
   ) {
-    service.recuperarTodosVeiculos().then(veiculos=> this.veiculos = veiculos);
   }
 
   ngOnInit() {
     this.menu.mudouTela();
+    this.route.queryParams.subscribe((params: Params) => {
+      this.service.recuperarTodosVeiculos(params["procurar"]).then(veiculos => this.veiculos = veiculos);
+    });
   }
 
 }

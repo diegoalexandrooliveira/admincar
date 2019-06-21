@@ -10,14 +10,14 @@ class VeiculoPublicController {
     opcionais: [Opcional] }`;
     }
     static getQueries() {
-        return `veiculo(id: Int = 0, aleatorios: Boolean = FALSE): [Veiculo]`;
+        return `veiculo(id: Int = 0, aleatorios: Boolean = FALSE, procurar: String = ""): [Veiculo]`;
     }
     static getQueryResolvers() {
         return {
-            veiculo: (root, args) => this.veiculos(args.id, args.aleatorios)
+            veiculo: (root, args) => this.veiculos(args.id, args.aleatorios, args.procurar)
         };
     }
-    static veiculos(id, aleatorio) {
+    static veiculos(id, aleatorio, procurar) {
         if (id) {
             return index_1.VeiculoDAO.buscarVeiculoPorId(id, true).then((veiculo) => Array.of(veiculo));
         }
@@ -26,7 +26,7 @@ class VeiculoPublicController {
                 return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados();
             }
             else {
-                return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveis();
+                return index_1.VeiculoDAO.buscarTodosVeiculosDisponiveis(procurar);
             }
         }
     }

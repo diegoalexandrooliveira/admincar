@@ -35,41 +35,47 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item" data-toggle="collapse" data-target="#navbarNav" id="inicio-mob">
+      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
         <a class="nav-link" data-nome="inicio" routerLink="/">
           Início
         </a>
       </li>
-      <li class="nav-item" id="inicio-desk">
+      <li class="nav-item desktop">
         <a class="nav-link" data-nome="inicio" routerLink="/">
           Início
         </a>
       </li>
-      <li class="nav-item" data-toggle="collapse" data-target="#navbarNav" id="veiculos-mob">
+      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
         <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
           Veículos
         </a>
       </li>
-      <li class="nav-item" id="veiculos-desk">
+      <li class="nav-item desktop">
         <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
           Veículos
         </a>
       </li>
-      <li class="nav-item" data-toggle="collapse" data-target="#navbarNav" id="contato-mob">
+      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
         <a class="nav-link" data-nome="contato" routerLink="/contato">
           Contato
         </a>
       </li>
-      <li class="nav-item" id="contato-desk">
+      <li class="nav-item desktop">
         <a class="nav-link" data-nome="contato" routerLink="/contato">
           Contato
         </a>
       </li>
     </ul>
-    <form class="form-inline">
-      <input class="form-control mr-sm-2 input-procurar" type="search" placeholder="Procurar veículos"
-        aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Procurar</button>
+    <form class="form-inline mobile">
+      <input class="form-control mr-sm-2 input-procurar" name="procurarMob" [(ngModel)]="textoProcurar" type="text"
+        placeholder="Procurar veículos" aria-label="Procurar">
+      <button class="btn btn-outline-success my-2 my-sm-0 mobile" type="submit" data-toggle="collapse"
+        data-target="#navbarNav" (click)="procurar()">Procurar</button>
+    </form>
+    <form class="form-inline desktop">
+      <input class="form-control mr-sm-2 input-procurar" name="procurarDesk" [(ngModel)]="textoProcurar" type="text"
+        placeholder="Procurar veículos" aria-label="Procurar">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="procurar()">Procurar</button>
     </form>
   </div>
 </nav>

@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { GraphqlService } from "./graphql.service";
 import { Resposta } from "./models/resposta.model";
-import { Mensagem } from "./models/mensagem.model";
 import { Veiculo } from "./models/veiculo.model";
 import { Modelo } from "./models/modelo.model";
 import { Marca } from "./models/marca.model";
 import { Cor } from "./models/cor.model";
 import { AnexoVeiculo } from "./models/anexo-veiculo.model";
-import { TipoVeiculo } from "./models/tipo-veiculo.model";
 import { Combustivel } from "./models/combustivel.model";
 import { Opcional } from "./models/opcional.model";
 
@@ -22,7 +20,7 @@ export class VeiculosService {
     private graphql: GraphqlService
   ) {
     this.todosVeiculos = `{
-      veiculo{
+      veiculo $1 {
       id
       anoFabricacao
       anoModelo
@@ -108,9 +106,10 @@ export class VeiculosService {
       .toPromise();
   }
 
-  public recuperarTodosVeiculos(): Promise<Veiculo[]> {
+  public recuperarTodosVeiculos(procurar?: String): Promise<Veiculo[]> {
+    let payload: string = this.todosVeiculos.replace("$1", procurar? `(procurar: "${procurar}")` : "");
     return this.graphql
-      .request(this.todosVeiculos)
+      .request(payload)
       .map((resposta: Resposta) =>
         resposta.dados["veiculo"].map(
           veiculo =>
@@ -154,69 +153,4 @@ export class VeiculosService {
       })
       .toPromise();
   }
-
-  // public recuperarVeiculoPorId(id: number): Promise<Veiculo> {
-  //   return this.graphql
-  //     .request(this.veiculoPorId.replace("$id", id.toString()))
-  //     .map((resposta: Resposta) => {
-  //       let veiculo = resposta.dados["veiculo"];
-  //       let cidade = veiculo.cidade;
-  //       let combustivel = veiculo.combustivel;
-  //       let anexos: AnexoVeiculo[] = [];
-  //       veiculo.anexos.forEach(anexo => {
-  //         anexos.push(
-  //           new AnexoVeiculo(
-  //             anexo.id,
-  //             anexo.url,
-  //             Boolean(anexo.principal),
-  //             anexo.tipoArquivo,
-  //             veiculo.id
-  //           )
-  //         );
-  //       });
-  //       let opcionais: Opcional[] = veiculo.opcionais
-  //         ? veiculo.opcionais.map(
-  //             opcional => new Opcional(opcional.id, opcional.descricao)
-  //           )
-  //         : [];
-
-  //       return new Veiculo(
-  //         veiculo.id,
-  //         new Modelo(
-  //           veiculo.modelo.id,
-  //           veiculo.modelo.descricao,
-  //           new Marca(
-  //             veiculo.modelo.marca.id,
-  //             veiculo.modelo.marca.descricao,
-  //             new TipoVeiculo(veiculo.modelo.marca.tipoVeiculo.id)
-  //           )
-  //         ),
-  //         veiculo.anoFabricacao,
-  //         veiculo.anoModelo,
-  //         veiculo.placa,
-  //         veiculo.renavam,
-  //         veiculo.chassi,
-  //         new Cor(veiculo.cor.id),
-  //         new Cidade(
-  //           cidade ? veiculo.cidade.id : null,
-  //           null,
-  //           new Estado(cidade ? veiculo.cidade.estado.id : null, null)
-  //         ),
-  //         veiculo.dataInclusao ? new Date(veiculo.dataInclusao) : null,
-  //         veiculo.dataAquisicao ? new Date(veiculo.dataAquisicao) : null,
-  //         veiculo.dataVenda ? new Date(veiculo.dataVenda) : null,
-  //         veiculo.valorCompra,
-  //         veiculo.valorVenda,
-  //         veiculo.valorAnuncio,
-  //         veiculo.observacoes,
-  //         combustivel ? new Combustivel(veiculo.combustivel.id) : null,
-  //         anexos,
-  //         null,
-  //         opcionais
-  //       );
-  //     })
-  //     .toPromise();
-  // }
-
-
 }

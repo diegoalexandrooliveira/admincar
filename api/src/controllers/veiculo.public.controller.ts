@@ -16,23 +16,23 @@ export class VeiculoPublicController {
   }
 
   public static getQueries(): string {
-    return `veiculo(id: Int = 0, aleatorios: Boolean = FALSE): [Veiculo]`;
+    return `veiculo(id: Int = 0, aleatorios: Boolean = FALSE, procurar: String = ""): [Veiculo]`;
   }
 
   public static getQueryResolvers(): Object {
     return {
-      veiculo: (root, args) => this.veiculos(args.id, args.aleatorios)
+      veiculo: (root, args) => this.veiculos(args.id, args.aleatorios, args.procurar)
     };
   }
 
-  public static veiculos(id: number, aleatorio: Boolean){
+  public static veiculos(id: number, aleatorio: Boolean, procurar: String){
     if(id){
       return VeiculoDAO.buscarVeiculoPorId(id, true).then((veiculo: Veiculo)=> Array.of(veiculo));
     } else {
       if(aleatorio){
         return VeiculoDAO.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados();
       } else {
-        return VeiculoDAO.buscarTodosVeiculosDisponiveis();
+        return VeiculoDAO.buscarTodosVeiculosDisponiveis(procurar);
       }
     }
 

@@ -66,48 +66,15 @@
     font-size: 1.8rem;
     color: #efb943 !important;
     margin-top: 5px !important;
+    text-shadow: 3px 3px 2px black !important;
   }
-  
- 
- 
-  
-  
-  
-   
-  
-  
-  
   
   @media (min-width: 992px) {
     .corpo {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 60% 40%;
       align-items: center;
       justify-items: center;
     }
-
-    .card-body {
-      display: grid;
-      grid-template-rows: 50% 20% 30%;
-      padding: 2px;
-      background-color: #8a3331;
-      border-radius: 6%;
-      margin: 1px;
-    }
-
-    .descricao-veiculo {
-      grid-row: 1/2;
-    }
-
-    .ano {
-      font-size: 0.6rem;
-      display: flex !important;
-      grid-row: 2/3;
-    }
-
-    .preco {
-      grid-row: 3/4;
-    }
-  
     
   }
   
