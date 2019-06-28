@@ -11,22 +11,22 @@ class AdminCarApi {
     constructor() {
         this._express = new CustomExpress().getExpress();
 
-        // let credenciais = {
-        //     key: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/privkey.pem", "utf8"),
-        //     cert: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/cert.pem", "utf8")
-        // }
+        let credenciais = {
+            key: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/privkey.pem", "utf8"),
+            cert: fs.readFileSync("/etc/letsencrypt/live/perimetralveiculos.com.br/cert.pem", "utf8")
+        }
 
-        this._express
-            .listen(this._port, () => {
-                let mensagem = "API admincar rodando na porta " + this._port;
-                logger.info(mensagem);
-            });
-
-        // https.createServer(credenciais, this._express)
+        // this._express
         //     .listen(this._port, () => {
         //         let mensagem = "API admincar rodando na porta " + this._port;
         //         logger.info(mensagem);
         //     });
+
+        https.createServer(credenciais, this._express)
+            .listen(this._port, () => {
+                let mensagem = "API admincar rodando na porta " + this._port;
+                logger.info(mensagem);
+            });
     }
 }
 new AdminCarApi();

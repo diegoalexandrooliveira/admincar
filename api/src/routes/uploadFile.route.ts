@@ -4,22 +4,15 @@ import { Mensagem, Veiculo, AnexoVeiculo } from "../model";
 import { configs } from "../config/configs";
 import { clientFactory } from "../database";
 import { PoolClient } from "pg";
-import * as awsS3 from "aws-sdk";
-//import * as tinify from "tinify";
+import { Storage } from "@google-cloud/storage";
+import * as fs from "fs";
 
 class UploadFileRoute {
   private router: Router;
-  private tinify;
 
   constructor() {
     this.router = Router();
     this.init();
-    awsS3.config.update({
-      accessKeyId: configs.S3Bucket.accessKeyId,
-      secretAccessKey: configs.S3Bucket.secretAccessKey
-    });
-    this.tinify = require("tinify");
-    this.tinify.key = configs.TinyPNG.apiKey;
   }
 
   public getRouter(): Router {
@@ -72,12 +65,12 @@ class UploadFileRoute {
     }
     let anexoVeiculo: AnexoVeiculo = null;
     let client = null;
-    let s3Bucket = new awsS3.S3();
+    let gcs = new Storage();
+    let tinify = require("tinify");
+    tinify.key = configs.TinyPNG.apiKey;
     let imageKey: string =
       (Math.random() * 100000000000000000).toString() + ".JPG";
-    let imageUrl: string = `https://s3-sa-east-1.amazonaws.com/${
-      configs.S3Bucket.bucketName
-    }/${imageKey}`;
+    let imagePath = configs.local.path + "tmp/" + imageKey;
     VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
       .then((veiculo: Veiculo) => {
         if (!veiculo) {
@@ -86,25 +79,24 @@ class UploadFileRoute {
         return;
       })
       .then(() =>
-      this.tinify
+        tinify
           //@ts-ignore
           .fromBuffer(imagem.data)
           .resize({ method: "scale", width: 800 })
           .toBuffer()
+      ).then(resizedImage =>
+        fs.writeFileSync(imagePath, resizedImage)
       )
-      .then(resizedImage =>
-        s3Bucket
-          .putObject({
-            Bucket: configs.S3Bucket.bucketName,
-            Key: imageKey,
-            //@ts-ignore
-            Body: resizedImage,
-            ACL: "public-read",
-            ContentType: "image/jpeg"
-          })
-          .promise()
-      )
-      .then(() => {
+      .then(() =>
+        gcs.bucket(configs.GCS.bucketId).upload(imagePath, {
+          gzip: true,
+          public: true,
+          destination: imageKey
+        })
+      ).then(() => {
+        fs.unlinkSync(imagePath);
+        return gcs.bucket(configs.GCS.bucketId).file(imageKey).getMetadata()
+      }).then(([metadata]) => {
         let tipoArquivo =
           req.body["tipoArquivo"] >= 0 ? req.body["tipoArquivo"] : 0;
         let principal = req.body["principal"]
@@ -114,9 +106,10 @@ class UploadFileRoute {
         anexoVeiculo = new AnexoVeiculo(
           null,
           tipoArquivo,
-          imageUrl,
+          metadata.mediaLink,
           principal,
-          veiculoId
+          veiculoId,
+          imageKey
         );
         return clientFactory.getClient();
       })

@@ -1,81 +1,77 @@
 <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC" rel="stylesheet">
 <div class="header">
-  <a routerLink="/" class="logo">
-    <div class="nome">
-      <p class="primeira-letra">P</p>
-      <p>erimetral</p>
-    </div>
-    <p class="subtitulo">veículos</p>
-  </a>
+    <a routerLink="/" class="logo">
+        <div class="nome">
+            <p class="primeira-letra">P</p>
+            <p>erimetral</p>
+        </div>
+        <p class="subtitulo">veículos</p>
+    </a>
 
-  <div class="location">
-    <i class="material-icons">
+    <div class="location">
+        <i class="material-icons">
       location_on
     </i>
-    <div class="address">
-      <p>Av. Otto Ribeiro, 2368</p>
-      <p>Assis - SP</p>
+        <div class="address">
+            <p>Av. Otto Ribeiro, 2368</p>
+            <p>Assis - SP</p>
+        </div>
     </div>
-  </div>
 
-  <div class="contact">
-    <i class="material-icons">
-      phone
-    </i>
-    <div class="phones">
-      <a href="tel:18-3022-2908">(18)3022-2908</a>
-      <a href="tel:18-99726-3409">(18)99726-3409</a>
+    <div class="contact">
+        <i class="material-icons telefone">phone</i>
+        <a href="https://wa.me/5518997263409" class="whatsapp">
+            <img src="../../../assets/whatsapp.png" alt="Whatsapp"></a>
+        <div class="phones">
+            <a href="tel:18-3022-2908">(18)3022-2908</a>
+            <a href="tel:18-99726-3409">(18)99726-3409</a>
+        </div>
     </div>
-  </div>
 </div>
 <nav #navBar class="navbar navbar-expand-lg navbar-light" id="navBar">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-    aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
-        <a class="nav-link" data-nome="inicio" routerLink="/">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
+                <a class="nav-link" data-nome="inicio" routerLink="/">
           Início
         </a>
-      </li>
-      <li class="nav-item desktop">
-        <a class="nav-link" data-nome="inicio" routerLink="/">
+            </li>
+            <li class="nav-item desktop">
+                <a class="nav-link" data-nome="inicio" routerLink="/">
           Início
         </a>
-      </li>
-      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
-        <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
+            </li>
+            <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
+                <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
           Veículos
         </a>
-      </li>
-      <li class="nav-item desktop">
-        <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
+            </li>
+            <li class="nav-item desktop">
+                <a class="nav-link" data-nome="veiculos" routerLink="/veiculos">
           Veículos
         </a>
-      </li>
-      <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
-        <a class="nav-link" data-nome="contato" routerLink="/contato">
-          Contato
+            </li>
+            <li class="nav-item mobile" data-toggle="collapse" data-target="#navbarNav">
+                <a class="nav-link" data-nome="informacoes" routerLink="/informacoes">
+          Informações
         </a>
-      </li>
-      <li class="nav-item desktop">
-        <a class="nav-link" data-nome="contato" routerLink="/contato">
-          Contato
+            </li>
+            <li class="nav-item desktop">
+                <a class="nav-link" data-nome="informacoes" routerLink="/informacoes">
+          Informações
         </a>
-      </li>
-    </ul>
-    <form class="form-inline mobile">
-      <input class="form-control mr-sm-2 input-procurar" name="procurarMob" [(ngModel)]="textoProcurar" type="text"
-        placeholder="Procurar veículos" aria-label="Procurar">
-      <button class="btn btn-outline-success my-2 my-sm-0 mobile" type="submit" data-toggle="collapse"
-        data-target="#navbarNav" (click)="procurar()">Procurar</button>
-    </form>
-    <form class="form-inline desktop">
-      <input class="form-control mr-sm-2 input-procurar" name="procurarDesk" [(ngModel)]="textoProcurar" type="text"
-        placeholder="Procurar veículos" aria-label="Procurar">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="procurar()">Procurar</button>
-    </form>
-  </div>
+            </li>
+        </ul>
+        <form class="form-inline mobile">
+            <input class="form-control mr-sm-2 input-procurar" name="procurarMob" [(ngModel)]="textoProcurar" type="text" placeholder="Procurar veículos" aria-label="Procurar">
+            <button class="btn btn-outline-success my-2 my-sm-0 mobile" type="submit" data-toggle="collapse" data-target="#navbarNav" (click)="procurar()">Procurar</button>
+        </form>
+        <form class="form-inline desktop">
+            <input class="form-control mr-sm-2 input-procurar" name="procurarDesk" [(ngModel)]="textoProcurar" type="text" placeholder="Procurar veículos" aria-label="Procurar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="procurar()">Procurar</button>
+        </form>
+    </div>
 </nav>

@@ -37,6 +37,7 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
     "apollo-server-express": "^2.6.4",
     "aws-sdk": "^2.479.0",
     "bcrypt": "^3.0.6",

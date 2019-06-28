@@ -1,7 +1,4 @@
 import {
-  VeiculoDAO,
-  ModeloDAO,
-  CidadeDAO,
   AnexoVeiculoDAO
 } from "../dao/index";
 import { AnexoVeiculo } from "../model/index";
@@ -9,7 +6,7 @@ import { clientFactory } from "../database";
 import { Client, PoolClient } from "pg";
 import { configs } from "../config/configs";
 import { logger } from "../utils";
-import * as awsS3 from "aws-sdk";
+import { Storage } from "@google-cloud/storage";
 
 export class AnexoVeiculoController {
   public static getType(): string {
@@ -39,7 +36,7 @@ export class AnexoVeiculoController {
     };
   }
 
-  public static getAnexoPrincipal(idVeiculo: number): Promise<AnexoVeiculo>{
+  public static getAnexoPrincipal(idVeiculo: number): Promise<AnexoVeiculo> {
     return AnexoVeiculoDAO.buscaAnexoPrincipalPorVeiculo(idVeiculo
     ).then((anexo: AnexoVeiculo) => {
       // if (!anexo || !anexo.$url) {
@@ -118,17 +115,9 @@ export class AnexoVeiculoController {
   public static deleteImageFromStorage(idAnexo: number) {
     return AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then(
       (anexo: AnexoVeiculo) => {
-        let objectKey = anexo.$url.substring(
-          anexo.$url.lastIndexOf("/") + 1,
-          anexo.$url.length
-        );
-        let s3 = new awsS3.S3();
-        return s3
-          .deleteObject({
-            Bucket: configs.S3Bucket.bucketName,
-            Key: objectKey
-          })
-          .promise();
+        let objectKey = anexo.$object_key;
+        let gcs = new Storage();
+        return gcs.bucket(configs.GCS.bucketId).file(objectKey).delete();
       }
     );
   }

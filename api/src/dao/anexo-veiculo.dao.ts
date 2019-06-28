@@ -8,7 +8,7 @@ export class AnexoVeiculoDAO {
     veiculoId: number
   ): Promise<AnexoVeiculo> {
     let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where veiculo_id = $1 and principal = TRUE`;
+    url, principal, object_key from anexo_veiculo where veiculo_id = $1 and principal = TRUE`;
 
     return new Promise((resolve, reject) => {
       clientFactory
@@ -20,6 +20,7 @@ export class AnexoVeiculoDAO {
             anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
             anexo.$url = result.rows[0].url;
             anexo.$principal = result.rows[0].principal;
+            anexo.$object_key = result.rows[0].object_key;
           }
           resolve(anexo);
         })
@@ -34,7 +35,7 @@ export class AnexoVeiculoDAO {
 
   public static buscaAnexoPorId(id: number): Promise<AnexoVeiculo> {
     let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where id = $1`;
+    url, principal, object_key from anexo_veiculo where id = $1`;
 
     return new Promise((resolve, reject) => {
       clientFactory
@@ -46,6 +47,7 @@ export class AnexoVeiculoDAO {
             anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
             anexo.$url = result.rows[0].url;
             anexo.$principal = result.rows[0].principal;
+            anexo.$object_key = result.rows[0].object_key;
           }
           resolve(anexo);
         })
@@ -61,7 +63,7 @@ export class AnexoVeiculoDAO {
   ): Promise<AnexoVeiculo[]> {
     let where = publicos? " and tipo_arquivo = 1 " : "";
     let query = `select id, tipo_arquivo, 
-    url, principal from anexo_veiculo where veiculo_id = $1 ${where} order by principal desc, id`;
+    url, principal, object_key from anexo_veiculo where veiculo_id = $1 ${where} order by principal desc, id`;
 
     return new Promise((resolve, reject) => {
       clientFactory
@@ -74,6 +76,7 @@ export class AnexoVeiculoDAO {
             anexo.$tipoArquivo = result.rows[0].tipo_arquivo;
             anexo.$url = result.rows[0].url;
             anexo.$principal = result.rows[0].principal;
+            anexo.$object_key = result.rows[0].object_key;
           }
           if (result.rows.length) {
             retorno = result.rows.map(
@@ -82,7 +85,8 @@ export class AnexoVeiculoDAO {
                   anexo.id,
                   anexo.tipo_arquivo,
                   anexo.url,
-                  anexo.principal
+                  anexo.principal,
+                  anexo.object_key
                 )
             );
           }
@@ -101,9 +105,8 @@ export class AnexoVeiculoDAO {
     client: PoolClient,
     anexo: AnexoVeiculo
   ): Promise<number> {
-    let insert = `insert into anexo_veiculo (tipo_arquivo, url, principal, veiculo_id) 
-                  values ($1, $2, $3, $4) returning id`;
-
+    let insert = `insert into anexo_veiculo (tipo_arquivo, url, principal, veiculo_id, object_key) 
+                  values ($1, $2, $3, $4, $5) returning id`;
     return new Promise((resolve, reject) => {
       client
         .query("BEGIN")
@@ -115,7 +118,8 @@ export class AnexoVeiculoDAO {
             anexo.$tipoArquivo,
             anexo.$url,
             anexo.$principal,
-            anexo.$veiculoId
+            anexo.$veiculoId,
+            anexo.$object_key
           ])
         )
         .then((result: QueryResult) => {

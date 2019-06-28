@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class AnexoVeiculo {
-    constructor(id, tipoArquivo, url, principal, veiculoId) {
+    constructor(id, tipoArquivo, url, principal, veiculoId, object_key) {
         this.id = id;
         this.tipoArquivo = tipoArquivo;
         this.url = url;
         this.principal = principal;
         this.veiculoId = veiculoId;
+        this.object_key = object_key;
     }
     get $id() {
         return this.id;
@@ -37,6 +38,12 @@ class AnexoVeiculo {
     }
     set $veiculoId(veiculoId) {
         this.veiculoId = veiculoId;
+    }
+    get $object_key() {
+        return this.object_key;
+    }
+    set $object_key(object_key) {
+        this.object_key = object_key;
     }
 }
 exports.AnexoVeiculo = AnexoVeiculo;

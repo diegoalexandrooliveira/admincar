@@ -1,3 +1,4 @@
 export const configs = {
-  url: "http://192.168.0.103:8080"
+  url: "https://perimetralveiculos.com.br:8080",
+  apiMaps: "AIzaSyDK9ajB5iO67z4T9HWdMYcKVYlpaCu7cgI"
 };

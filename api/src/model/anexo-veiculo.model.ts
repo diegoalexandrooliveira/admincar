@@ -4,19 +4,22 @@ export class AnexoVeiculo {
   private url: string;
   private principal: boolean;
   private veiculoId: number;
+  private object_key: string;
 
   constructor(
     id?: number,
     tipoArquivo?: number,
     url?: string,
     principal?: boolean,
-    veiculoId?: number
+    veiculoId?: number,
+    object_key?: string
   ) {
     this.id = id;
     this.tipoArquivo = tipoArquivo;
     this.url = url;
     this.principal = principal;
     this.veiculoId = veiculoId;
+    this.object_key = object_key;
   }
 
   public get $id() {
@@ -52,5 +55,12 @@ export class AnexoVeiculo {
   }
   public set $veiculoId(veiculoId: number) {
     this.veiculoId = veiculoId;
+  }
+
+  public get $object_key() {
+    return this.object_key;
+  }
+  public set $object_key(object_key: string) {
+    this.object_key = object_key;
   }
 }

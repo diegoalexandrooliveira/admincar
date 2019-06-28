@@ -5,7 +5,7 @@ const index_2 = require("../model/index");
 const database_1 = require("../database");
 const configs_1 = require("../config/configs");
 const utils_1 = require("../utils");
-const awsS3 = require("aws-sdk");
+const storage_1 = require("@google-cloud/storage");
 class AnexoVeiculoController {
     static getType() {
         return `type AnexoVeiculo { id: Int, tipoArquivo: Int, url: String, veiculoId: Int,
@@ -98,14 +98,9 @@ class AnexoVeiculoController {
     }
     static deleteImageFromStorage(idAnexo) {
         return index_1.AnexoVeiculoDAO.buscaAnexoPorId(idAnexo).then((anexo) => {
-            let objectKey = anexo.$url.substring(anexo.$url.lastIndexOf("/") + 1, anexo.$url.length);
-            let s3 = new awsS3.S3();
-            return s3
-                .deleteObject({
-                Bucket: configs_1.configs.S3Bucket.bucketName,
-                Key: objectKey
-            })
-                .promise();
+            let objectKey = anexo.$object_key;
+            let gcs = new storage_1.Storage();
+            return gcs.bucket(configs_1.configs.GCS.bucketId).file(objectKey).delete();
         });
     }
     static getResolvers() {

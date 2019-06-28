@@ -5,18 +5,12 @@ const index_1 = require("../dao/index");
 const model_1 = require("../model");
 const configs_1 = require("../config/configs");
 const database_1 = require("../database");
-const awsS3 = require("aws-sdk");
-//import * as tinify from "tinify";
+const storage_1 = require("@google-cloud/storage");
+const fs = require("fs");
 class UploadFileRoute {
     constructor() {
         this.router = express_1.Router();
         this.init();
-        awsS3.config.update({
-            accessKeyId: configs_1.configs.S3Bucket.accessKeyId,
-            secretAccessKey: configs_1.configs.S3Bucket.secretAccessKey
-        });
-        this.tinify = require("tinify");
-        this.tinify.key = configs_1.configs.TinyPNG.apiKey;
     }
     getRouter() {
         return this.router;
@@ -50,9 +44,11 @@ class UploadFileRoute {
         }
         let anexoVeiculo = null;
         let client = null;
-        let s3Bucket = new awsS3.S3();
+        let gcs = new storage_1.Storage();
+        let tinify = require("tinify");
+        tinify.key = configs_1.configs.TinyPNG.apiKey;
         let imageKey = (Math.random() * 100000000000000000).toString() + ".JPG";
-        let imageUrl = `https://s3-sa-east-1.amazonaws.com/${configs_1.configs.S3Bucket.bucketName}/${imageKey}`;
+        let imagePath = configs_1.configs.local.path + "tmp/" + imageKey;
         index_1.VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
             .then((veiculo) => {
             if (!veiculo) {
@@ -60,28 +56,25 @@ class UploadFileRoute {
             }
             return;
         })
-            .then(() => this.tinify
+            .then(() => tinify
             //@ts-ignore
             .fromBuffer(imagem.data)
             .resize({ method: "scale", width: 800 })
-            .toBuffer())
-            .then(resizedImage => s3Bucket
-            .putObject({
-            Bucket: configs_1.configs.S3Bucket.bucketName,
-            Key: imageKey,
-            //@ts-ignore
-            Body: resizedImage,
-            ACL: "public-read",
-            ContentType: "image/jpeg"
-        })
-            .promise())
-            .then(() => {
+            .toBuffer()).then(resizedImage => fs.writeFileSync(imagePath, resizedImage))
+            .then(() => gcs.bucket(configs_1.configs.GCS.bucketId).upload(imagePath, {
+            gzip: true,
+            public: true,
+            destination: imageKey
+        })).then(() => {
+            fs.unlinkSync(imagePath);
+            return gcs.bucket(configs_1.configs.GCS.bucketId).file(imageKey).getMetadata();
+        }).then(([metadata]) => {
             let tipoArquivo = req.body["tipoArquivo"] >= 0 ? req.body["tipoArquivo"] : 0;
             let principal = req.body["principal"]
                 ? req.body["principal"] == "true"
                 : false;
             let veiculoId = req.body["veiculoId"];
-            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, imageUrl, principal, veiculoId);
+            anexoVeiculo = new model_1.AnexoVeiculo(null, tipoArquivo, metadata.mediaLink, principal, veiculoId, imageKey);
             return database_1.clientFactory.getClient();
         })
             .then((result) => {

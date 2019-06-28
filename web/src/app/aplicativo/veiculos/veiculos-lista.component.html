@@ -1,83 +1,82 @@
 <app-mensagens [mensagens]="mensagens"></app-mensagens>
 <app-loading [carregando]="carregando"></app-loading>
 <div class="corpo">
-  <div class="text-center title-header">
-    <h1 class="text-center">
-      <a routerLink="/app/veiculos">Veículos</a>
-    </h1>
-  </div>
-  <div class="botoes-acoes">
-    <a routerLink="adicionar" class="btn btn-success alinhar-icone">
-      <i class="material-icons">add_circle</i>
-      <span>Adicionar</span>
-    </a>
-  </div>
-  <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
-    <label class="btn btn-outline-success btn-sm" (click)="todos()">
+    <div class="text-center title-header">
+        <h1 class="text-center">
+            <a routerLink="/app/veiculos">Veículos</a>
+        </h1>
+    </div>
+    <div class="botoes-acoes">
+        <a routerLink="adicionar" class="btn btn-success alinhar-icone">
+            <i class="material-icons">add_circle</i>
+            <span>Adicionar</span>
+        </a>
+    </div>
+    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+        <label class="btn btn-outline-success btn-sm" (click)="todos()">
       <input type="radio" id="todos" autocomplete="off"> Todos
     </label>
-    <label class="btn btn-outline-danger btn-sm" (click)="vendidos()">
+        <label class="btn btn-outline-danger btn-sm" (click)="vendidos()">
       <input type="radio" id="vendidos" autocomplete="off"> Vendidos
     </label>
-    <label class="btn btn-outline-primary active btn-sm" (click)="disponiveis()">
+        <label class="btn btn-outline-primary active btn-sm" (click)="disponiveis()">
       <input type="radio" id="disponiveis" autocomplete="off" checked> Disponíveis
     </label>
-  </div>
-  <div class="input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Procurar</span>
     </div>
-    <input [(ngModel)]="textoProcurar" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-  </div>
-  <!-- table-bordered -->
-  <table class="table  table-sm">
-    <thead>
-      <tr class="table-active">
-        <th class="text-center" scope="col" colspan="2">Veículos</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="!veiculos || veiculos.length == 0">
-        <td colspan="2">
-          <div class="alert alert-primary" role="alert">
-            Nenhum veículo cadastrado.
-          </div>
-        </td>
-      </tr>
-      <tr *ngFor="let veiculo of veiculos | veiculosFilter: textoProcurar ">
-        <td class="td-container" scope="row">
-          <div class="row-title">
-            <img class="rounded border border-dark" src="{{veiculo.$anexoPrincipal.url}}" alt="Imagem do veículo">
-            <a class="title" [routerLink]="['editar/', veiculo.id]">{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Procurar</span>
+        </div>
+        <input [(ngModel)]="textoProcurar" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <!-- table-bordered -->
+    <table class="table  table-sm">
+        <thead>
+            <tr class="table-active">
+                <th class="text-center" scope="col" colspan="2">Veículos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="!veiculos || veiculos.length == 0">
+                <td colspan="2">
+                    <div class="alert alert-primary" role="alert">
+                        Nenhum veículo cadastrado.
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let veiculo of veiculos | veiculosFilter: textoProcurar ">
+                <td class="td-container" scope="row">
+                    <div class="row-title">
+                        <img class="rounded border border-dark" src="{{veiculo.$anexoPrincipal.url}}" alt="Imagem do veículo">
+                        <a class="title" [routerLink]="['editar/', veiculo.id]">{{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}
               <span *ngIf="veiculo.dataVenda" class="badge badge-danger badge-pill">Vendido</span>
             </a>
-          </div>
-          <div class="row-detail">
-            <label for="ano">Ano:</label>
-            <p id="ano">{{veiculo.anoFabricacao}} / {{veiculo.anoModelo}}</p>
-          </div>
-          <div class="row-detail">
-            <label for="cor">Cor:</label>
-            <p id="cor">{{veiculo.cor.descricao}}</p>
-          </div>
-          <div class="row-detail">
-            <label for="valor-venda">Preço:</label>
-            <p id="valor-venda">{{veiculo.valorAnuncio | currency:'BRL':'symbol':'1.2-2':'pt'}}</p>
-          </div>
-          <div class="row-detail">
-            <label for="placa">Placa:</label>
-            <p id="placa">{{veiculo.placa? veiculo.placa : '-'}}</p>
-          </div>
-        </td>
-        <td class="text-center coluna-acoes">
-          <a class="btn btn-outline-primary btn-sm alinhar-icone" [routerLink]="['editar/', veiculo.id]">
-            <i class="material-icons">visibility</i>
-            <span class="texto-acoes">Visualizar</span>
-          </a>
-          <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo {{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}?"
-            [identificador]="veiculo.id" (acaoConfirmada)="excluirVeiculo(veiculo.id)"></app-botao-excluir>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+                    </div>
+                    <div class="row-detail">
+                        <label for="ano">Ano:</label>
+                        <p id="ano">{{veiculo.anoFabricacao}} / {{veiculo.anoModelo}}</p>
+                    </div>
+                    <div class="row-detail">
+                        <label for="cor">Cor:</label>
+                        <p id="cor">{{veiculo.cor.descricao}}</p>
+                    </div>
+                    <div class="row-detail">
+                        <label for="valor-venda">Preço:</label>
+                        <p id="valor-venda">{{veiculo.valorAnuncio | currency:'BRL':'symbol':'1.2-2':'pt'}}</p>
+                    </div>
+                    <div class="row-detail">
+                        <label for="placa">Placa:</label>
+                        <p id="placa">{{veiculo.placa? veiculo.placa : '-'}}</p>
+                    </div>
+                </td>
+                <td class="text-center coluna-acoes">
+                    <a class="btn btn-outline-primary btn-sm alinhar-icone" [routerLink]="['editar/', veiculo.id]">
+                        <i class="material-icons">visibility</i>
+                        <span class="texto-acoes">Visualizar</span>
+                    </a>
+                    <app-botao-excluir mensagemConfirmacao="Tem certeza que deseja excluir o veículo {{veiculo.modelo.marca.descricao}} / {{veiculo.modelo.descricao}}?" [identificador]="veiculo.id" (acaoConfirmada)="excluirVeiculo(veiculo.id)"></app-botao-excluir>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

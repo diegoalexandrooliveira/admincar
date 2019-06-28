@@ -4,3 +4,7 @@ api/src/config
 api/dist/config
 api/cert
 web/node_modules
+web/src/app/config/configs.ts
+web/dist
+api/dist.zip
+api/admincar-198704-d13a68d38c0b.json
