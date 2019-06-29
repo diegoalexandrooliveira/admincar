@@ -6,6 +6,7 @@ import { clientFactory } from "../database";
 import { PoolClient } from "pg";
 import { Storage } from "@google-cloud/storage";
 import * as fs from "fs";
+import * as path from "path";
 
 class UploadFileRoute {
   private router: Router;
@@ -70,7 +71,7 @@ class UploadFileRoute {
     tinify.key = configs.TinyPNG.apiKey;
     let imageKey: string =
       (Math.random() * 100000000000000000).toString() + ".JPG";
-    let imagePath = configs.local.path + "tmp/" + imageKey;
+    let imagePath = path.join(__dirname, "..", imageKey);
     VeiculoDAO.buscarVeiculoPorId(req.body["veiculoId"])
       .then((veiculo: Veiculo) => {
         if (!veiculo) {

@@ -1,4 +1,4 @@
 export const configs = {
-  url: "",
+  url: "https://localhost:8080",
   apiMaps: ""
 };

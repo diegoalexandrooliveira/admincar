@@ -10,7 +10,7 @@ import * as helmet from "helmet";
 import { GraphQlSchemaFactory, GraphQlPublicSchemaFactory } from "../graphql";
 import { ApolloServer } from "apollo-server-express";
 import * as expressFileUpload from "express-fileupload";
-import { configs } from "../config/configs";
+import * as path from "path";
 
 export class CustomExpress {
   private _express: express.Express;
@@ -64,7 +64,7 @@ export class CustomExpress {
     this._express.use("/api/v1/public/autenticar", routes.autenticacao);
     this._express.use(
       "/public/images",
-      express.static(configs.local.path + "public")
+      express.static( path.join(__dirname, "..", "/public"))
     );
     const graphql = new ApolloServer({ schema: GraphQlPublicSchemaFactory.createSchema() });
     graphql.applyMiddleware({

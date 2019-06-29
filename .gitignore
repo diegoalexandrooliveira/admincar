@@ -11,3 +11,5 @@ web/src/app/config/configs.ts
 api/PerimetralVeiculos-1910aa9d67e0.json
 api/dist
 logs
+api/privkey.pem
+api/cert.pem
