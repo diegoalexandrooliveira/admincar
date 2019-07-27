@@ -1,5 +1,5 @@
 import { clientFactory } from "../database/index";
-import { QueryResult, Client } from "pg";
+import { QueryResult, Client, PoolClient } from "pg";
 import { Veiculo, Mensagem } from "../model/index";
 import { logger } from "../utils";
 
@@ -19,7 +19,7 @@ export class VeiculoDAO {
     let query = `select id, modelo_id, ano_fabricacao, ano_modelo, placa, renavam, chassi, cor_id,
     cidade_id, data_inclusao, data_aquisicao, data_venda, valor_compra, valor_venda, valor_anunciado, observacoes,
     combustivel_id                    
-    from veiculo where data_venda is null order by random() limit 5`;
+    from veiculo where data_venda is null order by hit_count desc limit 5`;
     return new Promise((resolve, reject) => {
       clientFactory
         .query(query)
@@ -274,6 +274,34 @@ export class VeiculoDAO {
           logger.error(`veiculo.dao.atualizarVeiculo - ${error}`);
           reject(
             new Mensagem(`Erro ao atualizar o veículo ${veiculo.$id}.`, "erro")
+          );
+        });
+    });
+  }
+
+  public static atualizarHitCount(
+    client: PoolClient,
+    id: Number
+  ): Promise<number> {
+    let update = `UPDATE veiculo
+    SET hit_count = hit_count + 1  WHERE id = $1`;
+
+    return new Promise((resolve, reject) => {
+      client
+        .query("BEGIN")
+        .then((begin: QueryResult) => {
+          return;
+        })
+        .then(() =>
+          client.query(update, [id])
+        )
+        .then((result: QueryResult) => {
+          resolve(result.rowCount);
+        })
+        .catch(error => {
+          logger.error(`veiculo.dao.atualizarHitCount - ${error}`);
+          reject(
+            new Mensagem(`Erro ao atualizar o veículo ${id}.`, "erro")
           );
         });
     });

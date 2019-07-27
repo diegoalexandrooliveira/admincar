@@ -4,9 +4,11 @@ import {
   AnexoVeiculoDAO,
   OpcionalDAO
 } from "../dao/index";
-import {AnexoVeiculoController} from "./anexo-veiculo.controller";
+import { AnexoVeiculoController } from "./anexo-veiculo.controller";
 import { Veiculo, AnexoVeiculo, Opcional } from "../model/index";
 import { cores, combustiveis } from "../cache/index";
+import { Client, PoolClient } from "pg";
+import { clientFactory } from "../database";
 
 export class VeiculoPublicController {
   public static getType(): string {
@@ -25,11 +27,19 @@ export class VeiculoPublicController {
     };
   }
 
-  public static veiculos(id: number, aleatorio: Boolean, procurar: String){
-    if(id){
-      return VeiculoDAO.buscarVeiculoPorId(id, true).then((veiculo: Veiculo)=> Array.of(veiculo));
+  public static veiculos(id: number, aleatorio: Boolean, procurar: String) {
+    if (id) {
+      return VeiculoDAO.buscarVeiculoPorId(id, true).then((veiculo: Veiculo) => {
+        if (veiculo) {
+          clientFactory.getClient().then((client: PoolClient) =>
+            VeiculoDAO.atualizarHitCount(client, veiculo.$id).then((rows) =>
+              clientFactory.commit(client).then())
+          );
+        }
+        return Array.of(veiculo);
+      });
     } else {
-      if(aleatorio){
+      if (aleatorio) {
         return VeiculoDAO.buscarTodosVeiculosDisponiveisAleatoriamenteLimitados();
       } else {
         return VeiculoDAO.buscarTodosVeiculosDisponiveis(procurar);
@@ -47,7 +57,7 @@ export class VeiculoPublicController {
         combustivel: (veiculo: Veiculo) =>
           combustiveis()[veiculo.$combustivel_id - 1],
         anexoPrincipal: (veiculo: Veiculo) =>
-        AnexoVeiculoController.getAnexoPrincipal(veiculo.$id).then(
+          AnexoVeiculoController.getAnexoPrincipal(veiculo.$id).then(
             (anexo: AnexoVeiculo) => anexo
           ),
         anexos: (veiculo: Veiculo) =>

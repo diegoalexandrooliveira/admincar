@@ -1,4 +1,4 @@
-import { Pool, Client, QueryResult, QueryConfig, PoolClient } from "pg";
+import { Pool, QueryResult, PoolClient } from "pg";
 import { logger } from "../utils";
 import { configs } from "../config/configs";
 import { Mensagem } from "../model";
